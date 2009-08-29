@@ -1,13 +1,12 @@
-'''Game main module.
 
-Contains the entry point used by the run_game.py script.
+from pyglet import app
+from pyglet.window import Window
+from pyglet.media import load
 
-Feel free to put all your game code here, or in other modules in this "gamelib"
-package.
-'''
-
-import data
 
 def main():
-    print "Hello from your game's main()"
-    print data.load('sample.txt').read()
+    music = load('data/m3d049_bopMix_03_hwyChipmusik_by_xik.ogg')
+    win = Window()
+    music.play()
+    app.run()
+
