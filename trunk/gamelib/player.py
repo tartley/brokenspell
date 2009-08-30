@@ -1,6 +1,4 @@
 
-from pyglet import resource
-from pyglet.sprite import Sprite
 from pyglet.window import key
 
 from gameent import GameEnt, LEFT, RIGHT
@@ -13,25 +11,27 @@ FLAP_LIFT = 13
 
 class Player(GameEnt):
 
+    SPRITE_PREFIX = 'data/images/Player-'
+
     def __init__(self, keyhandler, *args):
         GameEnt.__init__(self, *args)
         self.keyhandler = keyhandler
         self.can_flap = True
-        self.sprites[LEFT] = \
-            Sprite(resource.image('data/images/Player-flap-L.png'))
-        self.sprites[RIGHT] = \
-            Sprite(resource.image('data/images/Player-flap-R.png'))
+        self.last_flap = None
 
 
     def read_controls(self):
+        if self.last_flap is not None:
+            self.last_flap += 1
+
         if self.keyhandler[key.Z]:
-            flapping = self.try_flap()
+            if self.can_flap:
+                self.flap()
         else:
             self.can_flap = True
-            flapping = False
 
         ddx = GLIDE_STEER
-        if flapping:
+        if self.last_flap == 0:
             ddx = FLAP_STEER
 
         if self.keyhandler[key.LEFT]:
@@ -42,15 +42,14 @@ class Player(GameEnt):
             self.facing = RIGHT
 
 
+    def flap(self):
+        if self.can_flap:
+            self.dy += FLAP_LIFT
+            self.last_flap = 0
+            self.can_flap = False
+
+
     def update(self):
         self.read_controls()
         GameEnt.update(self)
-
-
-    def try_flap(self):
-        if self.can_flap:
-            self.dy += FLAP_LIFT
-            self.can_flap = False
-            return True
-        return False
 

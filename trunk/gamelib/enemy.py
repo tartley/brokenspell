@@ -2,16 +2,20 @@
 from pyglet import resource
 from pyglet.sprite import Sprite
 
+from behaviour import Think, Hover
 from gameent import GameEnt, LEFT, RIGHT
 
 
 class Enemy(GameEnt):
 
+    SPRITE_PREFIX = 'data/images/Enemy-'
+
     def __init__(self, *args, **kwargs):
         GameEnt.__init__(self, *args, **kwargs)
-        self.sprites[LEFT] = \
-            Sprite(resource.image('data/images/Enemy-flight-L.png'))
-        self.sprites[RIGHT] = \
-            Sprite(resource.image('data/images/Enemy-flight-R.png'))
+        self.behaviour = Hover(self)
+        self.last_flap = 0
 
+    def update(self):
+        self.behaviour.update()
+        GameEnt.update(self)
 
