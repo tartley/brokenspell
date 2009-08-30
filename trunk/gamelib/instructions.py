@@ -3,6 +3,7 @@ from pyglet.text import Label
 
 
 MESSAGES = [
+        "Sinister Ducks",
         "ESC to exit",
         "Left and right to move around",
         "Z flaps wings",
