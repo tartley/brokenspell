@@ -1,7 +1,4 @@
 
-from glob import glob
-from pyglet import resource
-from pyglet.sprite import Sprite
 
 GRAVITY = 0.6
 LEFT, RIGHT = 'L', 'R'
@@ -16,23 +13,7 @@ class GameEnt(object):
         self.y = y
         self.dx = dx
         self.dy = dy
-        if dx < 0:
-            self.facing = LEFT
-        else:
-            self.facing = RIGHT
-        self.sprites = self.load_sprites()
         self.dead = False
-
-
-    def load_sprites(self):
-        sprites = {}
-        files = glob('%s*' % (self.SPRITE_PREFIX,))
-        for file in files:
-            file = file.replace('\\', '/')
-            image = resource.image(file)
-            name = file[len(self.SPRITE_PREFIX):-4]
-            sprites[name] = Sprite(image)
-        return sprites
 
 
     def update(self):
@@ -44,18 +25,6 @@ class GameEnt(object):
         if self.y < 0:
             self.y = 0
             self.dy *= -0.5
-
-
-    def get_sprite(self):
-        action = 'flight'
-        if self.last_flap is not None and self.last_flap < 5:
-            action = 'flap'
-        sprite = self.sprites['%s-%s' % (action, self.facing,)]
-        self.center_x = sprite.width/2
-        self.center_y = sprite.height/2
-        self.width = sprite.width
-        self.height = sprite.height
-        return sprite
 
 
     def draw(self):

@@ -10,8 +10,8 @@ class Player(Bird):
 
     SPRITE_PREFIX = 'data/images/Player-'
 
-    def __init__(self, keyhandler, *args, **kwargs):
-        Bird.__init__(self, *args, **kwargs)
+    def __init__(self, keyhandler, x, y):
+        Bird.__init__(self, x, y)
         self.keyhandler = keyhandler
 
 

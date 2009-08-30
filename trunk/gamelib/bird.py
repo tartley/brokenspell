@@ -1,4 +1,9 @@
 
+from glob import glob
+
+from pyglet import resource
+from pyglet.sprite import Sprite
+
 from gameent import GameEnt, LEFT, RIGHT
 
 
@@ -15,10 +20,16 @@ class Action(object):
 
 class Bird(GameEnt):
 
-    def __init__(self, *args, **kwargs):
-        GameEnt.__init__(self, *args, **kwargs)
+    def __init__(self, x, y, dx=0, dy=0):
+        GameEnt.__init__(self, x, y, dx, dy)
         self.can_flap = True
         self.last_flap = None
+        if dx < 0:
+            self.facing = LEFT
+        else:
+            self.facing = RIGHT
+        self.sprites = self.load_sprites()
+        self.get_sprite()
 
 
     def act(self, actions):
@@ -53,3 +64,25 @@ class Bird(GameEnt):
         if self.last_flap is not None:
             self.last_flap += 1 
 
+
+    def get_sprite(self):
+        action = 'flight'
+        if self.last_flap is not None and self.last_flap < 5:
+            action = 'flap'
+        sprite = self.sprites['%s-%s' % (action, self.facing,)]
+        self.center_x = sprite.width/2
+        self.center_y = sprite.height/2
+        self.width = sprite.width
+        self.height = sprite.height
+        return sprite
+
+
+    def load_sprites(self):
+        sprites = {}
+        files = glob('%s*' % (self.SPRITE_PREFIX,))
+        for file in files:
+            file = file.replace('\\', '/')
+            image = resource.image(file)
+            name = file[len(self.SPRITE_PREFIX):-4]
+            sprites[name] = Sprite(image)
+        return sprites
