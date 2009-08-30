@@ -84,3 +84,4 @@ class Bird(GameEnt):
             name = file[len(self.SPRITE_PREFIX):-4]
             sprites[name] = Sprite(image)
         return sprites
+

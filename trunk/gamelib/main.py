@@ -35,7 +35,7 @@ class Application(object):
         self.player = Player(self.keyhandler,
             self.level.width / 2, self.level.height)
         self.level.add(self.player)
-        self.populate_level()
+        clock.schedule_once(lambda _: self.add_enemy(), uniform(2, 4))
         self.instructions = Instructions()
 
         # music = load(join('data', 'musik.ogg'))
@@ -43,14 +43,14 @@ class Application(object):
         clock.schedule(self.update)
 
 
-    def populate_level(self):
-        for _ in range(5):
-            x = uniform(0, self.level.width)
-            y = self.level.height
-            dx = uniform(-20, 20)
-            dy = uniform(0, 10)
-            feathers = randint(0, 5)
-            self.level.add(Enemy(x, y, dx=dx, dy=dy, feathers=feathers))
+    def add_enemy(self):
+        x = uniform(0, self.level.width)
+        y = self.level.height
+        dx = uniform(-20, 20)
+        dy = uniform(0, 10)
+        feathers = randint(0, 5)
+        self.level.add(Enemy(x, y, dx=dx, dy=dy, feathers=feathers))
+        clock.schedule_once(lambda _: self.add_enemy(), uniform(2, 4))
 
 
     def update(self, dt):
