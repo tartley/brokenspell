@@ -30,6 +30,7 @@ class Bird(GameEnt):
             self.facing = RIGHT
         self.sprites = self.load_sprites()
         self.get_sprite()
+        self.canDie = True
 
 
     def act(self, actions):
@@ -70,10 +71,7 @@ class Bird(GameEnt):
         if self.last_flap is not None and self.last_flap < 5:
             action = 'flap'
         sprite = self.sprites['%s-%s' % (action, self.facing,)]
-        self.center_x = sprite.width/2
-        self.center_y = sprite.height/2
-        self.width = sprite.width
-        self.height = sprite.height
+        self.update_sprite_stats(sprite)
         return sprite
 
 

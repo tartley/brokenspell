@@ -1,10 +1,10 @@
 
 
-GRAVITY = 0.6
 LEFT, RIGHT = 'L', 'R'
 
 
 class GameEnt(object):
+    GRAVITY = 0.6
 
     SPRITE_PREFIX = None
 
@@ -17,7 +17,7 @@ class GameEnt(object):
 
 
     def update(self):
-        self.dy -= GRAVITY
+        self.dy -= self.GRAVITY
         self.dx *= 0.95
         self.dy *= 0.95
         self.x += self.dx
@@ -35,3 +35,10 @@ class GameEnt(object):
     
     def collided_with(self, ent):
         pass
+
+
+    def update_sprite_stats(self, sprite):
+        self.center_x = sprite.width/2
+        self.center_y = sprite.height/2
+        self.width = sprite.width
+        self.height = sprite.height

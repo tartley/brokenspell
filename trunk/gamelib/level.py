@@ -1,5 +1,7 @@
 import math
 
+from feather import Feather
+
 class Level(object):
 
     def __init__(self, width, height):
@@ -44,6 +46,7 @@ class Level(object):
 
             if ent.dead:
                 self.ents.remove(ent)
+                self.ents.append(Feather(ent.x, ent.y))
                 continue
 
             ent.update()
