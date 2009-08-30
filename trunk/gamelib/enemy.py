@@ -2,7 +2,7 @@
 from pyglet import resource
 from pyglet.sprite import Sprite
 
-from behaviour import Hover
+from behaviour import Thinker
 from bird import Bird
 
 
@@ -12,6 +12,6 @@ class Enemy(Bird):
 
     def __init__(self, *args, **kwargs):
         Bird.__init__(self, *args, **kwargs)
-        self.think = Hover(self)
+        self.think = Thinker(self)
         self.last_flap = 0
 
