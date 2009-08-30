@@ -13,4 +13,5 @@ class Level(object):
 
     def update(self, dt):
         self.age += dt
+        self.player.update(dt)
 
