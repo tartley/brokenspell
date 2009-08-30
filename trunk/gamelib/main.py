@@ -8,10 +8,10 @@ from pyglet.gl import (
     GL_COLOR_BUFFER_BIT, GL_PROJECTION, GL_QUADS, 
 )
 from pyglet.graphics import draw
-from pyglet.window import Window
+from pyglet.window import key, Window
 from pyglet.media import load
 
-
+from player import Player
 from level import Level
 
 
@@ -21,10 +21,14 @@ clockDisplay = clock.ClockDisplay()
 class Application(object):
 
     def __init__(self):
-        self.level = Level()
-        
+        self.player = Player()
+        self.level = Level(self.player)
+        self.win = None
+        self.keyhandler = None
+
 
     def update(self, dt):
+        self.player.read_controls(self.keyhandler)
         self.level.update(dt)
 
 
@@ -57,6 +61,9 @@ class Application(object):
         self.win = Window(width=1024, height=728)
         self.win.set_exclusive_mouse()
         self.win.on_draw = self.draw
+
+        self.keyhandler = key.KeyStateHandler()
+        self.win.push_handlers(self.keyhandler)
 
         # music = load(join('data', 'musik.ogg'))
         # clock.schedule_once(lambda _: music.play(), 1)

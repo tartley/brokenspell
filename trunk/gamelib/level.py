@@ -1,17 +1,14 @@
 
-from player import Player
-
 
 class Level(object):
 
-    def __init__(self):
+    def __init__(self, player):
         self.age = 0.0
-        self.player = Player()
+        self.player = player
 
 
     def draw(self):
-        if self.player:
-            self.player.draw()
+        self.player.draw()
 
 
     def update(self, dt):
