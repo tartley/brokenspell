@@ -62,3 +62,7 @@ class Level(object):
             ent1.dy = 10 - ent1.dy
             x_direction = math.copysign(1, ent1.x - ent2.x) 
             ent1.dx =  x_direction * 10 - x_direction * ent2.dx
+
+        if not hasattr(ent2, 'think') and hasattr(ent1, 'is_player'):
+            self.ents.remove(ent2)
+            print 'Caught feather'
