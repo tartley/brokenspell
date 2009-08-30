@@ -10,8 +10,9 @@ class Enemy(Bird):
 
     SPRITE_PREFIX = 'data/images/Enemy-'
 
-    def __init__(self, *args, **kwargs):
-        Bird.__init__(self, *args, **kwargs)
+    def __init__(self, x, y, dx=0, dy=0, feathers=2):
+        Bird.__init__(self, x, y, dx, dy)
         self.think = Thinker(self)
         self.last_flap = 0
+        self.feathers = feathers
 

@@ -1,6 +1,6 @@
 
 from os.path import join
-from random import uniform
+from random import randint, uniform
 
 from pyglet import app, clock
 from pyglet.event import EVENT_HANDLED
@@ -49,7 +49,8 @@ class Application(object):
             y = self.level.height
             dx = uniform(-20, 20)
             dy = uniform(0, 10)
-            self.level.add(Enemy(x, y, dx=dx, dy=dy))
+            feathers = randint(0, 5)
+            self.level.add(Enemy(x, y, dx=dx, dy=dy, feathers=feathers))
 
 
     def update(self, dt):

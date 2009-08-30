@@ -13,6 +13,7 @@ class Player(Bird):
     def __init__(self, keyhandler, x, y):
         Bird.__init__(self, x, y)
         self.keyhandler = keyhandler
+        self.is_player = True
 
 
     def think(self):
@@ -26,16 +27,4 @@ class Player(Bird):
             if self.keyhandler[keypress]:
                 actions.add(action)
         return actions
-
-
-    def collided_with(self, ent):
-        if ent.canDie:
-            if ent.y < self.y:
-                ent.dead = True
-
-            self.dy = 10 - ent.dy
-            x_direction = math.copysign(1, self.x - ent.x) 
-            self.dx =  x_direction * 10 - x_direction * ent.dx
-
-
 

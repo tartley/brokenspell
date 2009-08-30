@@ -42,13 +42,23 @@ class Level(object):
                 if collider == ent:
                     continue
                 if self.collision(ent, collider):
-                    ent.collided_with(collider)
+                    self.collided_with(ent, collider)
 
-            if ent.dead:
+            if hasattr(ent, 'feathers') and ent.feathers == 0:
                 self.ents.remove(ent)
-                self.ents.append(Feather(ent.x, ent.y))
                 continue
 
             ent.update()
             self.wraparound(ent)
 
+
+    def collided_with(self, ent1, ent2):
+        if ent2.canDie and hasattr(ent1, 'is_player'):
+            if ent2.y < ent1.y:
+                ent2.feathers -= 1
+                self.ents.append(Feather(ent2.x, ent2.y, ent2.dx, ent2.dy))
+
+
+            ent1.dy = 10 - ent1.dy
+            x_direction = math.copysign(1, ent1.x - ent2.x) 
+            ent1.dx =  x_direction * 10 - x_direction * ent2.dx
