@@ -23,8 +23,6 @@ class Instructions(object):
     def draw(self):
         if self.instruction:
             self.instruction.draw()
-        else:
-            print "skipping"
 
 
     def change_text(self):
@@ -38,7 +36,7 @@ class Instructions(object):
                 anchor_x='right', anchor_y='top')
         self.instruction.y = 0
         def set_pos():
-            if self.instruction.y <= self.instruction.content_height:
+            if self.instruction and self.instruction.y <= self.instruction.content_height:
                 self.instruction.y += 1
         clock.schedule(lambda _: set_pos())
 
