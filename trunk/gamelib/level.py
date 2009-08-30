@@ -44,7 +44,7 @@ class Level(object):
                 if self.collision(ent, collider):
                     self.collided_with(ent, collider)
 
-            if hasattr(ent, 'feathers') and ent.feathers == 0:
+            if ent.is_gone:
                 self.ents.remove(ent)
                 continue
 
@@ -53,7 +53,7 @@ class Level(object):
 
 
     def collided_with(self, ent1, ent2):
-        if ent2.canDie and hasattr(ent1, 'is_player'):
+        if hasattr(ent2, 'is_enemy') and hasattr(ent1, 'is_player'):
             if ent2.y < ent1.y:
                 ent2.feathers -= 1
                 self.ents.append(Feather(ent2.x, ent2.y, ent2.dx, ent2.dy))
@@ -63,6 +63,6 @@ class Level(object):
             x_direction = math.copysign(1, ent1.x - ent2.x) 
             ent1.dx =  x_direction * 10 - x_direction * ent2.dx
 
-        if not hasattr(ent2, 'think') and hasattr(ent1, 'is_player'):
+        if hasattr(ent2, 'is_feather') and hasattr(ent1, 'is_player'):
             self.ents.remove(ent2)
             print 'Caught feather'

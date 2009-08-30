@@ -30,7 +30,7 @@ class Bird(GameEnt):
             self.facing = RIGHT
         self.sprites = self.load_sprites()
         self.get_sprite()
-        self.canDie = True
+        self.is_enemy = True
 
 
     def act(self, actions):

@@ -16,3 +16,9 @@ class Enemy(Bird):
         self.last_flap = 0
         self.feathers = feathers
 
+
+    def update(self):
+        Bird.update(self)
+        if self.feathers == 0:
+            self.is_gone = True
+

@@ -13,7 +13,7 @@ class GameEnt(object):
         self.y = y
         self.dx = dx
         self.dy = dy
-        self.dead = False
+        self.is_gone = False
 
 
     def update(self):
