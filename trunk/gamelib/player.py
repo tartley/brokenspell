@@ -1,4 +1,6 @@
 
+import math
+
 from pyglet.window import key
 
 from gameent import GameEnt, LEFT, RIGHT
@@ -53,6 +55,10 @@ class Player(GameEnt):
     def collided_with(self, ent):
         if ent.y < self.y:
             ent.dead = True
+
+        self.dy = 10 - ent.dy
+        x_direction = math.copysign(1, self.x - ent.x) 
+        self.dx =  x_direction * 10 - x_direction * ent.dx
 
 
     def update(self):
