@@ -7,7 +7,7 @@ MESSAGES = [
         "Left and right to move around",
         "Z flaps wings",
         "Catch feathers to increase flap strength",
-        ""
+        None
 ]
 
 
@@ -22,23 +22,22 @@ class Instructions(object):
 
     def draw(self):
         if self.instruction:
-            self.instruction.y = self.instruction_pos.next()
             self.instruction.draw()
 
 
     def change_text(self):
         message = MESSAGES[self.showing_message]
+        if not message:
+            self.instruction = None
+            return
         self.showing_message += 1
         self.instruction = Label(message,
                 font_size=36, x=1024, y=0,
                 anchor_x='right', anchor_y='top')
         self.instruction.y = 0
-        def set_pos(pos):
-            while pos <= self.instruction.content_height:
-                pos += 1
-                yield pos
-            while 1:
-                yield self.instruction.content_height
-        self.instruction_pos = set_pos(0)
+        def set_pos():
+            if self.instruction.y <= self.instruction.content_height:
+                self.instruction.y += 1
+        clock.schedule(lambda _: set_pos())
 
 

@@ -8,7 +8,6 @@ from pyglet.gl import (
     GL_COLOR_BUFFER_BIT, GL_PROJECTION, GL_QUADS, 
 )
 from pyglet.graphics import draw
-from pyglet.text import Label
 from pyglet.window import key, Window
 from pyglet.media import load
 
