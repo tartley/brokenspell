@@ -29,14 +29,16 @@ class Bird(GameEnt):
         else:
             self.facing = RIGHT
         self.sprites = self.load_sprites()
-        self.get_sprite()
         self.is_enemy = True
+        self.actions = set()
 
 
-    def act(self, actions):
-        if Action.FLAP in actions:
+    def act(self):
+        if Action.FLAP in self.actions:
             if self.can_flap:
-                self.flap()
+                self.dy += FLAP_LIFT
+                self.last_flap = 0
+                self.can_flap = False
         else:
             self.can_flap = True
 
@@ -44,31 +46,29 @@ class Bird(GameEnt):
         if self.last_flap == 0:
             ddx = FLAP_STEER
 
-        if Action.LEFT in actions:
+        if Action.LEFT in self.actions:
             self.dx -= ddx
             self.facing = LEFT
-        if Action.RIGHT in actions:
+        if Action.RIGHT in self.actions:
             self.dx += ddx
             self.facing = RIGHT
 
 
-    def flap(self):
-        self.dy += FLAP_LIFT
-        self.last_flap = 0
-        self.can_flap = False
-
-
     def update(self):
         GameEnt.update(self)
-        actions = self.think()
-        self.act(actions)
+        self.actions = self.think()
+        self.act()
         if self.last_flap is not None:
             self.last_flap += 1 
 
 
     def get_sprite(self):
         action = 'flight'
-        if self.last_flap is not None and self.last_flap < 5:
+        flapping = (
+            (self.last_flap is not None and self.last_flap < 5)
+            or Action.FLAP in self.actions
+        )
+        if flapping:
             action = 'flap'
         sprite = self.sprites['%s-%s' % (action, self.facing,)]
         self.update_sprite_stats(sprite)
