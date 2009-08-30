@@ -21,12 +21,12 @@ class Level(object):
 
     def draw(self):
         for ent in self.ents:
-            ent.draw()
             for collider in self.ents:
                 if collider == ent:
                     continue
                 if self.collision(ent, collider):
                     ent.collided_with(collider)
+            ent.draw()
 
 
     def wraparound(self, ent):
@@ -38,7 +38,10 @@ class Level(object):
 
     def update(self, dt):
         self.age += dt
-        for ent in self.ents:
+        for ent in self.ents[:]:
+            if ent.dead:
+                self.ents.remove(ent)
+                continue
             ent.update()
             self.wraparound(ent)
 

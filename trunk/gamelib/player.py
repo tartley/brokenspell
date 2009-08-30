@@ -51,7 +51,8 @@ class Player(GameEnt):
 
 
     def collided_with(self, ent):
-        ent.dy = 10
+        if ent.y < self.y:
+            ent.dead = True
 
 
     def update(self):

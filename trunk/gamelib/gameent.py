@@ -21,6 +21,7 @@ class GameEnt(object):
         else:
             self.facing = RIGHT
         self.sprites = self.load_sprites()
+        self.dead = False
 
 
     def load_sprites(self):
