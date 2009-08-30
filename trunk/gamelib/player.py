@@ -18,6 +18,7 @@ class Player(GameEnt):
         self.keyhandler = keyhandler
         self.can_flap = True
         self.last_flap = None
+        self.get_sprite()
 
 
     def read_controls(self):
@@ -47,6 +48,10 @@ class Player(GameEnt):
             self.dy += FLAP_LIFT
             self.last_flap = 0
             self.can_flap = False
+
+
+    def collided_with(self, ent):
+        ent.dy = 10
 
 
     def update(self):

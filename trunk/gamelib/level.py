@@ -1,4 +1,4 @@
-
+import math
 
 class Level(object):
 
@@ -13,9 +13,20 @@ class Level(object):
         self.ents.append(ent)
 
 
+    def collision(self, ent1, ent2):
+        if math.sqrt(((ent1.center_x + ent1.x) - (ent2.center_x + ent2.x)) ** 2 + 
+                ((ent1.center_y + ent1.y) - (ent2.center_y + ent2.y)) ** 2) < ent1.width * 0.8:
+            return True
+
+
     def draw(self):
         for ent in self.ents:
             ent.draw()
+            for collider in self.ents:
+                if collider == ent:
+                    continue
+                if self.collision(ent, collider):
+                    ent.collided_with(collider)
 
 
     def wraparound(self, ent):

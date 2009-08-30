@@ -14,6 +14,7 @@ class Enemy(GameEnt):
         GameEnt.__init__(self, *args, **kwargs)
         self.behaviour = Hover(self)
         self.last_flap = 0
+        self.get_sprite()
 
     def update(self):
         self.behaviour.update()

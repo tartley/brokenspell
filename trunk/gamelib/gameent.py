@@ -49,7 +49,12 @@ class GameEnt(object):
         action = 'flight'
         if self.last_flap < 5:
             action = 'flap'
-        return self.sprites['%s-%s' % (action, self.facing,)]
+        sprite = self.sprites['%s-%s' % (action, self.facing,)]
+        self.center_x = sprite.width/2
+        self.center_y = sprite.height/2
+        self.width = sprite.width
+        self.height = sprite.height
+        return sprite
 
 
     def draw(self):
@@ -57,3 +62,6 @@ class GameEnt(object):
         sprite.position = (self.x, self.y)
         sprite.draw()
 
+    
+    def collided_with(self, ent):
+        pass
