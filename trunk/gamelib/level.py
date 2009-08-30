@@ -1,5 +1,7 @@
 import math
 
+from pyglet.text import Label
+
 from feather import Feather
 
 class Level(object):
@@ -9,6 +11,7 @@ class Level(object):
         self.ents = []
         self.width = width
         self.height = height
+        self.score = 0
 
     
     def add(self, ent):
@@ -22,6 +25,12 @@ class Level(object):
 
 
     def draw(self):
+        score = 'Score: %d' % self.score
+        score_label = Label(score,
+                font_size=36, x=1024, y=768,
+                anchor_x='right', anchor_y='top')
+        score_label.draw()
+
         for ent in self.ents:
             ent.draw()
             
@@ -31,6 +40,11 @@ class Level(object):
             ent.x += self.width + 70
         if ent.x > self.width:
             ent.x -= self.width + 70
+
+
+    def reset(self):
+        self.score = 0
+        self.ents = [e for e in self.ents if hasattr(e, 'is_player')]
 
 
     def update(self, dt):
@@ -57,12 +71,12 @@ class Level(object):
             if ent2.y < ent1.y:
                 ent2.feathers -= 1
                 self.ents.append(Feather(ent2.x, ent2.y, ent2.dx, ent2.dy))
-
-
-            ent1.dy = 10 - ent1.dy
-            x_direction = math.copysign(1, ent1.x - ent2.x) 
-            ent1.dx =  x_direction * 10 - x_direction * ent2.dx
+                ent1.dy = 10 - ent1.dy
+                x_direction = math.copysign(1, ent1.x - ent2.x) 
+                ent1.dx =  x_direction * 10 - x_direction * ent2.dx
+            else:
+                self.reset()
 
         if hasattr(ent2, 'is_feather') and hasattr(ent1, 'is_player'):
             self.ents.remove(ent2)
-            print 'Caught feather'
+            self.score += 10
