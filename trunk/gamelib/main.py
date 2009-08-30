@@ -1,12 +1,14 @@
 
-from pyglet import app
+from os.path import join
+
+from pyglet import app, clock
 from pyglet.window import Window
 from pyglet.media import load
 
 
 def main():
-    music = load('data/m3d049_bopMix_03_hwyChipmusik_by_xik.ogg')
+    music = load(join('data', 'musik.ogg'))
     win = Window()
-    music.play()
+    clock.schedule_once(lambda _: music.play, 1)
     app.run()
 
