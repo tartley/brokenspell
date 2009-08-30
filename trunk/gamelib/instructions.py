@@ -23,6 +23,8 @@ class Instructions(object):
     def draw(self):
         if self.instruction:
             self.instruction.draw()
+        else:
+            print "skipping"
 
 
     def change_text(self):
