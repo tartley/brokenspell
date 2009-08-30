@@ -25,14 +25,27 @@ class Hover(State):
         return set()
 
 
-class Cruise(State):
-    pass
+class Cruise(Hover):
+
+    def __init__(self, ent):
+        Hover.__init__(self, ent)
+        if self.ent.dx < 0:
+            self.direction = Action.LEFT
+        else:
+            self.direction = Action.RIGHT
+
+    def get_actions(self):
+        actions = Hover.get_actions(self)
+        if self.ent.last_flap % 2 == 1:
+            actions = set([self.direction])
+        return actions
+
 
 
 class Thinker(object):
 
     def __init__(self, ent):
-        self.state = Hover(ent)
+        self.state = Cruise(ent)
 
     def __call__(self):
         actions = self.state.get_actions()
