@@ -2,14 +2,19 @@
 
 class Level(object):
 
-    def __init__(self, player):
+    def __init__(self, width, height):
         self.age = 0.0
-        self.gameents = [player]
-        self.width = 1024
+        self.ents = []
+        self.width = width
+        self.height = height
+
+    
+    def add(self, ent):
+        self.ents.append(ent)
 
 
     def draw(self):
-        for ent in self.gameents:
+        for ent in self.ents:
             ent.draw()
 
 
@@ -22,8 +27,8 @@ class Level(object):
 
     def update(self, dt):
         self.age += dt
-        for ent in self.gameents:
-            ent.update(dt)
+        for ent in self.ents:
+            ent.update()
             self.wraparound(ent)
 
 

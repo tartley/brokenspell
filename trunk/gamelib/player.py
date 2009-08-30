@@ -3,21 +3,19 @@ from pyglet import resource
 from pyglet.sprite import Sprite
 from pyglet.window import key
 
-
-GRAVITY = 0.4
-LEFT, RIGHT = 0, 1
+from gameent import GameEnt, LEFT, RIGHT
 
 
-class Player(object):
+GLIDE_STEER = 0.3
+FLAP_STEER = 6
+FLAP_LIFT = 13
 
-    def __init__(self):
-        self.age = 0.0
-        self.x = self.y = 0
-        self.dx = self.dy = 5
+
+class Player(GameEnt):
+
+    def __init__(self, *args):
+        GameEnt.__init__(self, *args)
         self.can_flap = True
-        self.facing = RIGHT
-
-        self.sprites= {}
         self.sprites[LEFT] = \
             Sprite(resource.image('data/images/Player-flap-L.png'))
         self.sprites[RIGHT] = \
@@ -31,9 +29,9 @@ class Player(object):
             self.can_flap = True
             flapping = False
 
-        ddx = 0.3
+        ddx = GLIDE_STEER
         if flapping:
-            ddx = 6
+            ddx = FLAP_STEER
 
         if keyhandler[key.LEFT]:
             self.dx -= ddx
@@ -45,25 +43,8 @@ class Player(object):
 
     def try_flap(self):
         if self.can_flap:
-            self.dy += 7
+            self.dy += FLAP_LIFT
             self.can_flap = False
             return True
         return False
-
-
-    def update(self, dt):
-        self.age += dt
-        self.dy -= GRAVITY
-        self.dx *= 0.9
-        self.x += self.dx
-        self.y += self.dy
-        if self.y < 0:
-            self.y = 0
-            self.dy *= -0.5
-
-
-    def draw(self):
-        sprite = self.sprites[self.facing]
-        sprite.position = (self.x, self.y)
-        sprite.draw()
 

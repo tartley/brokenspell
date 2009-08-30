@@ -1,5 +1,6 @@
 
 from os.path import join
+from random import uniform
 
 from pyglet import app, clock
 from pyglet.event import EVENT_HANDLED
@@ -11,6 +12,7 @@ from pyglet.graphics import draw
 from pyglet.window import key, Window
 from pyglet.media import load
 
+from enemy import Enemy
 from instructions import Instructions
 from player import Player
 from level import Level
@@ -22,11 +24,31 @@ clockDisplay = clock.ClockDisplay()
 class Application(object):
 
     def __init__(self):
-        self.player = Player()
-        self.level = Level(self.player)
+        self.win = Window(width=1024, height=768)
+        self.win.set_exclusive_mouse()
+        self.win.on_draw = self.draw
+
+        self.keyhandler = key.KeyStateHandler()
+        self.win.push_handlers(self.keyhandler)
+
+        self.level = Level(self.win.width, self.win.height)
+        self.player = Player(self.level.width / 2, self.level.height - 30)
+        self.level.add(self.player)
+        self.populate_level()
         self.instructions = Instructions()
-        self.win = None
-        self.keyhandler = None
+
+        # music = load(join('data', 'musik.ogg'))
+        # clock.schedule_once(lambda _: music.play(), 1)
+        clock.schedule(self.update)
+
+
+    def populate_level(self):
+        for _ in range(5):
+            x = uniform(0, self.level.width)
+            y = self.level.height
+            dx = uniform(-50, 50)
+            dy = uniform(0, 10)
+            self.level.add(Enemy(x, y, dx=dx, dy=dy))
 
 
     def update(self, dt):
@@ -60,21 +82,7 @@ class Application(object):
         )        
 
 
-    def run(self):
-        self.win = Window(width=1024, height=728)
-        self.win.set_exclusive_mouse()
-        self.win.on_draw = self.draw
-
-        self.keyhandler = key.KeyStateHandler()
-        self.win.push_handlers(self.keyhandler)
-
-        # music = load(join('data', 'musik.ogg'))
-        # clock.schedule_once(lambda _: music.play(), 1)
-        clock.schedule(self.update)
-        app.run()
-
-
 def main():
     application = Application()
-    application.run()
+    app.run()
 
