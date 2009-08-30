@@ -4,7 +4,8 @@ from pyglet.sprite import Sprite
 from pyglet.window import key
 
 
-GRAVITY = 0.5
+GRAVITY = 0.4
+LEFT, RIGHT = 0, 1
 
 
 class Player(object):
@@ -14,9 +15,13 @@ class Player(object):
         self.x = self.y = 0
         self.dx = self.dy = 5
         self.can_flap = True
+        self.facing = RIGHT
 
-        image = resource.image('data/images/Player-flap.png')
-        self.sprite = Sprite(image)
+        self.sprites= {}
+        self.sprites[LEFT] = \
+            Sprite(resource.image('data/images/Player-flap-L.png'))
+        self.sprites[RIGHT] = \
+            Sprite(resource.image('data/images/Player-flap-R.png'))
 
 
     def read_controls(self, keyhandler):
@@ -28,12 +33,14 @@ class Player(object):
 
         ddx = 0.3
         if flapping:
-            ddx = 5
+            ddx = 6
 
         if keyhandler[key.LEFT]:
             self.dx -= ddx
+            self.facing = LEFT
         if keyhandler[key.RIGHT]:
             self.dx += ddx
+            self.facing = RIGHT
 
 
     def try_flap(self):
@@ -56,6 +63,7 @@ class Player(object):
 
 
     def draw(self):
-        self.sprite.position = (self.x, self.y)
-        self.sprite.draw()
+        sprite = self.sprites[self.facing]
+        sprite.position = (self.x, self.y)
+        sprite.draw()
 
