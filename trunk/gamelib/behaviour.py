@@ -1,11 +1,7 @@
 
-from random import uniform
+from random import randint 
 
-
-class Think(object):
-
-    def update(self):
-        pass
+from bird import Action
 
 
 class Hover(object):
@@ -13,7 +9,8 @@ class Hover(object):
     def __init__(self, ent):
         self.ent = ent
 
-    def update(self):
-        if uniform(0, 5) == 0:
-            ent.try_flap()
+    def __call__(self):
+        if randint(0, 30) == 1:
+            return set([Action.FLAP])
+        return set()
 

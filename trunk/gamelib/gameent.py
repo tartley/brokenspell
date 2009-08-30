@@ -48,7 +48,7 @@ class GameEnt(object):
 
     def get_sprite(self):
         action = 'flight'
-        if self.last_flap < 5:
+        if self.last_flap is not None and self.last_flap < 5:
             action = 'flap'
         sprite = self.sprites['%s-%s' % (action, self.facing,)]
         self.center_x = sprite.width/2
