@@ -32,7 +32,8 @@ class Application(object):
         self.win.push_handlers(self.keyhandler)
 
         self.level = Level(self.win.width, self.win.height)
-        self.player = Player(self.level.width / 2, self.level.height - 30)
+        self.player = Player(self.keyhandler,
+            self.level.width / 2, self.level.height)
         self.level.add(self.player)
         self.populate_level()
         self.instructions = Instructions()
@@ -46,13 +47,12 @@ class Application(object):
         for _ in range(5):
             x = uniform(0, self.level.width)
             y = self.level.height
-            dx = uniform(-50, 50)
+            dx = uniform(-20, 20)
             dy = uniform(0, 10)
             self.level.add(Enemy(x, y, dx=dx, dy=dy))
 
 
     def update(self, dt):
-        self.player.read_controls(self.keyhandler)
         self.level.update(dt)
 
 

@@ -13,8 +13,9 @@ FLAP_LIFT = 13
 
 class Player(GameEnt):
 
-    def __init__(self, *args):
+    def __init__(self, keyhandler, *args):
         GameEnt.__init__(self, *args)
+        self.keyhandler = keyhandler
         self.can_flap = True
         self.sprites[LEFT] = \
             Sprite(resource.image('data/images/Player-flap-L.png'))
@@ -22,8 +23,8 @@ class Player(GameEnt):
             Sprite(resource.image('data/images/Player-flap-R.png'))
 
 
-    def read_controls(self, keyhandler):
-        if keyhandler[key.Z]:
+    def read_controls(self):
+        if self.keyhandler[key.Z]:
             flapping = self.try_flap()
         else:
             self.can_flap = True
@@ -33,12 +34,17 @@ class Player(GameEnt):
         if flapping:
             ddx = FLAP_STEER
 
-        if keyhandler[key.LEFT]:
+        if self.keyhandler[key.LEFT]:
             self.dx -= ddx
             self.facing = LEFT
-        if keyhandler[key.RIGHT]:
+        if self.keyhandler[key.RIGHT]:
             self.dx += ddx
             self.facing = RIGHT
+
+
+    def update(self):
+        self.read_controls()
+        GameEnt.update(self)
 
 
     def try_flap(self):

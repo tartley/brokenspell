@@ -10,7 +10,7 @@ class GameEnt(object):
         self.y = y
         self.dx = dx
         self.dy = dy
-        if dy < 0:
+        if dx < 0:
             self.facing = LEFT
         else:
             self.facing = RIGHT
