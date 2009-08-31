@@ -4,6 +4,7 @@ from pyglet.text import Label
 
 from feather import Feather
 
+
 class Level(object):
 
     def __init__(self, width, height):
@@ -47,23 +48,32 @@ class Level(object):
         self.ents = [e for e in self.ents if hasattr(e, 'is_player')]
 
 
-    def update(self, dt):
-        self.age += dt
-
-        for ent in self.ents[:]:
-
+    def detect_collisions(self):
+        for ent in self.ents:
             for collider in self.ents:
                 if collider == ent:
                     continue
                 if self.collision(ent, collider):
                     self.collided_with(ent, collider)
+    
 
+    def remove_dead(self):
+        for ent in self.ents[:]:
             if ent.is_gone:
                 self.ents.remove(ent)
-                continue
 
+
+    def update_ents(self):
+        for ent in self.ents:
             ent.update()
-            self.wraparound(ent)
+            self.wraparound(ent)    
+
+
+    def update(self, dt):
+        self.age += dt
+        self.detect_collisions()
+        self.remove_dead()
+        self.update_ents()
 
 
     def collided_with(self, ent1, ent2):
@@ -80,3 +90,4 @@ class Level(object):
         if hasattr(ent2, 'is_feather') and hasattr(ent1, 'is_player'):
             self.ents.remove(ent2)
             self.score += 10
+

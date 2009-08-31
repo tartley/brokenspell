@@ -38,8 +38,8 @@ class Application(object):
         clock.schedule_once(lambda _: self.add_enemy(), uniform(2, 4))
         self.instructions = Instructions()
 
-        music = load(join('data', 'musik.ogg'))
-        clock.schedule_once(lambda _: music.play(), 1)
+        # music = load(join('data', 'musik.ogg'))
+        # clock.schedule_once(lambda _: music.play(), 1)
         clock.schedule(self.update)
 
 

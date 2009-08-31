@@ -6,8 +6,6 @@ from gameent import GameEnt
 
 class Feather(GameEnt):
     
-    GRAVITY = 0.1
-
     def __init__(self, *args, **kwargs):
         GameEnt.__init__(self, *args, **kwargs)
         self.sprite = Sprite(resource.image('data/images/feather.png'))
@@ -21,5 +19,7 @@ class Feather(GameEnt):
 
     def update(self):
         GameEnt.update(self)
+        self.dy *= 0.5
         if self.y == 0:
             self.is_gone = True
+

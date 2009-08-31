@@ -1,12 +1,15 @@
 
 
+GRAVITY = 0.4
 LEFT, RIGHT = 'L', 'R'
 
 
 class GameEnt(object):
-    GRAVITY = 0.6
 
     SPRITE_PREFIX = None
+
+    AIR_RESIST_X = 0.95
+    AIR_RESIST_Y = 0.95
 
     def __init__(self, x, y, dx=0, dy=0):
         self.x = x
@@ -17,9 +20,10 @@ class GameEnt(object):
 
 
     def update(self):
-        self.dy -= self.GRAVITY
-        self.dx *= 0.95
-        self.dy *= 0.95
+        self.dy -= GRAVITY
+        self.dx *= self.AIR_RESIST_X
+        self.dy *= self.AIR_RESIST_Y
+
         self.x += self.dx
         self.y += self.dy
         if self.y < 0:
