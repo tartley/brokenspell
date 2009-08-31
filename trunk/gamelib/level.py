@@ -4,6 +4,7 @@ from pyglet.text import Label
 
 from feather import Feather
 
+
 class Level(object):
 
     def __init__(self, width, height):
@@ -56,12 +57,10 @@ class Level(object):
 
 
     def detect_collisions(self):
-        for ent in self.ents:
-            for collider in self.ents:
-                if collider == ent:
-                    continue
-                if self.collision(ent, collider):
-                    self.collided_with(ent, collider)
+        for i, ent1 in enumerate(self.ents):
+            for ent2 in self.ents[i+1:]:
+                if self.collision(ent1, ent2):
+                    self.collided_with(ent1, ent2)
 
 
     def remove_dead(self):
@@ -105,4 +104,5 @@ class Level(object):
         if hasattr(ent2, 'is_feather') and hasattr(ent1, 'is_player'):
             self.ents.remove(ent2)
             self.score += 10
+
 
