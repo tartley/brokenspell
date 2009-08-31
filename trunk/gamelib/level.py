@@ -61,11 +61,9 @@ class Level(object):
 
 
     def detect_collisions(self):
-        print '.',
         for i, ent1 in enumerate(self.ents):
             for ent2 in islice(self.ents, i+1, None):
                 if self.collision(ent1, ent2):
-                    print 'C', type(ent1).__name__, type(ent2).__name__,
                     ent1.collided_with(ent2)
                     ent2.collided_with(ent1)
 

@@ -66,7 +66,6 @@ class Bird(GameEnt):
 
 
     def lose_feather(self, otherx, othery):
-        print 'losefeather', type(self).__name__
         self.feathers -= 1
         if self.feathers >= 0:
             directionx = self.x - otherx
