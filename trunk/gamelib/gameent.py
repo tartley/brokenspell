@@ -19,6 +19,8 @@ class GameEnt(object):
         self.dx = dx
         self.dy = dy
         self.is_gone = False
+        self.width = 0
+        self.height = 0
 
 
     def update(self):

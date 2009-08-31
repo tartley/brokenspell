@@ -59,7 +59,7 @@ class Bird(GameEnt):
         self.actions = self.think()
         self.act()
         if self.last_flap is not None:
-            self.last_flap += 1 
+            self.last_flap += 1
 
 
     def lose_feather(self):

@@ -4,7 +4,6 @@ from pyglet.text import Label
 
 from feather import Feather
 
-
 class Level(object):
 
     def __init__(self, width, height):
@@ -13,10 +12,16 @@ class Level(object):
         self.width = width
         self.height = height
         self.score = 0
+        self.player = None
 
-    
+
     def add(self, ent):
         self.ents.append(ent)
+
+
+    def add_player(self, ent):
+        self.player = ent
+        self.add(ent)
 
 
     def collision(self, ent1, ent2):
@@ -34,7 +39,7 @@ class Level(object):
 
         for ent in self.ents:
             ent.draw()
-            
+
 
     def wraparound(self, ent):
         if ent.x < ent.width:
@@ -43,9 +48,11 @@ class Level(object):
             ent.x -= self.width + ent.width
 
 
-    def reset(self):
+    def reset_player(self):
+        self.player.x = self.width / 2
+        self.player.y = self.height
+        self.player.is_alive = True
         self.score = 0
-        # self.ents = [e for e in self.ents if hasattr(e, 'is_player')]
 
 
     def detect_collisions(self):
@@ -55,7 +62,7 @@ class Level(object):
                     continue
                 if self.collision(ent, collider):
                     self.collided_with(ent, collider)
-    
+
 
     def remove_dead(self):
         for ent in self.ents[:]:
@@ -66,7 +73,11 @@ class Level(object):
     def update_ents(self):
         for ent in self.ents:
             ent.update()
-            self.wraparound(ent)    
+            self.wraparound(ent)
+
+
+    def is_player_dead(self):
+        return not self.player.is_alive and self.player.y <= 0
 
 
     def update(self, dt):
@@ -74,6 +85,7 @@ class Level(object):
         self.detect_collisions()
         self.remove_dead()
         self.update_ents()
+        return self.is_player_dead()
 
 
     def collided_with(self, ent1, ent2):
@@ -88,7 +100,7 @@ class Level(object):
                 x_direction = math.copysign(1, ent1.x - ent2.x) 
                 ent1.dx =  x_direction * 3 - x_direction * ent2.dx
             else:
-                self.reset()
+                ent1.is_alive = False
 
         if hasattr(ent2, 'is_feather') and hasattr(ent1, 'is_player'):
             self.ents.remove(ent2)

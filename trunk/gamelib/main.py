@@ -16,6 +16,7 @@ from enemy import Enemy
 from instructions import Instructions
 from player import Player
 from level import Level
+from user_message import UserMessage
 
 
 clockDisplay = clock.ClockDisplay()
@@ -31,10 +32,13 @@ class Application(object):
         self.keyhandler = key.KeyStateHandler()
         self.win.push_handlers(self.keyhandler)
 
+        self.player_dead = False
+        self.user_message = UserMessage(self.win.width,
+                                        self.win.height)
         self.level = Level(self.win.width, self.win.height)
         self.player = Player(self.keyhandler,
             self.level.width / 2, self.level.height)
-        self.level.add(self.player)
+        self.level.add_player(self.player)
         clock.schedule_once(lambda _: self.add_enemy(), uniform(2, 4))
         self.instructions = Instructions()
 
@@ -54,7 +58,16 @@ class Application(object):
 
 
     def update(self, dt):
-        self.level.update(dt)
+        if self.level.update(dt) and not self.player_dead:
+            self.player_dead = True
+            self.user_message.set_message('Oh no! Get ready...')
+            clock.schedule_once(lambda _: self.reincarnate(), 2)
+
+
+    def reincarnate(self):
+        self.user_message.set_message(None)
+        self.level.reset_player()
+        self.player_dead = False
 
 
     def draw(self):
@@ -62,6 +75,7 @@ class Application(object):
         self.level.draw()
         self.instructions.draw()
         clockDisplay.draw()
+        self.user_message.draw()
 
 
     def gradient_clear(self):
