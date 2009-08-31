@@ -30,6 +30,7 @@ class Bird(GameEnt):
             self.facing = RIGHT
         self.sprites = self.load_sprites()
         self.is_enemy = True
+        self.is_alive = True
         self.actions = set()
 
 
@@ -63,10 +64,12 @@ class Bird(GameEnt):
 
 
     def get_sprite(self):
-        action = 'flight'
+        action = 'flight' if self.is_alive else 'dead'
         flapping = (
-            (self.last_flap is not None and self.last_flap < 5)
-            or Action.FLAP in self.actions
+            self.is_alive and (
+                (self.last_flap is not None
+                 and self.last_flap < 5)
+                or Action.FLAP in self.actions)
         )
         if flapping:
             action = 'flap'

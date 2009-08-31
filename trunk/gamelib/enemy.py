@@ -20,5 +20,8 @@ class Enemy(Bird):
     def update(self):
         Bird.update(self)
         if self.feathers == 0:
+            self.is_alive = False
+            self.think = lambda: set()
+        if not self.is_alive and self.y == 0:
             self.is_gone = True
 
