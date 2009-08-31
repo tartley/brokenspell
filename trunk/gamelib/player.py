@@ -23,8 +23,9 @@ class Player(Bird):
             key.RIGHT: Action.RIGHT,
         }
         actions = set()
-        for keypress, action in action_map.iteritems():
-            if self.keyhandler[keypress]:
-                actions.add(action)
+        if self.is_alive:
+            for keypress, action in action_map.iteritems():
+                if self.keyhandler[keypress]:
+                    actions.add(action)
         return actions
 
