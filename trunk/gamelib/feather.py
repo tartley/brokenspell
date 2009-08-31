@@ -1,4 +1,6 @@
 
+from random import uniform
+
 from pyglet import resource
 from pyglet.sprite import Sprite
 
@@ -6,11 +8,14 @@ from gameent import GameEnt
 
 class Feather(GameEnt):
     
+    is_feather = True
+    can_fall_off = True
+
     def __init__(self, *args, **kwargs):
         GameEnt.__init__(self, *args, **kwargs)
+        self.AIR_RESIST_Y = uniform(0.6, 0.9)
         self.sprite = Sprite(resource.image('data/images/feather.png'))
         self.update_sprite_stats(self.sprite)
-        self.is_feather = True
 
 
     def get_sprite(self):
@@ -19,7 +24,4 @@ class Feather(GameEnt):
 
     def update(self):
         GameEnt.update(self)
-        self.dy *= 0.5
-        if self.y == 0:
-            self.is_gone = True
 

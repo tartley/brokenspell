@@ -9,19 +9,11 @@ from bird import Bird
 class Enemy(Bird):
 
     SPRITE_PREFIX = 'data/images/Enemy-'
+    is_enemy = True
 
     def __init__(self, x, y, dx=0, dy=0, feathers=2):
         Bird.__init__(self, x, y, dx, dy)
         self.think = Thinker(self)
         self.last_flap = 0
         self.feathers = feathers
-
-
-    def update(self):
-        Bird.update(self)
-        if self.feathers == 0:
-            self.is_alive = False
-            self.think = lambda: set()
-        if not self.is_alive and self.y == 0:
-            self.is_gone = True
 

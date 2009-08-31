@@ -7,9 +7,9 @@ from pyglet.sprite import Sprite
 from gameent import GameEnt, LEFT, RIGHT
 
 
-GLIDE_STEER = 0.3
-FLAP_STEER = 6
-FLAP_LIFT = 13
+GLIDE_STEER = 0.1
+FLAP_STEER = 3
+FLAP_LIFT = 5
 
 
 class Action(object):
@@ -29,7 +29,6 @@ class Bird(GameEnt):
         else:
             self.facing = RIGHT
         self.sprites = self.load_sprites()
-        self.is_enemy = True
         self.is_alive = True
         self.actions = set()
 
@@ -61,6 +60,14 @@ class Bird(GameEnt):
         self.act()
         if self.last_flap is not None:
             self.last_flap += 1 
+
+
+    def lose_feather(self):
+        self.feathers -= 1
+        if self.feathers == 0:
+            self.is_alive = False
+            self.can_fall_off = True
+            self.think = lambda: set()
 
 
     def get_sprite(self):

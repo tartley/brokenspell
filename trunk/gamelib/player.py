@@ -9,11 +9,11 @@ from bird import Action, Bird
 class Player(Bird):
 
     SPRITE_PREFIX = 'data/images/Player-'
+    is_player = True
 
     def __init__(self, keyhandler, x, y):
         Bird.__init__(self, x, y)
         self.keyhandler = keyhandler
-        self.is_player = True
 
 
     def think(self):

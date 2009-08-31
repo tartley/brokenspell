@@ -1,6 +1,6 @@
 
 
-GRAVITY = 0.4
+GRAVITY = 0.2
 LEFT, RIGHT = 'L', 'R'
 
 
@@ -8,8 +8,10 @@ class GameEnt(object):
 
     SPRITE_PREFIX = None
 
-    AIR_RESIST_X = 0.95
-    AIR_RESIST_Y = 0.95
+    AIR_RESIST_X = 0.98
+    AIR_RESIST_Y = 0.98
+
+    can_fall_off = False
 
     def __init__(self, x, y, dx=0, dy=0):
         self.x = x
@@ -26,9 +28,14 @@ class GameEnt(object):
 
         self.x += self.dx
         self.y += self.dy
-        if self.y < 0:
-            self.y = 0
-            self.dy *= -0.5
+        
+        if self.can_fall_off:
+            if self.y < -self.height:
+                self.is_gone = True
+        else:
+            if self.y < 0:
+                self.y = 0
+                self.dy *= -0.5
 
 
     def draw(self):
@@ -46,3 +53,4 @@ class GameEnt(object):
         self.center_y = sprite.height/2
         self.width = sprite.width
         self.height = sprite.height
+

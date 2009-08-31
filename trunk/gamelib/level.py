@@ -28,7 +28,7 @@ class Level(object):
     def draw(self):
         score = 'Score: %d' % self.score
         score_label = Label(score,
-                font_size=36, x=1024, y=768,
+                font_size=36, x=self.width, y=self.height,
                 anchor_x='right', anchor_y='top')
         score_label.draw()
 
@@ -37,15 +37,15 @@ class Level(object):
             
 
     def wraparound(self, ent):
-        if ent.x < -70:
-            ent.x += self.width + 70
+        if ent.x < ent.width:
+            ent.x += self.width + ent.width
         if ent.x > self.width:
-            ent.x -= self.width + 70
+            ent.x -= self.width + ent.width
 
 
     def reset(self):
         self.score = 0
-        self.ents = [e for e in self.ents if hasattr(e, 'is_player')]
+        # self.ents = [e for e in self.ents if hasattr(e, 'is_player')]
 
 
     def detect_collisions(self):
@@ -79,11 +79,14 @@ class Level(object):
     def collided_with(self, ent1, ent2):
         if hasattr(ent2, 'is_enemy') and hasattr(ent1, 'is_player'):
             if ent2.y < ent1.y:
-                ent2.feathers -= 1
+
+                ent2.lose_feather()
+
                 self.ents.append(Feather(ent2.x, ent2.y, ent2.dx, ent2.dy))
-                ent1.dy = 10 - ent1.dy
+
+                ent1.dy = 3 - ent1.dy
                 x_direction = math.copysign(1, ent1.x - ent2.x) 
-                ent1.dx =  x_direction * 10 - x_direction * ent2.dx
+                ent1.dx =  x_direction * 3 - x_direction * ent2.dx
             else:
                 self.reset()
 
