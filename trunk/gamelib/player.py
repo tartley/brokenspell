@@ -4,6 +4,7 @@ import math
 from pyglet.window import key
 
 from bird import Action, Bird
+from feather import Feather
 
 
 class Player(Bird):
@@ -28,4 +29,10 @@ class Player(Bird):
                 if self.keyhandler[keypress]:
                     actions.add(action)
         return actions
+
+
+    def collided_with(self, other):
+        Bird.collided_with(self, other)
+        if isinstance(other, Feather):
+            self.level.score += 10
 

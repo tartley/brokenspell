@@ -1,8 +1,11 @@
 import math
 
+from itertools import islice
+
 from pyglet.text import Label
 
 from feather import Feather
+from gameent import GameEnt
 
 
 class Level(object):
@@ -14,6 +17,7 @@ class Level(object):
         self.height = height
         self.score = 0
         self.player = None
+        GameEnt.level = self
 
 
     def add(self, ent):
@@ -57,10 +61,13 @@ class Level(object):
 
 
     def detect_collisions(self):
+        print '.',
         for i, ent1 in enumerate(self.ents):
-            for ent2 in self.ents[i+1:]:
+            for ent2 in islice(self.ents, i+1, None):
                 if self.collision(ent1, ent2):
-                    self.collided_with(ent1, ent2)
+                    print 'C', type(ent1).__name__, type(ent2).__name__,
+                    ent1.collided_with(ent2)
+                    ent2.collided_with(ent1)
 
 
     def remove_dead(self):
@@ -85,24 +92,5 @@ class Level(object):
         self.remove_dead()
         self.update_ents()
         return self.is_player_dead()
-
-
-    def collided_with(self, ent1, ent2):
-        if hasattr(ent2, 'is_enemy') and hasattr(ent1, 'is_player'):
-            if ent2.y < ent1.y:
-
-                ent2.lose_feather()
-
-                self.ents.append(Feather(ent2.x, ent2.y, ent2.dx, ent2.dy))
-
-                ent1.dy = 3 - ent1.dy
-                x_direction = math.copysign(1, ent1.x - ent2.x) 
-                ent1.dx =  x_direction * 3 - x_direction * ent2.dx
-            else:
-                ent1.is_alive = False
-
-        if hasattr(ent2, 'is_feather') and hasattr(ent1, 'is_player'):
-            self.ents.remove(ent2)
-            self.score += 10
 
 

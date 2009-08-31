@@ -1,9 +1,11 @@
 
 from glob import glob
+from random import uniform
 
 from pyglet import resource
 from pyglet.sprite import Sprite
 
+from feather import Feather
 from gameent import GameEnt, LEFT, RIGHT
 
 
@@ -20,8 +22,9 @@ class Action(object):
 
 class Bird(GameEnt):
 
-    def __init__(self, x, y, dx=0, dy=0):
+    def __init__(self, x, y, dx=0, dy=0, feathers=3):
         GameEnt.__init__(self, x, y, dx, dy)
+        self.feathers = feathers
         self.can_flap = True
         self.last_flap = None
         if dx < 0:
@@ -62,12 +65,32 @@ class Bird(GameEnt):
             self.last_flap += 1
 
 
-    def lose_feather(self):
+    def lose_feather(self, otherx, othery):
+        print 'losefeather', type(self).__name__
         self.feathers -= 1
-        if self.feathers == 0:
+        if self.feathers >= 0:
+            directionx = self.x - otherx
+            directiony = self.y - othery
+            feather = Feather(
+                self.x + directionx, self.y + directiony,
+                self.dx + directionx / 3.0, self.dy + directiony / 5.0,
+                owner=self)
+            self.level.add(feather)
+        else:
             self.is_alive = False
             self.can_fall_off = True
             self.think = lambda: set()
+
+
+    def collided_with(self, other):
+        if self.is_alive:
+            if isinstance(other, Bird):
+                GameEnt.collided_with(self, other)
+                if other.is_alive and self.y < other.y:
+                    self.lose_feather(other.x, other.y)
+            elif isinstance(other, Feather) and other.owner is not self:
+                other.is_gone = True
+                self.feathers += 1
 
 
     def get_sprite(self):

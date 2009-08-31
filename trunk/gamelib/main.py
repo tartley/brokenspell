@@ -39,7 +39,7 @@ class Application(object):
         self.player = Player(self.keyhandler,
             self.level.width / 2, self.level.height)
         self.level.add_player(self.player)
-        clock.schedule_once(lambda _: self.add_enemy(), uniform(2, 4))
+        clock.schedule_once(lambda _: self.add_enemy(), 2)
         self.instructions = Instructions()
 
         # music = load(join('data', 'musik.ogg'))
@@ -52,9 +52,9 @@ class Application(object):
         y = self.level.height
         dx = uniform(-20, 20)
         dy = uniform(0, 10)
-        feathers = randint(0, 5)
+        feathers = randint(1, 5)
         self.level.add(Enemy(x, y, dx=dx, dy=dy, feathers=feathers))
-        clock.schedule_once(lambda _: self.add_enemy(), uniform(2, 4))
+        clock.schedule_once(lambda _: self.add_enemy(), uniform(4, 8))
 
 
     def update(self, dt):

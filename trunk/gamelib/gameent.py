@@ -13,20 +13,28 @@ class GameEnt(object):
 
     can_fall_off = False
 
+    level = None
+
     def __init__(self, x, y, dx=0, dy=0):
         self.x = x
         self.y = y
         self.dx = dx
         self.dy = dy
+        self.ddx = 0
+        self.ddy = 0
         self.is_gone = False
         self.width = 0
         self.height = 0
 
 
     def update(self):
-        self.dy -= GRAVITY
+        self.dx += self.ddx
+        self.dy += self.ddy - GRAVITY
         self.dx *= self.AIR_RESIST_X
         self.dy *= self.AIR_RESIST_Y
+
+        self.ddx = 0
+        self.ddy = 0
 
         self.x += self.dx
         self.y += self.dy
@@ -46,8 +54,9 @@ class GameEnt(object):
         sprite.draw()
 
     
-    def collided_with(self, ent):
-        pass
+    def collided_with(self, other):
+        self.ddx += other.dx - self.dx
+        self.ddy += other.dy - self.dy
 
 
     def update_sprite_stats(self, sprite):
