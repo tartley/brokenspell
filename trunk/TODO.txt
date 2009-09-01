@@ -11,8 +11,18 @@ Next priorities:
     and we just call it game over when player dies?
 
 
+* packaging:
+    Binary exe for Windows (use py2exe, pyinstall, ?)
+    Check that our source distribution works out of the box on machines
+        with python26, (do we rely on external pyglet being installed?)
+    Lower priority:
+        Binary exe for Mac (not *crucial* for PyWeek, would be nice eventually)
+        Can PyInstall create a binary for linux too? That includes correct
+        version of Python and dependencies?
+
+
 * Enemies spawn in waves.
-    How about a 'Get Ready' before each wave?
+    a 'Get Ready' before each wave?
     Each wave contains one more enemy.
     Within a wave, bird N starts with N feathers
 
@@ -27,6 +37,7 @@ Next priorities:
     They should fly slower when they have fewer feathers
     They should attack you.
         eg. When directly above the player, just stop flapping.
+            (a first approximation of this is checked in)
         More likely when they have more feathers.
     They should run away when attacked
     They should change altitude or direction every once in a while
@@ -80,9 +91,7 @@ Next priorities:
     Instructions continuously display controls
     wait for player to have used (left or right) and flap
     Remove instructions
-    Schedule wave N in 1 sec
-        Display 'Get Ready...'
-        start spawning N birds, one at a time
+    Spawn first wave
     Next wave scheduled when no enemies remain.
 
 
