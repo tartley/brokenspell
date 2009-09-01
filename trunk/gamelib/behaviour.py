@@ -27,6 +27,8 @@ class Hover(State):
         self.desired_y = randint(0, self.ent.y)
 
     def get_actions(self):
+        if self.ent.enemy and abs(self.ent.enemy.x - self.ent.x) < self.ent.width:
+            return set()
         flap_rate = 50 / (1 + self.ent.feathers)
         if self.ent.y < self.desired_y and self.ent.last_flap > flap_rate:
             return set([Action.FLAP])
@@ -44,7 +46,7 @@ class Cruise(Hover):
 
     def get_actions(self):
         actions = Hover.get_actions(self)
-        if self.ent.last_flap % 2 == 1:
+        if not actions and self.ent.last_flap % 2 == 1:
             actions = set([self.direction])
         return actions
 

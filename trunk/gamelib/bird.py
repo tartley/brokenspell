@@ -29,6 +29,7 @@ class Bird(GameEnt):
         self.last_flap = None
         self.is_alive = True
         self.actions = set()
+        self.enemy = None
 
 
     def reincarnate(self, x, y, feathers=3):
@@ -90,6 +91,7 @@ class Bird(GameEnt):
             if isinstance(other, Bird):
                 GameEnt.collided_with(self, other)
                 if other.is_alive and self.y < other.y:
+                    self.enemy = other
                     self.lose_feather(other.x, other.y)
             elif isinstance(other, Feather) and other.owner is not self:
                 other.remove_from_game = True
