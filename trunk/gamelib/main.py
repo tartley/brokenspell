@@ -20,6 +20,15 @@ from user_message import UserMessage
 
 clockDisplay = clock.ClockDisplay()
 
+MESSAGES = [
+        "Sinister Ducks",
+        "ESC to exit",
+        "Left and right to move around",
+        "Z flaps wings",
+        "Catch feathers to increase flap strength",
+        None
+]
+
 
 class Application(object):
 
@@ -41,7 +50,8 @@ class Application(object):
         self.resurrecting = False
         self.user_message = UserMessage(self.win.width,
                                         self.win.height)
-        self.instructions = Instructions()
+        self.instructions = Instructions(
+            MESSAGES, self.win.width, 0, 'right', 'top')
 
         clock.schedule_once(
             lambda _: self.level.spawn_enemy(8, self.player),

@@ -15,13 +15,13 @@ class Feather(GameEnt):
     def __init__(self, *args, **kwargs):
         self.owner = kwargs.pop('owner')
         GameEnt.__init__(self, *args, **kwargs)
-        self.AIR_RESIST_Y = uniform(0.6, 0.9)
+        self.AIR_RESIST_Y = uniform(0.7, 0.9)
         self.AIR_RESIST_X = 0.9
         self.sprite = Sprite(resource.image('data/images/feather.png'))
         self.update_sprite_stats(self.sprite)
 
         self.rotation = atan2(self.dy, self.dx)
-        self.speed = 1
+        self.speed = uniform(1, 2)
 
 
     def get_sprite(self):
@@ -32,8 +32,8 @@ class Feather(GameEnt):
     def update(self):
         self.ddx = self.speed * -cos(self.rotation)
         self.ddy = self.speed * sin(self.rotation)
-        self.rotation = sin(self.level.age * 2)
-        self.speed *= 0.99
+        self.rotation += self.speed / 10 # = sin(self.level.age * 2)
+        self.speed *= 0.97
         self.speed -= self.rotation / 100
         GameEnt.update(self)
 
