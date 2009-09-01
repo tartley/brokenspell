@@ -44,8 +44,8 @@ class Application(object):
         clock.schedule_once(lambda _: self.spawn_enemy(), 3)
         self.instructions = Instructions()
 
-        # music = load(join('data', 'musik.ogg'))
-        # clock.schedule_once(lambda _: music.play(), 1)
+        music = load(join('data', 'music2.mp3'))
+        clock.schedule_once(lambda _: music.play(), 1)
         clock.schedule(self.update)
 
 
