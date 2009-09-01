@@ -1,0 +1,136 @@
+
+Next priorities:
+
+* Lives? Game over?
+    The problem with having multiple lives is that when player dies, they have
+    no feathers left. If we start the next life with only 3 feathers, in the
+    middle of the same (hard) level they were at, then player may be too weak
+    in the flapping department, and game may be too hard for lives 2..n
+    
+    Needs some thought. Maybe collected feathers correspond to lives or health
+    and we just call it game over when player dies?
+
+
+* Enemies spawn in waves.
+    How about a 'Get Ready' before each wave?
+    Each wave contains one more enemy.
+    Within a wave, bird N starts with N feathers
+
+
+* Collecting feathers improves flap power
+    maybe highest number of consecutive collections should determine flap power
+    Later levels offer more enemies/feathers, hence scope for higher
+    number of consecutive collections
+
+
+* Enemy behaviour
+    They should fly slower when they have fewer feathers
+    They should attack you.
+        eg. When directly above the player, just stop flapping.
+        More likely when they have more feathers.
+    They should run away when attacked
+    They should change altitude or direction every once in a while
+    They should chase feathers
+
+
+* Display player's current flap power
+    As a HUD graphic - a pic of a wing gets feathers added to it?
+
+
+* Sound effects.
+    Mostly comical quacking and quiet flapping.
+    Quacks of gradually increasing pitch and excitement as the player
+        collects more consecutive feathers
+
+
+* polish the programmer art
+    enemies are different color depending on number of feathers
+
+
+* use a single image full of sprites ('spritesheet' in pyglet parlance),
+  rather than one image per sprite
+
+
+* load all images in a graphics module at startup, rather than in gameent
+  constructor, then create sprites from that.
+  (we currently reload images every time we spawn a bird, etc. Presumably
+  they are cached, but still)
+
+
+* try a profiler, see where it bogs down when lots is on screen
+    sprite rendering could be batched for performance
+
+
+* choose music
+    Everyone should put forward any proposed CC licensed tunes they fancy
+    Should we just pick one and play it repeatedly?
+    How about track 9 from here:
+       http://www.ptesquad.com/more/pte018.html 
+
+
+* Key to toggle music.
+    Display this in the instructions.
+
+
+* Sequence of events on startup:
+    Display title "Sinister Ducks" in centre
+    wait for 2 secs or for keypress
+    if a control (left, right, flap) is pressed, remove the title
+    player falls from sky
+    Instructions continuously display controls
+    wait for player to have used (left or right) and flap
+    Remove instructions
+    Schedule wave N in 1 sec
+        Display 'Get Ready...'
+        start spawning N birds, one at a time
+    Next wave scheduled when no enemies remain.
+
+
+* Display instructions during game according to wave:
+    1: Birds: 1f
+        Attack enemies from above to get their feathers
+        Collect feathers for points
+    2: Birds: 1f 2f
+        Enemies will attack you from above
+        Avoid diving enemies
+    3: Birds: 1f 2f 3f
+        Chain feather collection for more points
+        Don't let enemies attack you from above
+
+
+* improve accuracy of collision detection
+    Pixel perfect would be nice, but can we do it in time?
+    I wouldn't mind if things (esp birds) had to overlap a smidgeon before they
+    were considered to collide. Better that than having a visible gap.
+
+
+* Clouds
+    Do nothing except float across the screen, obscuring what is behind them.
+    These aren't as much value as platforms, but sure would be easy to code.
+    Maybe introduce a new cloud every three waves
+
+
+* sky colors fade in day/night cycle
+    stars come out?
+
+
+* Display green landscape at bottom of screen
+    Player and enemies land on this, not at absolute bottom of screen
+
+
+* Collecting many feathers gives extra abilities
+    More than 10: Press down to dive.
+    Enemies should be able to use this too.
+
+
+* Platforms
+    Would be nice
+    But is a bunch of work.
+    Affects collisions, behaviour, gameplay, graphics, etc.
+    Are they worth it?
+
+
+* High scores
+    Displayed after user dies, until next game starts
+    Persisted, in 'All Users/AppData' or equivalent
+
