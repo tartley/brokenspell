@@ -40,11 +40,12 @@ class Hover(State):
 
 
     def get_actions(self):
-        foe_is_near = (
+        foe_is_below = (
             self.ent.foe and
+            self.ent.foe.y < self.ent.y and
             abs(self.ent.foe.x - self.ent.x) < self.ent.width
         )
-        if foe_is_near:
+        if foe_is_below:
             return set()
 
         flap_rate = 15
