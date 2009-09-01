@@ -35,8 +35,16 @@ REALLY NICE TO HAVE:
 
 * Sound effects.
     Mostly comical quacking and quiet flapping.
-    Quacks of gradually increasing pitch and excitement as the player
-        collects more consecutive feathers
+    chimes (or quacks?) of of gradually increasing pitch and excitement as the
+        player collects consecutive feathers
+    Events that need sound:
+        enemy spawn: subdued quack
+        player collect feather: melodic scale of chings!
+        enemy attacked: spluttering quacks
+        player attacked: urgent spluttering quacks
+        enemy dies: folorn quack
+        player dies: really folorn quack
+        any bird flaps: flap
 
 
 * improve accuracy of collision detection
@@ -126,6 +134,10 @@ REALLY NICE TO HAVE:
         Don't let enemies attack you from above
 
 
+* Display green landscape at bottom of screen
+    Player and enemies land on this, not at absolute bottom of screen
+
+
 * Key to toggle music.
     Display this in the instructions.
 
@@ -136,8 +148,9 @@ REALLY NICE TO HAVE:
     Maybe introduce a new cloud every three waves
 
 
-* Display green landscape at bottom of screen
-    Player and enemies land on this, not at absolute bottom of screen
+* walking animation when landed
+    walking should probably be slightly quicker and more responsive than
+    gliding without flaps (but slower than flying with flaps)
 
 
 * sky colors fade in day/night cycle
