@@ -6,6 +6,8 @@ LEFT, RIGHT = 'L', 'R'
 
 class GameEnt(object):
 
+    next_id = 0
+
     SPRITE_PREFIX = None
 
     AIR_RESIST_X = 0.98
@@ -15,9 +17,15 @@ class GameEnt(object):
     level = None
 
     def __init__(self, x, y, dx=0, dy=0):
+        self.id = GameEnt.next_id
+        GameEnt.next_id += 1
         GameEnt.reincarnate(self, x, y, dx, dy)
         self.width = 0
         self.height = 0
+
+
+    def __str__(self):
+        return "<%s%s>" % (type(self).__name__, self.id)
 
 
     def reincarnate(self, x, y, dx=0, dy=0):
