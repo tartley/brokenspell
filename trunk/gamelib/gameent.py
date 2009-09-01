@@ -28,6 +28,11 @@ class GameEnt(object):
         self.ddx = 0
         self.ddy = 0
         self.remove_from_game = False
+        self.born = self.level.age
+
+
+    def get_age(self):
+        return self.level.age - self.born
 
 
     def update(self):

@@ -1,5 +1,6 @@
 
 from random import uniform
+from math import pi, sin
 
 from pyglet import resource
 from pyglet.sprite import Sprite
@@ -19,6 +20,10 @@ class Feather(GameEnt):
         self.sprite = Sprite(resource.image('data/images/feather.png'))
         self.update_sprite_stats(self.sprite)
 
+        self.drift_phase = uniform(0, 2*pi)
+        self.drift_frequency = uniform(0, 2)
+        self.drift_amplitude = 0.5 # uniform(0, 1)
+
 
     def get_sprite(self):
         return self.sprite
@@ -26,6 +31,8 @@ class Feather(GameEnt):
 
     def update(self):
         GameEnt.update(self)
+        self.ddx +=  self.drift_amplitude * sin(
+            self.level.age * self.drift_frequency + self.drift_phase)
 
 
     def collided_with(self, other):
