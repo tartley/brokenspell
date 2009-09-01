@@ -1,6 +1,5 @@
 
 from os.path import join
-from random import randint, uniform
 
 from pyglet import app, clock
 from pyglet.event import EVENT_HANDLED
@@ -29,38 +28,30 @@ class Application(object):
         self.win.set_exclusive_mouse()
         self.win.on_draw = self.draw
 
+        music = load(join('data', 'music2.mp3'))
+        clock.schedule_once(lambda _: music.play(), 1)
+
         self.keyhandler = key.KeyStateHandler()
         self.win.push_handlers(self.keyhandler)
 
+        self.level = Level(self.win.width, self.win.height)
+        self.player = Player(
+            self.keyhandler,
+            self.level.width / 2, self.level.height)
+        self.resurrecting = False
         self.user_message = UserMessage(self.win.width,
                                         self.win.height)
-        self.level = Level(self.win.width, self.win.height)
-
-        self.resurrecting = False
-
-        self.player = Player(self.keyhandler, Level.width / 2, Level.height)
-        self.get_ready()
-
-        clock.schedule_once(lambda _: self.spawn_enemy(), 3)
         self.instructions = Instructions()
 
-        music = load(join('data', 'music2.mp3'))
-        clock.schedule_once(lambda _: music.play(), 1)
+        clock.schedule_once(
+            lambda _: self.level.spawn_enemy(8, self.player),
+            18.25)
         clock.schedule(self.update)
-
-
-    def spawn_enemy(self):
-        x = (self.player.x + Level.width / 2) % Level.width
-        y = Level.height
-        dx = uniform(-20, 20)
-        dy = uniform(0, 10)
-        feathers = randint(1, 5)
-        self.level.add(Enemy(x, y, dx=dx, dy=dy, feathers=feathers))
-        clock.schedule_once(lambda _: self.spawn_enemy(), uniform(4, 8))
+        self.get_ready()
 
 
     def get_ready(self):
-        self.player.reincarnate(Level.width / 2, Level.height)
+        self.player.reincarnate(self.level.width / 2, self.level.height)
         self.user_message.set_message('Get ready...')
         clock.schedule_once(lambda _: self.spawn_player(), 1)
 
