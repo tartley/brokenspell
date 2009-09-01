@@ -27,7 +27,7 @@ class Hover(State):
         self.desired_y = randint(0, self.ent.y)
 
     def get_actions(self):
-        if self.ent.y < self.desired_y and self.ent.last_flap > 1:
+        if self.ent.y < self.desired_y and self.ent.last_flap > 10:
             return set([Action.FLAP])
         return set()
 
