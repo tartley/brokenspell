@@ -1,5 +1,8 @@
+BEING WORKED ON:
 
-Next priorities:
+
+
+ABSOLUTELY CRITICAL:
 
 * Lives? Game over?
     The problem with having multiple lives is that when player dies, they have
@@ -21,16 +24,46 @@ Next priorities:
         version of Python and dependencies?
 
 
+REALLY NICE TO HAVE:
+
 * Enemies spawn in waves.
     a 'Get Ready' before each wave?
     Each wave contains one more enemy.
     Within a wave, bird N starts with N feathers
+    Next wave starts a couple of seconds after the all enemies are gone.
+
+
+* Sound effects.
+    Mostly comical quacking and quiet flapping.
+    Quacks of gradually increasing pitch and excitement as the player
+        collects more consecutive feathers
+
+
+* improve accuracy of collision detection
+    Pixel perfect would be nice, but can we do it in time?
+    I wouldn't mind if things (esp birds) had to overlap a smidgeon before they
+    were considered to collide. Better that than having a visible gap.
 
 
 * Collecting feathers improves flap power
     maybe highest number of consecutive collections should determine flap power
     Later levels offer more enemies/feathers, hence scope for higher
     number of consecutive collections
+    would be nice if collecing feathers did the same things for enemies that
+        it does for the player
+        
+
+* Display player's current flap power
+    As a HUD graphic - a pic of a wing gets feathers added to it?
+
+
+* Combos
+    killing an enemy increments multiplier for a few seconds
+    display multiplier if it is >1
+    attacking an enemy increases duration of current multiplier
+
+
+* floating numbers on screen for point-scoring events
 
 
 * Enemy behaviour
@@ -44,28 +77,18 @@ Next priorities:
     They should chase feathers
 
 
-* Display player's current flap power
-    As a HUD graphic - a pic of a wing gets feathers added to it?
-
-
-* Sound effects.
-    Mostly comical quacking and quiet flapping.
-    Quacks of gradually increasing pitch and excitement as the player
-        collects more consecutive feathers
-
-
 * polish the programmer art
     enemies are different color depending on number of feathers
-
-
-* use a single image full of sprites ('spritesheet' in pyglet parlance),
-  rather than one image per sprite
+    feathers are the color of the bird they came from? (then you can identify
+        your own feathers, which currently are not pick-up-able.)
 
 
 * load all images in a graphics module at startup, rather than in gameent
   constructor, then create sprites from that.
   (we currently reload images every time we spawn a bird, etc. Presumably
   they are cached, but still)
+    * use a single image full of sprites ('spritesheet' in pyglet parlance),
+      rather than one image per sprite
 
 
 * try a profiler, see where it bogs down when lots is on screen
@@ -77,10 +100,6 @@ Next priorities:
     Should we just pick one and play it repeatedly?
     How about track 9 from here:
        http://www.ptesquad.com/more/pte018.html 
-
-
-* Key to toggle music.
-    Display this in the instructions.
 
 
 * Sequence of events on startup:
@@ -107,10 +126,8 @@ Next priorities:
         Don't let enemies attack you from above
 
 
-* improve accuracy of collision detection
-    Pixel perfect would be nice, but can we do it in time?
-    I wouldn't mind if things (esp birds) had to overlap a smidgeon before they
-    were considered to collide. Better that than having a visible gap.
+* Key to toggle music.
+    Display this in the instructions.
 
 
 * Clouds
@@ -119,12 +136,12 @@ Next priorities:
     Maybe introduce a new cloud every three waves
 
 
-* sky colors fade in day/night cycle
-    stars come out?
-
-
 * Display green landscape at bottom of screen
     Player and enemies land on this, not at absolute bottom of screen
+
+
+* sky colors fade in day/night cycle
+    stars come out?
 
 
 * Collecting many feathers gives extra abilities
