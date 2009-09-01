@@ -2,7 +2,7 @@
 from pyglet import resource
 from pyglet.sprite import Sprite
 
-from behaviour import Thinker
+from behaviour import Thinker, Plummet
 from bird import Bird
 
 
@@ -15,4 +15,9 @@ class Enemy(Bird):
         Bird.__init__(self, x, y, dx, dy, feathers)
         self.think = Thinker(self)
         self.last_flap = 0
+
+
+    def die(self):
+        Bird.die(self)
+        self.think.state = Plummet(self)
 

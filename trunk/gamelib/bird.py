@@ -5,6 +5,7 @@ from random import uniform
 from pyglet import resource
 from pyglet.sprite import Sprite
 
+from behaviour import Action, State, Plummet
 from feather import Feather
 from gameent import GameEnt, LEFT, RIGHT
 
@@ -14,22 +15,11 @@ FLAP_STEER = 3
 FLAP_LIFT = 5
 
 
-class Action(object):
-    FLAP = 0
-    LEFT = 1
-    RIGHT = 2
-
-
 class Bird(GameEnt):
 
     def __init__(self, x, y, dx=0, dy=0, feathers=3):
         GameEnt.__init__(self, x, y, dx, dy)
         self.sprites = self.load_sprites()
-        Bird.reset(self, feathers)
-
-
-    def reset(self, feathers):
-        GameEnt.reset(self)
         self.feathers = feathers
         if self.dx < 0:
             self.facing = LEFT
@@ -39,6 +29,12 @@ class Bird(GameEnt):
         self.last_flap = None
         self.is_alive = True
         self.actions = set()
+
+
+    def reincarnate(self, x, y, feathers=3):
+        GameEnt.reincarnate(self, x, y)
+        self.feathers = feathers
+        self.can_fall_off = False
 
 
     def act(self):
@@ -76,14 +72,17 @@ class Bird(GameEnt):
             directionx = self.x - otherx
             directiony = self.y - othery
             feather = Feather(
-                self.x + directionx, self.y + directiony,
+                self.x, self.y,
                 self.dx + directionx / 3.0, self.dy + directiony / 5.0,
                 owner=self)
             self.level.add(feather)
         else:
-            self.is_alive = False
-            self.can_fall_off = True
-            self.think = lambda: set()
+            self.die()
+
+
+    def die(self):
+        self.is_alive = False
+        self.can_fall_off = True
 
 
     def collided_with(self, other):

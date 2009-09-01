@@ -60,14 +60,12 @@ class Application(object):
 
 
     def get_ready(self):
-        self.player.x = Level.width / 2
-        self.player.y = Level.height
+        self.player.reincarnate(Level.width / 2, Level.height)
         self.user_message.set_message('Get ready...')
         clock.schedule_once(lambda _: self.spawn_player(), 1)
 
 
     def spawn_player(self):
-        self.player.reset(3)
         self.level.add(self.player)
         self.user_message.set_message(None)
         self.resurrecting = False

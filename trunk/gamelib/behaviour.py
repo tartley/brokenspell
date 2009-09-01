@@ -1,16 +1,23 @@
 
 from random import randint 
 
-from bird import Action
+
+class Action(object):
+    FLAP = 0
+    LEFT = 1
+    RIGHT = 2
 
 
 class State(object):
     def __init__(self, ent):
         self.ent = ent
-        self.new_state = None
 
     def get_actions(self):
         return set()
+
+
+class Plummet(State):
+    pass
 
 
 class Hover(State):
@@ -41,15 +48,11 @@ class Cruise(Hover):
         return actions
 
 
-
 class Thinker(object):
 
     def __init__(self, ent):
         self.state = Cruise(ent)
 
     def __call__(self):
-        actions = self.state.get_actions()
-        # if self.state.new_state:
-        #     self.state = new_state
-        return actions
+        return self.state.get_actions()
 

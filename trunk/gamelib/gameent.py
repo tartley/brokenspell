@@ -15,16 +15,16 @@ class GameEnt(object):
     level = None
 
     def __init__(self, x, y, dx=0, dy=0):
+        GameEnt.reincarnate(self, x, y, dx, dy)
+        self.width = 0
+        self.height = 0
+
+
+    def reincarnate(self, x, y, dx=0, dy=0):
         self.x = x
         self.y = y
         self.dx = dx
         self.dy = dy
-        self.width = 0
-        self.height = 0
-        GameEnt.reset(self)
-
-
-    def reset(self):
         self.ddx = 0
         self.ddy = 0
         self.remove_from_game = False
