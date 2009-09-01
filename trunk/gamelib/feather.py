@@ -1,6 +1,5 @@
 
-import math
-from itertools import count
+from math import atan2, cos, pi, sin, degrees
 from random import uniform
 
 from pyglet import resource
@@ -21,28 +20,24 @@ class Feather(GameEnt):
         self.sprite = Sprite(resource.image('data/images/feather.png'))
         self.update_sprite_stats(self.sprite)
 
-        self.sine_gen = sine_curve()
-        self.saw_gen = saw_curve()
+        self.rotation = atan2(self.dy, self.dx)
+        self.speed = 1
+
 
     def get_sprite(self):
+        self.sprite.rotation = degrees(self.rotation)
         return self.sprite
 
 
     def update(self):
-        self.ddx = self.sine_gen.next()
-        self.ddy = self.saw_gen.next()
+        self.ddx = self.speed * -cos(self.rotation)
+        self.ddy = self.speed * sin(self.rotation)
+        self.rotation = sin(self.level.age * 2)
+        self.speed *= 0.99
+        self.speed -= self.rotation / 100
         GameEnt.update(self)
 
 
     def collided_with(self, other):
         pass
 
-
-def sine_curve():
-    to_rad = 2 * math.pi / 360.0
-    for degrees in count():
-        yield math.sin(degrees * 2 * to_rad) / 10
-
-def saw_curve():
-    for t in count():
-        yield ((t % 7) - 3) / 4.0

@@ -24,12 +24,14 @@ class Hover(State):
 
     def __init__(self, *args):
         State.__init__(self, *args)
-        self.desired_y = randint(0, self.ent.level.height - self.ent.height * 3)
+        self.desired_y = randint(100, self.ent.level.height - 100)
+        print self.desired_y
+
 
     def get_actions(self):
-        if self.ent.enemy and abs(self.ent.enemy.x - self.ent.x) < self.ent.width:
+        if self.ent.foe and abs(self.ent.foe.x - self.ent.x) < self.ent.width:
             return set()
-        flap_rate = 10 + 20 / (1 + self.ent.feathers)
+        flap_rate = 15
         if self.ent.y < self.desired_y and self.ent.last_flap > flap_rate:
             return set([Action.FLAP])
         return set()

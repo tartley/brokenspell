@@ -45,7 +45,7 @@ class Application(object):
 
         clock.schedule_once(
             lambda _: self.level.spawn_enemy(8, self.player),
-            18.25)
+            00.25)
         clock.schedule(self.update)
         self.get_ready()
 

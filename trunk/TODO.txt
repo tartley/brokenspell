@@ -116,14 +116,27 @@ REALLY NICE TO HAVE:
 
 * Sequence of events on startup:
     Display title "Sinister Ducks" in centre
-    wait for 2 secs or for keypress
-    if a control (left, right, flap) is pressed, remove the title
+    instructions, smaller font, read 'press any key'
+    wait for keypress
+    remove title
     player falls from sky
-    Instructions continuously display controls
-    wait for player to have used (left or right) and flap
-    Remove instructions
-    Spawn first wave
-    Next wave scheduled when no enemies remain.
+    Instructions display (rotating):
+        Z to flap
+        Left and Right to steer
+    when player has used (left or right) and flap:
+        spawn tutorial wave:
+            single hovering bird, 1 feather, at (1/3 or 2/3, 2/3) 
+    instructions say:
+        collide with enemies to joust
+        highest bird wins
+        loser sheds a feather
+    when player kills tutorial wave enemy:
+    instructions say:
+        collect their feathers
+        consecutive feathers give more points
+    at 18 seconds after startup:
+        Spawn next wave of 8 birds, in time with music
+    Next waves scheduled whenever no enemies remain.
 
 
 * Display instructions during game according to wave:
