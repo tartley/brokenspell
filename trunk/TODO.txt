@@ -1,5 +1,9 @@
 BEING WORKED ON:
 
+Jonathan:
+    Introductory tutorial wave
+    Second wave at 18 seconds
+    Further waves whenever no enemies remain
 
 
 ABSOLUTELY CRITICAL:

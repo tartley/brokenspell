@@ -110,6 +110,9 @@ class Bird(GameEnt):
             action = 'flap'
         sprite = self.sprites['%s-%s' % (action, self.facing,)]
         self.update_sprite_stats(sprite)
+
+        sprite.rotation = self.dx * 3
+
         return sprite
 
 
