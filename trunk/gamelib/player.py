@@ -17,6 +17,12 @@ class Player(Bird):
         self.keyhandler = keyhandler
 
 
+    def reset(self, *args):
+        Bird.reset(self, *args)
+        self.think = lambda: Player.think(self)
+        self.can_fall_off = False
+
+
     def think(self):
         action_map = {
             key.Z:  Action.FLAP,

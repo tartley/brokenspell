@@ -12,7 +12,6 @@ class GameEnt(object):
     AIR_RESIST_Y = 0.98
 
     can_fall_off = False
-
     level = None
 
     def __init__(self, x, y, dx=0, dy=0):
@@ -20,11 +19,15 @@ class GameEnt(object):
         self.y = y
         self.dx = dx
         self.dy = dy
-        self.ddx = 0
-        self.ddy = 0
-        self.is_gone = False
         self.width = 0
         self.height = 0
+        GameEnt.reset(self)
+
+
+    def reset(self):
+        self.ddx = 0
+        self.ddy = 0
+        self.remove_from_game = False
 
 
     def update(self):
@@ -41,7 +44,7 @@ class GameEnt(object):
         
         if self.can_fall_off:
             if self.y < -self.height:
-                self.is_gone = True
+                self.remove_from_game = True
         else:
             if self.y < 0:
                 self.y = 0

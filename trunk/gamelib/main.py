@@ -32,14 +32,16 @@ class Application(object):
         self.keyhandler = key.KeyStateHandler()
         self.win.push_handlers(self.keyhandler)
 
-        self.player_dead = False
         self.user_message = UserMessage(self.win.width,
                                         self.win.height)
         self.level = Level(self.win.width, self.win.height)
-        self.player = Player(self.keyhandler,
-            self.level.width / 2, self.level.height)
-        self.level.add_player(self.player)
-        clock.schedule_once(lambda _: self.add_enemy(), 2)
+
+        self.resurrecting = False
+
+        self.player = Player(self.keyhandler, Level.width / 2, Level.height)
+        self.get_ready()
+
+        clock.schedule_once(lambda _: self.spawn_enemy(), 3)
         self.instructions = Instructions()
 
         # music = load(join('data', 'musik.ogg'))
@@ -47,27 +49,36 @@ class Application(object):
         clock.schedule(self.update)
 
 
-    def add_enemy(self):
-        x = uniform(0, self.level.width)
-        y = self.level.height
+    def spawn_enemy(self):
+        x = (self.player.x + Level.width / 2) % Level.width
+        y = Level.height
         dx = uniform(-20, 20)
         dy = uniform(0, 10)
         feathers = randint(1, 5)
         self.level.add(Enemy(x, y, dx=dx, dy=dy, feathers=feathers))
-        clock.schedule_once(lambda _: self.add_enemy(), uniform(4, 8))
+        clock.schedule_once(lambda _: self.spawn_enemy(), uniform(4, 8))
+
+
+    def get_ready(self):
+        self.player.x = Level.width / 2
+        self.player.y = Level.height
+        self.user_message.set_message('Get ready...')
+        clock.schedule_once(lambda _: self.spawn_player(), 1)
+
+
+    def spawn_player(self):
+        self.player.reset(3)
+        self.level.add(self.player)
+        self.user_message.set_message(None)
+        self.resurrecting = False
 
 
     def update(self, dt):
-        if self.level.update(dt) and not self.player_dead:
-            self.player_dead = True
-            self.user_message.set_message('Oh no! Get ready...')
-            clock.schedule_once(lambda _: self.reincarnate(), 2)
-
-
-    def reincarnate(self):
-        self.user_message.set_message(None)
-        self.level.reset_player()
-        self.player_dead = False
+        self.level.update(dt)
+        if not self.player.is_alive and not self.resurrecting:
+            self.resurrecting = True
+            self.user_message.set_message('Oh no!')
+            clock.schedule_once(lambda _: self.get_ready(), 2)
 
 
     def draw(self):

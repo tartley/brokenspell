@@ -24,14 +24,19 @@ class Bird(GameEnt):
 
     def __init__(self, x, y, dx=0, dy=0, feathers=3):
         GameEnt.__init__(self, x, y, dx, dy)
+        self.sprites = self.load_sprites()
+        Bird.reset(self, feathers)
+
+
+    def reset(self, feathers):
+        GameEnt.reset(self)
         self.feathers = feathers
-        self.can_flap = True
-        self.last_flap = None
-        if dx < 0:
+        if self.dx < 0:
             self.facing = LEFT
         else:
             self.facing = RIGHT
-        self.sprites = self.load_sprites()
+        self.can_flap = True
+        self.last_flap = None
         self.is_alive = True
         self.actions = set()
 
@@ -88,7 +93,7 @@ class Bird(GameEnt):
                 if other.is_alive and self.y < other.y:
                     self.lose_feather(other.x, other.y)
             elif isinstance(other, Feather) and other.owner is not self:
-                other.is_gone = True
+                other.remove_from_game = True
                 self.feathers += 1
 
 

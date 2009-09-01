@@ -10,23 +10,20 @@ from gameent import GameEnt
 
 class Level(object):
 
+    width = None
+    height = None
+
     def __init__(self, width, height):
+        Level.width = width
+        Level.height = height
         self.age = 0.0
         self.ents = []
-        self.width = width
-        self.height = height
         self.score = 0
-        self.player = None
         GameEnt.level = self
 
 
     def add(self, ent):
         self.ents.append(ent)
-
-
-    def add_player(self, ent):
-        self.player = ent
-        self.add(ent)
 
 
     def collision(self, ent1, ent2):
@@ -38,7 +35,7 @@ class Level(object):
     def draw(self):
         score = 'Score: %d' % self.score
         score_label = Label(score,
-                font_size=36, x=self.width, y=self.height,
+                font_size=36, x=Level.width, y=Level.height,
                 anchor_x='right', anchor_y='top')
         score_label.draw()
 
@@ -48,16 +45,9 @@ class Level(object):
 
     def wraparound(self, ent):
         if ent.x < ent.width:
-            ent.x += self.width + ent.width
-        if ent.x > self.width:
-            ent.x -= self.width + ent.width
-
-
-    def reset_player(self):
-        self.player.x = self.width / 2
-        self.player.y = self.height
-        self.player.is_alive = True
-        self.score = 0
+            ent.x += Level.width + ent.width
+        if ent.x > Level.width:
+            ent.x -= Level.width + ent.width
 
 
     def detect_collisions(self):
@@ -70,7 +60,7 @@ class Level(object):
 
     def remove_dead(self):
         for ent in self.ents[:]:
-            if ent.is_gone:
+            if ent.remove_from_game:
                 self.ents.remove(ent)
 
 
@@ -80,15 +70,10 @@ class Level(object):
             self.wraparound(ent)
 
 
-    def is_player_dead(self):
-        return not self.player.is_alive and self.player.y <= 0
-
-
     def update(self, dt):
         self.age += dt
         self.detect_collisions()
         self.remove_dead()
         self.update_ents()
-        return self.is_player_dead()
 
 
