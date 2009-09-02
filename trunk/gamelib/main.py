@@ -10,12 +10,15 @@ from pyglet.graphics import draw
 from pyglet.window import key, Window
 from pyglet.media import load, Player as MediaPlayer
 
+from config import settings
+from gameent import GameEnt
+from graphics import load_sprite_images
 from instructions import Instructions
-from player import Player
 from level import Level
 from meter import Meter
-from config import settings
+from player import Player
 import sounds
+
 
 clockDisplay = clock.ClockDisplay()
 
@@ -83,6 +86,8 @@ class ToggleMusic(KeyHandler):
 class Application(object):
 
     def __init__(self):
+        GameEnt.sprite_images = load_sprite_images()
+
         self.win = Window(width=1024, height=768)
         self.win.set_exclusive_mouse()
         self.win.on_draw = self.draw

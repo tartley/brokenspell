@@ -101,7 +101,7 @@ class Bird(GameEnt):
                 self.feathers += 1
 
 
-    def get_sprite(self):
+    def animate(self):
         action = 'flight' if self.is_alive else 'dead'
         flapping = (
             self.is_alive and (
@@ -111,12 +111,12 @@ class Bird(GameEnt):
         )
         if flapping:
             action = 'flap'
-        self.sprite.image = self.images['%s-%s' % (action, self.facing,)]
-        self.update_sprite_stats(self.sprite)
 
         self.sprite.rotation = self.dx * 3
 
-        return self.sprite
+        frame = '%s-%s-%s' % (type(self).__name__, action, self.facing,)
+        self.sprite.image = self.sprite_images[frame]
+        self.update_sprite_stats()
 
 
     def load_sprites(self):

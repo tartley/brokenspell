@@ -18,15 +18,14 @@ class Feather(GameEnt):
         self.AIR_RESIST_Y = uniform(0.7, 0.9)
         self.AIR_RESIST_X = 0.9
         self.sprite = Sprite(resource.image('data/sprites/feather.png'))
-        self.update_sprite_stats(self.sprite)
+        self.update_sprite_stats()
 
         self.rotation = atan2(self.dy, self.dx)
         self.speed = uniform(1, 2)
 
 
-    def get_sprite(self):
+    def animate(self):
         self.sprite.rotation = degrees(self.rotation)
-        return self.sprite
 
 
     def update(self):

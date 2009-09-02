@@ -1,4 +1,7 @@
 
+from pyglet.image import SolidColorImagePattern
+from pyglet.sprite import Sprite
+
 
 GRAVITY = 0.2
 LEFT, RIGHT = 'L', 'R'
@@ -16,12 +19,15 @@ class GameEnt(object):
     can_fall_off = False
     level = None
 
+    dummy_image = SolidColorImagePattern(color=(0, 0, 0, 0)).create_image(0, 0)
+
     def __init__(self, x, y, dx=0, dy=0):
         self.id = GameEnt.next_id
         GameEnt.next_id += 1
         GameEnt.reincarnate(self, x, y, dx, dy)
         self.width = 0
         self.height = 0
+        self.sprite = Sprite(GameEnt.dummy_image)
 
 
     def __str__(self):
@@ -65,9 +71,9 @@ class GameEnt(object):
 
 
     def draw(self):
-        sprite = self.get_sprite()
-        sprite.position = (self.x, self.y)
-        sprite.draw()
+        self.animate()
+        self.sprite.position = (self.x, self.y)
+        self.sprite.draw()
 
     
     def collided_with(self, other):
@@ -75,9 +81,9 @@ class GameEnt(object):
         self.ddy += other.dy - self.dy
 
 
-    def update_sprite_stats(self, sprite):
-        self.center_x = sprite.width/2
-        self.center_y = sprite.height/2
-        self.width = sprite.width
-        self.height = sprite.height
+    def update_sprite_stats(self):
+        self.center_x = self.sprite.width/2
+        self.center_y = self.sprite.height/2
+        self.width = self.sprite.width
+        self.height = self.sprite.height
 
