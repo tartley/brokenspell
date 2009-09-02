@@ -17,7 +17,6 @@ action_map = {
 
 class Player(Bird):
 
-    SPRITE_PREFIX = 'data/sprites/Player-'
     is_player = True
 
     def __init__(self, keyhandler, x, y):
@@ -42,11 +41,13 @@ class Player(Bird):
         if self.last_flap == 0:
             self.play_flap()
 
+
     def play_flap(self):
         player = MediaPlayer()
         player.queue(flap)
         player.volume = 0.4
         player.play()
+
 
     def collided_with(self, other):
         Bird.collided_with(self, other)
@@ -57,5 +58,5 @@ class Player(Bird):
         if isinstance(other, Feather) and other.owner is not self:
             self.consecutive_feathers += 1
             self.level.score += self.consecutive_feathers
-            dings[(self.consecutive_feathers - 1) % len(dings)].play()
+            dings[min(len(dings) - 1, self.consecutive_feathers - 1)].play()
 

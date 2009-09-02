@@ -11,8 +11,6 @@ class GameEnt(object):
 
     next_id = 0
 
-    SPRITE_PREFIX = None
-
     AIR_RESIST_X = 0.98
     AIR_RESIST_Y = 0.98
 

@@ -23,3 +23,4 @@ class Enemy(Bird):
     def lose_feather(self, x, y):
         Bird.lose_feather(self, x, y)
         random.choice(quacks).play()
+

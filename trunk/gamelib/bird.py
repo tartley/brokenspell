@@ -29,10 +29,6 @@ class Bird(GameEnt):
         self.actions = set()
         self.foe = None
 
-        self.images = {}
-        self.load_sprites()
-        self.sprite = Sprite(self.images.values()[0])
-
 
     def reincarnate(self, x, y, feathers=3):
         GameEnt.reincarnate(self, x, y)
@@ -117,13 +113,4 @@ class Bird(GameEnt):
         frame = '%s-%s-%s' % (type(self).__name__, action, self.facing,)
         self.sprite.image = self.sprite_images[frame]
         self.update_sprite_stats()
-
-
-    def load_sprites(self):
-        sprites = {}
-        files = glob('%s*' % (self.SPRITE_PREFIX,))
-        for file in files:
-            file = file.replace('\\', '/')
-            name = file[len(self.SPRITE_PREFIX):-4]
-            self.images[name] = resource.image(file)
 

@@ -7,6 +7,7 @@ from pyglet.sprite import Sprite
 
 from gameent import GameEnt
 
+
 class Feather(GameEnt):
     
     is_feather = True
@@ -17,11 +18,10 @@ class Feather(GameEnt):
         GameEnt.__init__(self, *args, **kwargs)
         self.AIR_RESIST_Y = uniform(0.7, 0.9)
         self.AIR_RESIST_X = 0.9
-        self.sprite = Sprite(resource.image('data/sprites/feather.png'))
-        self.update_sprite_stats()
-
         self.rotation = atan2(self.dy, self.dx)
         self.speed = uniform(1, 2)
+        self.sprite.image = self.sprite_images['feather']
+        self.update_sprite_stats()
 
 
     def animate(self):
@@ -31,7 +31,7 @@ class Feather(GameEnt):
     def update(self):
         self.ddx = self.speed * -cos(self.rotation)
         self.ddy = self.speed * sin(self.rotation)
-        self.rotation += self.speed / 10 # = sin(self.level.age * 2)
+        self.rotation += self.speed / 10
         self.speed *= 0.97
         self.speed -= self.rotation / 100
         GameEnt.update(self)
