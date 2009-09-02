@@ -14,6 +14,7 @@ from instructions import Instructions
 from player import Player
 from level import Level
 from config import settings
+import sounds
 
 clockDisplay = clock.ClockDisplay()
 
@@ -140,6 +141,7 @@ class Application(object):
         if self.player and not self.player.is_alive and not self.resurrecting:
             self.resurrecting = True
             self.user_message.set_messages('Oh no!')
+            sounds.ohno.play()
             clock.schedule_once(lambda _: self.get_ready(), 2)
 
 
