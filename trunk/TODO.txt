@@ -97,6 +97,11 @@ REALLY NICE TO HAVE:
         your own feathers, which currently are not pick-up-able.)
 
 
+* Make feather meter look less professional to go with the rest of the graphics
+     It also needs a permanent base so that it looks ok when the meter
+     is low (black?)
+
+
 * Combos
     killing an enemy increments multiplier for a few seconds
     display multiplier if it is >1
