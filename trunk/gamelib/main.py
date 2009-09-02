@@ -4,8 +4,10 @@ from os.path import join
 from pyglet import app, clock
 from pyglet.event import EVENT_HANDLED
 from pyglet.gl import (
-    glClearColor, glClear, glLoadIdentity, glMatrixMode, gluOrtho2D, 
-    GL_COLOR_BUFFER_BIT, GL_PROJECTION, GL_QUADS, 
+    glBlendFunc, glClearColor, glClear, glEnable, glLoadIdentity, glMatrixMode,
+    gluOrtho2D, 
+    GL_BLEND, GL_COLOR_BUFFER_BIT, GL_ONE_MINUS_SRC_ALPHA, GL_PROJECTION,
+    GL_QUADS, GL_SRC_ALPHA,
 )
 from pyglet.graphics import draw
 from pyglet.window import key, Window
@@ -77,6 +79,9 @@ class Application(object):
         self.player = None
         music = load(join('data', 'music2.mp3'))
         clock.schedule_once(lambda _: music.play(), 1)
+
+        glEnable(GL_BLEND)
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 
         self.keyhandler = key.KeyStateHandler()
         self.win.push_handlers(self.keyhandler)
