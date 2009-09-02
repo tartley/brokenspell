@@ -13,7 +13,7 @@ from pyglet.media import load, Player as MediaPlayer
 from instructions import Instructions
 from player import Player
 from level import Level
-
+from config import settings
 
 clockDisplay = clock.ClockDisplay()
 
@@ -61,12 +61,13 @@ class UseControlsSkipsInstruction(KeyHandler):
             (key.LEFT in self.pressed or key.RIGHT in self.pressed) and
             key.Z in self.pressed
         )
+        delay = 18.25 if settings.getboolean('all', 'show_intro') else 1
         if all_controls_used:
             self.app.win.pop_handlers()
             self.app.user_message.set_messages(MESSAGE_WAVE1)
             clock.schedule_once(
                lambda _: self.app.level.spawn_enemy(8, self.app.player),
-               18.25 - self.app.level.age)
+               max(delay - self.app.level.age, 1))
 
 
 class Application(object):
