@@ -16,7 +16,7 @@ action_map = {
 
 class Player(Bird):
 
-    SPRITE_PREFIX = 'data/images/Player-'
+    SPRITE_PREFIX = 'data/sprites/Player-'
     is_player = True
 
     def __init__(self, keyhandler, x, y):

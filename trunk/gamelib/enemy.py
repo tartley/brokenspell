@@ -6,7 +6,7 @@ from sounds import quacks
 
 class Enemy(Bird):
 
-    SPRITE_PREFIX = 'data/images/Enemy-'
+    SPRITE_PREFIX = 'data/sprites/Enemy-'
     is_enemy = True
 
     def __init__(self, x, y, dx=0, dy=0, feathers=2):

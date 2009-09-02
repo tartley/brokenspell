@@ -17,7 +17,7 @@ class Feather(GameEnt):
         GameEnt.__init__(self, *args, **kwargs)
         self.AIR_RESIST_Y = uniform(0.7, 0.9)
         self.AIR_RESIST_X = 0.9
-        self.sprite = Sprite(resource.image('data/images/feather.png'))
+        self.sprite = Sprite(resource.image('data/sprites/feather.png'))
         self.update_sprite_stats(self.sprite)
 
         self.rotation = atan2(self.dy, self.dx)

@@ -18,7 +18,6 @@ class Bird(GameEnt):
 
     def __init__(self, x, y, dx=0, dy=0, feathers=3):
         GameEnt.__init__(self, x, y, dx, dy)
-        self.sprites = self.load_sprites()
         self.feathers = feathers
         if self.dx < 0:
             self.facing = LEFT
@@ -29,6 +28,10 @@ class Bird(GameEnt):
         self.is_alive = True
         self.actions = set()
         self.foe = None
+
+        self.images = {}
+        self.load_sprites()
+        self.sprite = Sprite(self.images.values()[0])
 
 
     def reincarnate(self, x, y, feathers=3):
@@ -108,12 +111,12 @@ class Bird(GameEnt):
         )
         if flapping:
             action = 'flap'
-        sprite = self.sprites['%s-%s' % (action, self.facing,)]
-        self.update_sprite_stats(sprite)
+        self.sprite.image = self.images['%s-%s' % (action, self.facing,)]
+        self.update_sprite_stats(self.sprite)
 
-        sprite.rotation = self.dx * 3
+        self.sprite.rotation = self.dx * 3
 
-        return sprite
+        return self.sprite
 
 
     def load_sprites(self):
@@ -121,8 +124,6 @@ class Bird(GameEnt):
         files = glob('%s*' % (self.SPRITE_PREFIX,))
         for file in files:
             file = file.replace('\\', '/')
-            image = resource.image(file)
             name = file[len(self.SPRITE_PREFIX):-4]
-            sprites[name] = Sprite(image)
-        return sprites
+            self.images[name] = resource.image(file)
 
