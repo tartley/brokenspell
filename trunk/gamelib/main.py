@@ -2,18 +2,14 @@
 from os.path import join
 
 from pyglet import app, clock
-from pyglet.event import EVENT_HANDLED
 from pyglet.gl import (
-    glBlendFunc, glClearColor, glClear, glEnable, glLoadIdentity, glMatrixMode,
-    gluOrtho2D, 
-    GL_BLEND, GL_COLOR_BUFFER_BIT, GL_ONE_MINUS_SRC_ALPHA, GL_PROJECTION,
-    GL_QUADS, GL_SRC_ALPHA,
+    glBlendFunc, glEnable,
+    GL_BLEND, GL_ONE_MINUS_SRC_ALPHA, GL_QUADS, GL_SRC_ALPHA,
 )
 from pyglet.graphics import draw
 from pyglet.window import key, Window
-from pyglet.media import load
+from pyglet.media import load, Player as MediaPlayer
 
-from enemy import Enemy
 from instructions import Instructions
 from player import Player
 from level import Level
@@ -82,8 +78,7 @@ class Application(object):
         self.player = None
         self.wave = 1
 
-        music = load(join('data', 'music2.mp3'))
-        clock.schedule_once(lambda _: music.play(), 1)
+        clock.schedule_once(self.play_music, 1)
 
         glEnable(GL_BLEND)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
@@ -106,6 +101,14 @@ class Application(object):
         KeyHandler.app = self
         self.win.push_handlers(AnyKeyStartsGame())
         clock.schedule(self.update)
+
+
+    def play_music(self, _):
+        music_source = load(join('data', 'music2.mp3'))
+        player = MediaPlayer()
+        player.queue(music_source)
+        player.eos_action = player.EOS_LOOP
+        player.play()
 
 
     def get_ready(self):
