@@ -23,7 +23,7 @@ clockDisplay = clock.ClockDisplay()
 
 
 MESSAGE_TITLE = 'Sinister Ducks'
-MESSAGE_ANYKEY = ['', 'Press any key...']
+MESSAGE_ANYKEY = ['Press any key...', '']
 
 MESSAGE_CONTROLS = [
     'Z to flap wings',
@@ -46,9 +46,14 @@ class AnyKeyStartsGame(KeyHandler):
         self.app.user_message.clear()
         self.app.instructions.clear()
         self.app.spawn_player()
-        clock.schedule_once(self.app.show_instructions, 2)
+
+        def start_instructions(_):
+            self.app.show_instructions(None)
+            self.app.win.push_handlers(UseControlsSkipsInstruction())
+
         self.app.win.pop_handlers()
-        self.app.win.push_handlers(UseControlsSkipsInstruction())
+        clock.schedule_once(start_instructions, 2)
+
 
 class UseControlsSkipsInstruction(KeyHandler):
     def __init__(self):
@@ -61,10 +66,8 @@ class UseControlsSkipsInstruction(KeyHandler):
             key.Z in self.pressed
         )
         if all_controls_used:
-            self.app.user_message.clear()
             self.app.win.pop_handlers()
-            self.app.user_message.set_messages(
-                MESSAGE_INSTRUCTIONS, repeat=False)
+            self.app.user_message.set_messages(MESSAGE_INSTRUCTIONS)
             clock.schedule_once(
                lambda _: self.app.level.spawn_enemy(8, self.app.player),
                18.25 - self.app.level.age)
@@ -77,6 +80,8 @@ class Application(object):
         self.win.set_exclusive_mouse()
         self.win.on_draw = self.draw
         self.player = None
+        self.wave = 1
+
         music = load(join('data', 'music2.mp3'))
         clock.schedule_once(lambda _: music.play(), 1)
 
@@ -86,7 +91,7 @@ class Application(object):
         self.keyhandler = key.KeyStateHandler()
         self.win.push_handlers(self.keyhandler)
 
-        self.level = Level(self.win.width, self.win.height)
+        self.level = Level(self, self.win.width, self.win.height)
         self.resurrecting = False
 
         self.user_message = Instructions(
@@ -96,7 +101,7 @@ class Application(object):
         self.instructions = Instructions(
             MESSAGE_ANYKEY, self.win.width/2, self.win.height/2 - 20,
             'center', 'center',
-            delay=1, size=20)
+            delay=0.5, repeat=True, size=20)
 
         KeyHandler.app = self
         self.win.push_handlers(AnyKeyStartsGame())
@@ -109,9 +114,8 @@ class Application(object):
         clock.schedule_once(lambda _: self.spawn_player(), 1)
 
 
-
     def show_instructions(self, _):
-        self.user_message.set_messages(MESSAGE_CONTROLS)
+        self.user_message.set_messages(MESSAGE_CONTROLS, repeat=True)
 
 
     def spawn_player(self):
@@ -127,10 +131,19 @@ class Application(object):
 
     def update(self, dt):
         self.level.update(dt)
+
         if self.player and not self.player.is_alive and not self.resurrecting:
             self.resurrecting = True
-            # self.user_message.set_message('Oh no!')
+            self.user_message.set_messages('Oh no!')
             clock.schedule_once(lambda _: self.get_ready(), 2)
+
+
+    def next_wave(self):
+        self.wave += 1
+        self.user_message.set_messages('Wave %d' % (self.wave,))
+        clock.schedule_once(
+            lambda _: self.level.spawn_enemy(8, self.player),
+            2)
 
 
     def draw(self):

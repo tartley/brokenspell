@@ -16,12 +16,14 @@ IMG_GROUND = 'data/images/ground.png'
 
 class Level(object):
 
-    def __init__(self, width, height):
+    def __init__(self, app, width, height):
+        self.app = app
         self.width = width
         self.height = height
         self.age = 0.0
         self.ents = []
         self.score = 0
+        self.num_enemies = 0
         GameEnt.level = self
         self.ground = resource.image(IMG_GROUND)
 
@@ -36,6 +38,7 @@ class Level(object):
         dx = uniform(-20, 20)
         dy = 0
         self.add(Enemy(x, y, dx=dx, dy=dy, feathers=number))
+        self.num_enemies += 1
         if number > 1:
             clock.schedule_once(
                 lambda _: self.spawn_enemy(number - 1, player),
@@ -72,6 +75,11 @@ class Level(object):
         for ent in self.ents[:]:
             if ent.remove_from_game:
                 self.ents.remove(ent)
+                
+                if isinstance(ent, Enemy):
+                    self.num_enemies -= 1
+                    if self.num_enemies == 0:
+                        self.app.next_wave()
 
 
     def wraparound(self, ent):
@@ -92,5 +100,4 @@ class Level(object):
         self.detect_collisions()
         self.remove_dead()
         self.update_ents()
-
 

@@ -7,7 +7,7 @@ class Instructions(object):
 
     def __init__(self,
         messages, x, y, anchor_x='center', anchor_y='center',
-        delay=2, repeat=True, size=36):
+        delay=2, repeat=False, size=36):
 
         self.x = x
         self.y = y
@@ -17,7 +17,7 @@ class Instructions(object):
         self.size = size
         self.repeat = repeat
         self.label = None
-        self.set_messages(messages)
+        self.set_messages(messages, delay=delay, repeat=repeat)
 
 
     def clear(self):
@@ -27,13 +27,13 @@ class Instructions(object):
         clock.unschedule(self.next)
 
 
-    def set_messages(self, messages, delay=2, repeat=True):
-        self.delay=delay
+    def set_messages(self, messages, delay=2, repeat=False):
+        self.clear()
         if isinstance(messages, basestring):
             messages = [messages]
-            delay = None
-        self.repeat = repeat
         self.messages = messages
+        self.delay=delay
+        self.repeat = repeat
         self.msg_idx = 0
         self.next(None)
 
