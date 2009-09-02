@@ -122,7 +122,7 @@ class Application(object):
     def play_music(self, _):
         music_source = load(join('data', 'music2.mp3'))
         self.music = MediaPlayer()
-        self.music.volume = 0.2
+        self.music.volume = 0.15
         self.music.queue(music_source)
         self.music.eos_action = self.music.EOS_LOOP
         self.music.play()

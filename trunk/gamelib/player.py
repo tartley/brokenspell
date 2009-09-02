@@ -2,10 +2,11 @@
 import math
 
 from pyglet.window import key
+from pyglet.media import Player as MediaPlayer
 
 from bird import Action, Bird
 from feather import Feather
-from sounds import dings
+from sounds import dings, flap
 
 action_map = {
     key.Z:  Action.FLAP,
@@ -35,6 +36,17 @@ class Player(Bird):
                 actions.add(action)
         return actions
 
+
+    def act(self):
+        Bird.act(self)
+        if self.last_flap == 0:
+            self.play_flap()
+
+    def play_flap(self):
+        player = MediaPlayer()
+        player.queue(flap)
+        player.volume = 0.4
+        player.play()
 
     def collided_with(self, other):
         Bird.collided_with(self, other)
