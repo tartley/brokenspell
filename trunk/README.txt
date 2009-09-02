@@ -26,6 +26,8 @@ RUNNING THE GAME:
 
       python run_game.py
 
+    A configuration file, config.ini, can be used to affect the
+    game and workaround issues. See comments within.
 
 
 HOW TO PLAY THE GAME:
