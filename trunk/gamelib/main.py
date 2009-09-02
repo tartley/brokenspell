@@ -72,6 +72,14 @@ class UseControlsSkipsInstruction(KeyHandler):
                max(delay - self.app.level.age, 1))
 
 
+class ToggleMusic(KeyHandler):
+
+    def on_key_press(self, symbol, _):
+        if symbol == key.M:
+            self.app.toggle_music()
+
+
+
 class Application(object):
 
     def __init__(self):
@@ -79,6 +87,7 @@ class Application(object):
         self.win.set_exclusive_mouse()
         self.win.on_draw = self.draw
         self.player = None
+        self.music = None
         self.wave = 1
 
         if settings.getboolean('all', 'music'):
@@ -89,6 +98,7 @@ class Application(object):
 
         self.keyhandler = key.KeyStateHandler()
         self.win.push_handlers(self.keyhandler)
+        self.win.push_handlers(ToggleMusic())
 
         self.meter = Meter(self.win.height)
 
@@ -111,11 +121,19 @@ class Application(object):
 
     def play_music(self, _):
         music_source = load(join('data', 'music2.mp3'))
-        player = MediaPlayer()
-        player.volume = 0.2
-        player.queue(music_source)
-        player.eos_action = player.EOS_LOOP
-        player.play()
+        self.music = MediaPlayer()
+        self.music.volume = 0.2
+        self.music.queue(music_source)
+        self.music.eos_action = self.music.EOS_LOOP
+        self.music.play()
+
+
+    def toggle_music(self):
+        if self.music:
+            if self.music.playing:
+                self.music.pause()
+            else:
+                self.music.play()
 
 
     def get_ready(self):

@@ -32,6 +32,8 @@ RUNNING THE GAME:
 
 HOW TO PLAY THE GAME:
 
+    Use "M" to toggle the music.
+
     Press escape to exit.
 
 
