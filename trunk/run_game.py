@@ -10,7 +10,7 @@ from pyglet import options
 if system() == 'Windows':
     options['audio'] = ('directsound', 'openal', 'silent')
 else:
-    options['audio'] = ('alsa', 'openal', 'silent')
+    options['audio'] = ('openal', 'silent')
 
 
 from gamelib import main

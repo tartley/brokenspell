@@ -13,6 +13,7 @@ from pyglet.media import load, Player as MediaPlayer
 from instructions import Instructions
 from player import Player
 from level import Level
+from meter import Meter
 from config import settings
 import sounds
 
@@ -88,6 +89,8 @@ class Application(object):
         self.keyhandler = key.KeyStateHandler()
         self.win.push_handlers(self.keyhandler)
 
+        self.meter = Meter(self.win.height)
+
         self.level = Level(self, self.win.width, self.win.height)
         self.resurrecting = False
 
@@ -137,6 +140,8 @@ class Application(object):
 
     def update(self, dt):
         self.level.update(dt)
+        if self.player:
+            self.meter.value = self.player.feathers
 
         if self.player and not self.player.is_alive and not self.resurrecting:
             self.resurrecting = True
@@ -158,6 +163,7 @@ class Application(object):
         self.level.draw()
         self.user_message.draw()
         self.instructions.draw()
+        self.meter.draw()
         clockDisplay.draw()
 
 
