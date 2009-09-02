@@ -1,14 +1,11 @@
 BEING WORKED ON:
 
-Jonathan:
-    Introductory tutorial wave
-    Second wave at 18 seconds
-    Further waves whenever no enemies remain
 
 
 ABSOLUTELY CRITICAL:
 
 * Lives? Game over?
+
     The problem with having multiple lives is that when player dies, they have
     no feathers left. If we start the next life with only 3 feathers, in the
     middle of the same (hard) level they were at, then player may be too weak
