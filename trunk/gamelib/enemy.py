@@ -1,10 +1,8 @@
-
-from pyglet import resource
-from pyglet.sprite import Sprite
+import random
 
 from behaviour import Thinker, Plummet
 from bird import Bird
-
+from sounds import quacks
 
 class Enemy(Bird):
 
@@ -21,3 +19,7 @@ class Enemy(Bird):
         Bird.die(self)
         self.think.state = Plummet(self)
 
+
+    def lose_feather(self, x, y):
+        Bird.lose_feather(self, x, y)
+        random.choice(quacks).play()

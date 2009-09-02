@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<audacityproject projname="orig_data" version="1.1.0" audacityversion="1.2.6" sel0="0.4897280543" sel1="0.6824933523" vpos="0" h="0.0000000000" zoom="191.9432615230" rate="44100.000000" >
+	<tags title="quack1" artist="xtian" album="" track="-1" year="" genre="0" comments="" id3v2="1" />
+	<wavetrack name="Audio Track" channel="2" linked="0" offset="0.00000000" rate="44100.000000" gain="1.000000" pan="0.000000" >
+		<sequence maxsamples="524288" sampleformat="131073" numsamples="255488" >
+			<waveblock start="0" >
+				<simpleblockfile filename='b00000.au' len='255488' min='-0.454154' max='0.282704' rms='0.029494'/>
+			</waveblock>
+		</sequence>
+		<envelope numpoints='0'>
+		</envelope>
+	</wavetrack>
+</audacityproject>

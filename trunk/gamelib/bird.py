@@ -1,11 +1,10 @@
 
 from glob import glob
-from random import uniform
 
 from pyglet import resource
 from pyglet.sprite import Sprite
 
-from behaviour import Action, State, Plummet
+from behaviour import Action
 from feather import Feather
 from gameent import GameEnt, LEFT, RIGHT
 

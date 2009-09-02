@@ -106,6 +106,7 @@ class Application(object):
     def play_music(self, _):
         music_source = load(join('data', 'music2.mp3'))
         player = MediaPlayer()
+        player.volume = 0.5
         player.queue(music_source)
         player.eos_action = player.EOS_LOOP
         player.play()
