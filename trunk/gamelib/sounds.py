@@ -3,7 +3,12 @@ from os import path
 from pyglet.media import load
 
 sounds_dir = path.join('data', 'sounds')
-quack_names = glob(path.join(sounds_dir, 'quack?.ogg'))
-quacks = [load(f, streaming=False) for f in quack_names]
 
-ohno = load(path.join(sounds_dir, 'ohno.ogg'), streaming=False)
+def load_sounds_matching(pattern):
+    names = glob(path.join(sounds_dir, pattern))
+    names.sort()
+    return [load(n, streaming=False) for n in names]
+
+quacks = load_sounds_matching('quack?.ogg')
+ohno = load_sounds_matching('ohno.ogg')[0]
+dings = load_sounds_matching('ding?.ogg')

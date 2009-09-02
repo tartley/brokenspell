@@ -81,7 +81,8 @@ class Application(object):
         self.player = None
         self.wave = 1
 
-        clock.schedule_once(self.play_music, 1)
+        if settings.getboolean('all', 'music'):
+            clock.schedule_once(self.play_music, 1)
 
         glEnable(GL_BLEND)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
@@ -111,7 +112,7 @@ class Application(object):
     def play_music(self, _):
         music_source = load(join('data', 'music2.mp3'))
         player = MediaPlayer()
-        player.volume = 0.5
+        player.volume = 0.2
         player.queue(music_source)
         player.eos_action = player.EOS_LOOP
         player.play()

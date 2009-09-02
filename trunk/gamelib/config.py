@@ -9,3 +9,4 @@ class DefaultConfigParser(ConfigParser):
 
 settings = DefaultConfigParser()
 settings.read('config.ini')
+        

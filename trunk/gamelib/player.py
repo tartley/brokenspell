@@ -5,7 +5,7 @@ from pyglet.window import key
 
 from bird import Action, Bird
 from feather import Feather
-
+from sounds import dings
 
 action_map = {
     key.Z:  Action.FLAP,
@@ -45,4 +45,5 @@ class Player(Bird):
         if isinstance(other, Feather) and other.owner is not self:
             self.consecutive_feathers += 1
             self.level.score += self.consecutive_feathers
+            dings[(self.consecutive_feathers - 1) % len(dings)].play()
 
