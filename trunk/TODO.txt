@@ -28,6 +28,11 @@ ABSOLUTELY CRITICAL:
         version of Python and dependencies?
 
 
+* should enemy ducks attack each other? Means that highest-scoring tactic
+  is for player to wait for fights to break out and collect the resulting
+  feathers. Which is boring.
+
+
 REALLY NICE TO HAVE:
 
 
