@@ -30,11 +30,11 @@ MESSAGE_CONTROLS = [
     'Left and Right to steer',
 ]
 
-MESSAGE_INSTRUCTIONS = [
+MESSAGE_WAVE1 = [
     '',
-    'Collide with enemies to joust',
-    'Lowest bird sheds feathers',
-    'Collect feathers FTW!',
+    'Attack from above',
+    'Avoid enemies above you',
+    'Lowest bird loses feathers',
 ]
 
 
@@ -67,7 +67,7 @@ class UseControlsSkipsInstruction(KeyHandler):
         )
         if all_controls_used:
             self.app.win.pop_handlers()
-            self.app.user_message.set_messages(MESSAGE_INSTRUCTIONS)
+            self.app.user_message.set_messages(MESSAGE_WAVE1)
             clock.schedule_once(
                lambda _: self.app.level.spawn_enemy(8, self.app.player),
                18.25 - self.app.level.age)

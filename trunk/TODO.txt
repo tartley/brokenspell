@@ -30,12 +30,6 @@ ABSOLUTELY CRITICAL:
 
 REALLY NICE TO HAVE:
 
-* Enemies spawn in waves.
-    a 'Get Ready' before each wave?
-    Each wave contains one more enemy.
-    Within a wave, bird N starts with N feathers
-    Next wave starts a couple of seconds after the all enemies are gone.
-
 
 * Sound effects.
     Mostly comical quacking and quiet flapping.
@@ -51,48 +45,13 @@ REALLY NICE TO HAVE:
         any bird flaps: flap
 
 
-* improve accuracy of collision detection
-    Pixel perfect would be nice, but can we do it in time?
-    I wouldn't mind if things (esp birds) had to overlap a smidgeon before they
-    were considered to collide. Better that than having a visible gap.
-
-
-* Collecting feathers improves flap power
-    maybe highest number of consecutive collections should determine flap power
-    Later levels offer more enemies/feathers, hence scope for higher
-    number of consecutive collections
-    would be nice if collecing feathers did the same things for enemies that
-        it does for the player
-        
-
-* Display player's current flap power
-    As a HUD graphic - a pic of a wing gets feathers added to it?
-
-
-* Combos
-    killing an enemy increments multiplier for a few seconds
-    display multiplier if it is >1
-    attacking an enemy increases duration of current multiplier
-
-
 * floating numbers on screen for point-scoring events
 
 
-* Enemy behaviour
-    They should fly slower when they have fewer feathers
-    They should attack you.
-        eg. When directly above the player, just stop flapping.
-            (a first approximation of this is checked in)
-        More likely when they have more feathers.
-    They should run away when attacked
-    They should change altitude or direction every once in a while
-    They should chase feathers
-
-
-* polish the programmer art
-    enemies are different color depending on number of feathers
-    feathers are the color of the bird they came from? (then you can identify
-        your own feathers, which currently are not pick-up-able.)
+* try a profiler, see where it bogs down when lots is on screen
+    sprite rendering could be batched for performance (see below for sprite
+    overhaul)
+    This would let us have many birds & MANY feathers in a level.
 
 
 * load all images in a graphics module at startup, rather than in gameent
@@ -103,56 +62,48 @@ REALLY NICE TO HAVE:
       rather than one image per sprite
 
 
-* try a profiler, see where it bogs down when lots is on screen
-    sprite rendering could be batched for performance
+* Needs to make each wave harder than the last
+     More enemies?
+     Smarter enemies?
 
 
-* choose music
-    Everyone should put forward any proposed CC licensed tunes they fancy
-    Should we just pick one and play it repeatedly?
-    How about track 9 from here:
-       http://www.ptesquad.com/more/pte018.html 
+* improve accuracy of collision detection
+    Pixel perfect would be nice, but can we do it in time?
+    I wouldn't mind if things (esp birds) had to overlap a smidgeon before they
+    were considered to collide. Better that than having a visible gap.
 
 
-* Sequence of events on startup:
-    Display title "Sinister Ducks" in centre
-    instructions, smaller font, read 'press any key'
-    wait for keypress
-    remove title
-    player falls from sky
-    Instructions display (rotating):
-        Z to flap
-        Left and Right to steer
-    when player has used (left or right) and flap:
-        spawn tutorial wave:
-            single hovering bird, 1 feather, at (1/3 or 2/3, 2/3) 
-    instructions say:
-        collide with enemies to joust
-        highest bird wins
-        loser sheds a feather
-    when player kills tutorial wave enemy:
-    instructions say:
-        collect their feathers
-        consecutive feathers give more points
-    at 18 seconds after startup:
-        Spawn next wave of 8 birds, in time with music
-    Next waves scheduled whenever no enemies remain.
+* Enemy behaviour
+    Being attacked, should face and move away from the attacker.
+    More feathers means:
+        They can cruise faster
+        They change altitude more rapidly:
+        They change altitude more frequently.
+        Can flap more frequently
+        They flap when approaching from the side
+        They chase feathers
+        They run when attacked
+        They dive when you are above them
+        They flap away when you are far above them
+    Current 'dive on you' behaviour needs work, it does not account for
+    horizontal velocities, so a diving enemy will almost always miss.
 
 
-* Display instructions during game according to wave:
-    1: Birds: 1f
-        Attack enemies from above to get their feathers
-        Collect feathers for points
-    2: Birds: 1f 2f
-        Enemies will attack you from above
-        Avoid diving enemies
-    3: Birds: 1f 2f 3f
-        Chain feather collection for more points
-        Don't let enemies attack you from above
+* polish the programmer art
+    enemies are different color depending on number of feathers
+    feathers are the color of the bird they came from? (then you can identify
+        your own feathers, which currently are not pick-up-able.)
 
 
-* Display green landscape at bottom of screen
-    Player and enemies land on this, not at absolute bottom of screen
+* Combos
+    killing an enemy increments multiplier for a few seconds
+    display multiplier if it is >1
+    attacking an enemy increases duration of current multiplier
+
+
+* Display instructions (the small text) at wave startup:
+    2   Collect feathers for points
+        Chain your feather collection
 
 
 * Key to toggle music.
@@ -170,15 +121,6 @@ REALLY NICE TO HAVE:
     gliding without flaps (but slower than flying with flaps)
 
 
-* sky colors fade in day/night cycle
-    stars come out?
-
-
-* Collecting many feathers gives extra abilities
-    More than 10: Press down to dive.
-    Enemies should be able to use this too.
-
-
 * Platforms
     Would be nice
     But is a bunch of work.
@@ -189,4 +131,14 @@ REALLY NICE TO HAVE:
 * High scores
     Displayed after user dies, until next game starts
     Persisted, in 'All Users/AppData' or equivalent
+
+
+
+NOT BEING DONE
+
+* Collecting feathers improves flap power - don't like this on reflection.
+    It makes control of the player very icky if flap_power is a variable
+    amount. (or at least I couldn't find the right combo of values)
+    Plus, it makes balancing enemy AI harder if they have to account for
+    variable flap power.
 
