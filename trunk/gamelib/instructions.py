@@ -3,43 +3,63 @@ from pyglet import clock
 from pyglet.text import Label
 
 
-
 class Instructions(object):
 
-    def __init__(self, messages, x, y, anchor_x, anchor_y):
-        self.messages = messages
+    def __init__(self,
+        messages, x, y, anchor_x='center', anchor_y='center',
+        delay=2, repeat=True, size=36):
+
         self.x = x
         self.y = y
         self.anchor_x = anchor_x
         self.anchor_y = anchor_y
-        self.instruction = None
+        self.delay = delay
+        self.size = size
+        self.repeat = repeat
+        self.label = None
+        self.set_messages(messages)
+
+
+    def clear(self):
+        if self.label:
+            self.label.delete()
+            self.label = None
+        clock.unschedule(self.next)
+
+
+    def set_messages(self, messages, delay=2, repeat=True):
+        self.delay=delay
+        if isinstance(messages, basestring):
+            messages = [messages]
+            delay = None
+        self.repeat = repeat
+        self.messages = messages
         self.msg_idx = 0
-        for number, message in enumerate(self.messages):
-            clock.schedule_once(lambda _: self.change_text(), 3*number)
+        self.next(None)
 
 
     def draw(self):
-        if self.instruction:
-            self.instruction.draw()
+        if self.label:
+            self.label.draw()
 
 
-    def change_text(self):
+    def next(self, _):
+        if self.msg_idx >= len(self.messages):
+            if self.repeat:
+                self.msg_idx = 0
+            else:
+                self.clear()
+                return
+
         message = self.messages[self.msg_idx]
-        if not message:
-            self.instruction = None
-            return
+        self.label = Label(
+            message,
+            font_size=self.size,
+            x=self.x, y=self.y,
+            anchor_x=self.anchor_x, anchor_y=self.anchor_y)
+
         self.msg_idx += 1
-        self.instruction = Label(message,
-                font_size=36, x=1024, y=0,
-                anchor_x='right', anchor_y='top')
-        self.instruction.y = 0
-
-        def set_pos():
-            if (self.instruction and 
-                self.instruction.y <= self.instruction.content_height):
-
-                self.instruction.y += 1
-
-        clock.schedule(lambda _: set_pos())
+        if self.delay is not None:
+            clock.schedule_once(self.next, self.delay)
 
 

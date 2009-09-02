@@ -23,8 +23,6 @@ class Level(object):
 
 
     def add(self, ent):
-        ent.remove_from_game = False
-        ent.is_alive = True
         self.ents.append(ent)
 
 
