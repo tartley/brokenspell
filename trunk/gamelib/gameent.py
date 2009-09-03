@@ -17,6 +17,10 @@ class GameEnt(object):
     can_fall_off = False
     level = None
 
+    is_player = False
+    is_enemy = False
+    is_feather = False
+
     dummy_image = SolidColorImagePattern(color=(0, 0, 0, 0)).create_image(0, 0)
 
     def __init__(self, x, y, dx=0, dy=0):
@@ -77,6 +81,10 @@ class GameEnt(object):
     def collided_with(self, other):
         self.ddx += other.dx - self.dx
         self.ddy += other.dy - self.dy
+        if self.y < other.y:
+            self.y -= 2
+        if self.x < other.x:
+            self.x -= 2
 
 
     def update_sprite_stats(self):

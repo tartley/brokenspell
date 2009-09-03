@@ -47,6 +47,16 @@ class Hover(State):
         )
         if foe_is_below:
             return set()
+        if self.ent.foe:
+            foe_x = self.ent.foe.x
+            self.ent.foe = None
+            if foe_x < self.ent.x:
+                self.direction = Action.RIGHT
+                return set()
+            else:
+                self.direction = Action.LEFT
+                return set()
+
 
         flap_rate = 15
         if self.ent.y < self.desired_y and self.ent.last_flap > flap_rate:

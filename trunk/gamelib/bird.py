@@ -67,16 +67,20 @@ class Bird(GameEnt):
 
     def lose_feather(self, otherx, othery):
         self.feathers -= 1
-        directionx = self.x - otherx
-        directiony = self.y - othery
         feather = Feather(
             self.x, self.y,
-            self.dx + directionx / 3.0, self.dy + directiony / 5.0,
+            *self.get_collision_opposite(otherx, othery),
             owner=self)
         self.level.add(feather)
 
         if self.feathers == 0:
             self.die()
+
+
+    def get_collision_opposite(self, otherx, othery):
+        directionx = self.x - otherx
+        directiony = self.y - othery
+        return self.dx + directionx / 3.0, self.dy + directiony / 5.0
 
 
     def die(self):
@@ -86,13 +90,14 @@ class Bird(GameEnt):
 
     def collided_with(self, other):
         if self.is_alive:
-            if isinstance(other, Bird):
+            if other.is_player or other.is_enemy:
                 if other.is_alive:
                     GameEnt.collided_with(self, other)
                     if self.y < other.y:
                         self.foe = other
-                        self.lose_feather(other.x, other.y)
-            elif isinstance(other, Feather) and other.owner is not self:
+                        if other.is_enemy != self.is_enemy:
+                            self.lose_feather(other.x, other.y)
+            elif other.is_feather and other.owner is not self:
                 other.remove_from_game = True
                 self.feathers += 1
 

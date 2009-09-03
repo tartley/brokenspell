@@ -58,8 +58,8 @@ class Level(object):
 
 
     def collision(self, ent1, ent2):
-        if math.sqrt(((ent1.center_x + ent1.x) - (ent2.center_x + ent2.x)) ** 2 + 
-                ((ent1.center_y + ent1.y) - (ent2.center_y + ent2.y)) ** 2) < max(ent1.width, ent2.width) * 0.8:
+        if math.hypot((ent1.center_x + ent1.x) - (ent2.center_x + ent2.x),
+                      (ent1.center_y + ent1.y) - (ent2.center_y + ent2.y)) < max(ent1.width, ent2.width) * 0.8:
             return True
 
 
