@@ -3,7 +3,7 @@ import math
 from itertools import islice
 from random import randint, uniform
 
-from pyglet import clock, resource
+from pyglet import clock, image
 from pyglet.text import Label
 
 from feather import Feather
@@ -25,7 +25,7 @@ class Level(object):
         self.score = 0
         self.num_enemies = 0
         GameEnt.level = self
-        self.ground = resource.image(IMG_GROUND)
+        self.ground = image.load(IMG_GROUND)
 
 
     def add(self, ent):

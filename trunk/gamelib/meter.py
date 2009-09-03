@@ -1,5 +1,5 @@
 
-from pyglet import resource
+from pyglet import image
 
 class Meter(object):
 
@@ -9,7 +9,7 @@ class Meter(object):
 
     def __init__(self, level_height):
         self.level_height = level_height
-        self.image = resource.image(self.IMG_METER)
+        self.image = image.load(self.IMG_METER)
         self.max_height = self.image.height
         self.value = 0
 

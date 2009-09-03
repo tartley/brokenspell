@@ -1,9 +1,8 @@
 
 from glob import glob
-from os import listdir
 from os.path import join
 
-from pyglet import resource
+from pyglet import image
 
 
 SPRITES_DIR = join('data', 'sprites')
@@ -15,6 +14,6 @@ def load_sprite_images():
     for filename in files:
         filename = filename.replace('\\', '/')
         name = filename[len(SPRITES_DIR) + 1:-4]
-        images[name] = resource.image(filename)
+        images[name] = image.load(filename)
     return images
 
