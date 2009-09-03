@@ -11,14 +11,30 @@ Your Game Title
 
 
 DEPENDENCIES:
+    
+    If you're using a binary distribution all dependencies should be
+    in place.
 
-    You will need to install these before running the game:
+    If you've got the Python source you'll need to install these
+    before running the game:
 
       Python 2.6: http://python.org/download/releases/2.6.2/
-      Pyglet:     http://pyglet.org/download.html
+      Pyglet:     http://pyglet.org/download.html 
+                  (try "easy_install pyglet")
 
 
-RUNNING THE GAME:
+RUNNING THE GAME (BINARY VERSION):
+
+    If you're using the Linux binary distribution run the "run_game"
+    executable. From the console this is simply:
+
+      ./run_game               
+
+    Double-clicking the icon for "run_game" from your favourite file
+    manager should work too.
+
+
+RUNNING THE GAME FROM SOURCE:
 
     On Windows or Mac OS X, locate the "run_game.pyw" file and double-click it.
 
@@ -32,9 +48,11 @@ RUNNING THE GAME:
 
 HOW TO PLAY THE GAME:
 
-    Use "M" to toggle the music.
+    Instructions appear at the start of the game.
 
-    Press escape to exit.
+    Use M to toggle the music.
+
+    Press Esc to exit.
 
 
 LICENSE:
