@@ -4,7 +4,7 @@ Your Game Title
     Entry in PyWeek #9  <http://www.pyweek.org/9/>
     Team: Broken Spell
     Members:
-        Christian Muirhead
+        Christian Muirhead, xtian
         Glenn Jones, millenniumhand
         Jonathan Hartley, tartley
         Menno Smits, mjs0

@@ -21,7 +21,7 @@ class GameEnt(object):
     is_enemy = False
     is_feather = False
 
-    dummy_image = SolidColorImagePattern(color=(0, 0, 0, 0)).create_image(0, 0)
+    dummy_image = SolidColorImagePattern(color=(0, 0, 0, 0)).create_image(64, 64)
 
     def __init__(self, x, y, dx=0, dy=0):
         self.id = GameEnt.next_id
