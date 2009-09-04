@@ -26,6 +26,9 @@ class Level(object):
         self.num_enemies = 0
         GameEnt.level = self
         self.ground = image.load(IMG_GROUND)
+        self.score_label = Label("Score: 0",
+                font_size=36, x=self.width, y=self.height,
+                anchor_x='right', anchor_y='top')
 
 
     def add(self, ent):
@@ -47,11 +50,8 @@ class Level(object):
 
     def draw(self):
         self.ground.blit(0, 0)
-        score = 'Score: %d' % self.score
-        score_label = Label(score,
-                font_size=36, x=self.width, y=self.height,
-                anchor_x='right', anchor_y='top')
-        score_label.draw()
+        self.score_label.text = 'Score: %d' % self.score
+        self.score_label.draw()
 
         for ent in self.ents:
             ent.draw()

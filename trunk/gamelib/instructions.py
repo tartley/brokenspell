@@ -16,14 +16,19 @@ class Instructions(object):
         self.delay = delay
         self.size = size
         self.repeat = repeat
-        self.label = None
+        self.label = Label(
+            '',
+            font_size=self.size,
+            x=self.x, y=self.y,
+            anchor_x=self.anchor_x, anchor_y=self.anchor_y)
+
         self.set_messages(messages, delay=delay, repeat=repeat)
 
 
     def clear(self):
         if self.label:
             self.label.delete()
-            self.label = None
+            self.label.text = ''
         clock.unschedule(self.next)
 
 
@@ -39,7 +44,7 @@ class Instructions(object):
 
 
     def draw(self):
-        if self.label:
+        if self.label.text:
             self.label.draw()
 
 
@@ -51,13 +56,7 @@ class Instructions(object):
                 self.clear()
                 return
 
-        message = self.messages[self.msg_idx]
-        self.label = Label(
-            message,
-            font_size=self.size,
-            x=self.x, y=self.y,
-            anchor_x=self.anchor_x, anchor_y=self.anchor_y)
-
+        self.label.text = self.messages[self.msg_idx]
         self.msg_idx += 1
         if self.delay is not None:
             clock.schedule_once(self.next, self.delay)
