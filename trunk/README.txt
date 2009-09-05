@@ -61,6 +61,9 @@ HOW TO PLAY THE GAME:
     Collecting feathers gives you points. Points are greatly increased by
     consecutive collection, without touching any other birds.
 
+    You cannot collect your own feathers - although they all look much the
+    same from a distance, huh?
+
     Use M to toggle the music.
 
     Press Esc to exit.
