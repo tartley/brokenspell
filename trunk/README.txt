@@ -15,12 +15,16 @@ DEPENDENCIES:
     If you're using a binary distribution all dependencies should be
     included.
 
-    If you've got the Python source you'll need to install these
+    If you're running the Python source you'll need to install these
     before running the game:
 
       Python 2.6: http://python.org/download/releases/2.6.2/
-      Pyglet:     http://pyglet.org/download.html 
-                  (try "easy_install pyglet")
+      pyglet:     http://pyglet.org/download.html 
+      AVBin:      This is included with pyglet Windows (.msi) and Mac (.dmg)
+                  binary installers, but if you installed pyglet from source
+                  (.tar.gz or .zip, or easy_install) then you'll need to get
+                  this from here:
+                  http://code.google.com/p/avbin/downloads/list
 
 
 RUNNING THE GAME (BINARY VERSION):
@@ -60,7 +64,7 @@ HOW TO PLAY THE GAME:
     Press Esc to exit.
 
 
-LICENSE:
+COPYRIGHT
 
     This whole work is published under the Creative Commons: Attribution -
     Noncommercial - Share Alike license, as detailed here:
@@ -68,14 +72,12 @@ LICENSE:
     With the exception of the components listed below, which are licensed
     as specified by their respective owners.
 
-COPYRIGHT
-
     This program uses and redistributes Python, under the terms of its open
     source license:
     http://www.python.org/psf/license/
 
-    This program requires the library pyglet, which is licensed under the 
-    new BSD open source license, details of which are here:
+    This program requires and redistributes the library pyglet, which is 
+    licensed under the new BSD open source license, details of which are here:
     http://www.opensource.org/licenses/bsd-license.php
 
     The music is 'We Are All On Drugs', a cover of a Weezer track, performed by
