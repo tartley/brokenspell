@@ -57,6 +57,29 @@ HOW TO PLAY THE GAME:
 
 LICENSE:
 
-    This game skellington is licenced under the new BSD:
+    This whole work is published under the Creative Commons: Attribution -
+    Noncommercial - Share Alike license, as detailed here:
+    http://creativecommons.org/licenses/by-nc-sa/3.0/
+    With the exception of the components listed below, which are licensed
+    as specified by their respective owners.
+
+COPYRIGHT
+
+    This program uses and redistributes Python, under the terms of its open
+    source license:
+    http://www.python.org/psf/license/
+
+    This program requires the library pyglet, which is licensed under the 
+    new BSD open source license, details of which are here:
+    http://www.opensource.org/licenses/bsd-license.php
+
+    The music is 'We Are All On Drugs', a cover of a Weezer track, performed by
+    Rabato, published on 'Weezer - The 8-bit album':
+        http://www.ptesquad.com/more/pte018.html
+    This is licensed under the terms of the Creative Commons: Attribution -
+    Noncommercial - No derivative works license:
+        http://creativecommons.org/licenses/by-nc-nd/3.0/
+
+    This game skellington code is licenced under the new BSD:
     http://www.opensource.org/licenses/bsd-license.php
 
