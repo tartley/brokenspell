@@ -2,7 +2,7 @@ import random
 
 from behaviour import Thinker, Plummet
 from bird import Bird
-from sounds import quacks
+from sounds import dies, quacks
 
 class Enemy(Bird):
 
@@ -17,6 +17,7 @@ class Enemy(Bird):
 
     def die(self):
         Bird.die(self)
+        random.choice(dies).play()
         self.think.state = Plummet(self)
 
 

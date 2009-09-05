@@ -14,5 +14,7 @@ def load_sounds_matching(pattern):
 
 quacks = load_sounds_matching('quack?.ogg')
 dings = load_sounds_matching('ding?.ogg')
+dies = load_sounds_matching('die?.ogg')
 ohno = load_sound('ohno.ogg')
 flap = load_sound('flap.ogg')
+
