@@ -55,9 +55,11 @@ HOW TO PLAY THE GAME:
     Z to flap. Left and Right to steer.
 
     Attack the sinister ducks by colliding with them. Whichever bird is highest
-    will win the fight - the other will lose a feather. Collecting these
-    feathers gives you points. Points are greatly increased by collecting
-    feathers consecutively, without touching other birds.
+    will win the fight - the loser will shed a feather. When out of feathers,
+    a bird will plummet from the sky.
+    
+    Collecting feathers gives you points. Points are greatly increased by
+    consecutive collection, without touching any other birds.
 
     Use M to toggle the music.
 
