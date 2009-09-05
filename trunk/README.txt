@@ -1,5 +1,5 @@
-Your Game Title
-===============
+Sinister Ducks
+==============
 
     Entry in PyWeek #9  <http://www.pyweek.org/9/>
     Team: Broken Spell
@@ -48,7 +48,12 @@ RUNNING THE GAME FROM SOURCE:
 
 HOW TO PLAY THE GAME:
 
-    Instructions appear at the start of the game.
+    Z to flap. Left and Right to steer.
+
+    Attack the sinister ducks by colliding with them. Whichever bird is highest
+    will win the fight - the other will lose a feather. Collecting these
+    feathers gives you points. Points are greatly increased by collecting
+    feathers consecutively, without touching other birds.
 
     Use M to toggle the music.
 

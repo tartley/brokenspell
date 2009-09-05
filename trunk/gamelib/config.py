@@ -1,3 +1,4 @@
+from os.path import join
 from ConfigParser import ConfigParser
 
 class DefaultConfigParser(ConfigParser):
@@ -8,5 +9,5 @@ class DefaultConfigParser(ConfigParser):
         return ConfigParser.get(self, section, key)
 
 settings = DefaultConfigParser()
-settings.read('config.ini')
+settings.read(join('data', 'config.ini'))
         
