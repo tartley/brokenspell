@@ -13,7 +13,7 @@ Your Game Title
 DEPENDENCIES:
     
     If you're using a binary distribution all dependencies should be
-    in place.
+    included.
 
     If you've got the Python source you'll need to install these
     before running the game:
