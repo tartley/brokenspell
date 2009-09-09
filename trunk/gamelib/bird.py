@@ -67,9 +67,10 @@ class Bird(GameEnt):
 
     def lose_feather(self, otherx, othery):
         self.feathers -= 1
+        dx, dy = self.get_collision_opposite(otherx, othery)
         feather = Feather(
             self.x, self.y,
-            *self.get_collision_opposite(otherx, othery),
+            dx, dy,
             owner=self)
         self.level.add(feather)
 
