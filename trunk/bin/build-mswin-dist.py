@@ -1,15 +1,20 @@
 from distutils.core import setup
 from glob import glob
+from os import listdir
+from os.path import isdir, join
 import sys
+from zipfile import ZipFile
 
 import py2exe
 
 import fixpath
 
-from gamelib import VERSION
+from gamelib import NAME, VERSION
 
 
-DIST_DIR = 'dist\\SinisterDucks-%s-mswin' % (VERSION,)
+NAME = NAME.replace(' ', '')
+WIN_BINARY = '%s-%s-mswin' % (NAME, VERSION,)
+DIST_DIR = 'dist\\%s' % (WIN_BINARY)
 
 
 py2exe_options = dict(
@@ -60,12 +65,35 @@ config = dict(
 )
 
 
+def zip_directory():
+    def zip_dir(archive, prefix, path):
+        '''
+        archive=zip file to write to
+        prefix+path=directory to be zipped
+        prefix is stripped from the paths within the zip
+        '''
+        fullpath = join(prefix, path)
+        for filename in listdir(fullpath):
+            filepath = join(fullpath, filename)
+            zippath = join(path, filename)
+            if isdir(filepath):
+                zip_dir(archive, prefix, zippath)
+            else:
+                archive.write(filepath, zippath)
+
+    zipname = join('dist', '%s.zip' % (WIN_BINARY,))
+    archive = ZipFile(zipname, 'w')
+    zip_dir(archive, 'dist', WIN_BINARY)
+    archive.close()
+
+
 def main(config):
     if not 'py2exe' in sys.argv:
         sys.argv.append('py2exe')
     if not ('--verbose' in sys.argv or '-v' in sys.argv):
         sys.argv.append('--quiet')
     setup(**config)
+    zip_directory()
 
 
 if __name__ == '__main__':
