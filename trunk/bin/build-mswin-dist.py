@@ -26,6 +26,7 @@ py2exe_options = dict(
         'dummy.Process',
         'email',
         'email.utils',
+        'email.Utils',
 
         # filter out unused .pyd files
         '_ssl',
@@ -54,6 +55,7 @@ config = dict(
     windows=['run_game.py'],
     data_files=[
         ('', ['lib\\avbin.dll']),
+        ('', ['README.txt']),
         ('data', glob('data\\*.*')),
         ('data\\images', glob('data\\images\*.*')),
         ('data\\sounds', glob('data\\sounds\*.*')),

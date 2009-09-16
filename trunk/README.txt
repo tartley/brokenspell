@@ -10,47 +10,32 @@ Sinister Ducks
         Menno Smits, mjs0
 
 
-DEPENDENCIES:
-    
-    If you're using a binary distribution all dependencies should be
-    included.
+RUNNING THE GAME
 
-    If you're running the Python source you'll need to install these
-    before running the game:
+    On Windows, download the windows binary version, and double-click
+    'run_game.exe'.
 
-      Python 2.6: http://python.org/download/releases/2.6.2/
-      pyglet:     http://pyglet.org/download.html 
-      AVBin:      This is included with pyglet Windows (.msi) and Mac (.dmg)
-                  binary installers, but if you installed pyglet from source
-                  (.tar.gz or .zip, or easy_install) then you'll need to get
-                  this from here:
-                  http://code.google.com/p/avbin/downloads/list
+    Otherwise, download the source, install the dependencies listed
+    below, and then from a terminal, cd to the game directory and type:
 
-
-RUNNING THE GAME (BINARY VERSION):
-
-    If you're using the Linux binary distribution run the "run_game"
-    executable. From the console this is simply:
-
-      ./run_game               
-
-    Double-clicking the icon for "run_game" from your favourite file
-    manager should work too.
-
-
-RUNNING THE GAME FROM SOURCE:
-
-    On Windows or Mac OS X, locate the "run_game.pyw" file and double-click it.
-
-    Othewise open a terminal / console and "cd" to the game directory and run:
-
-      python run_game.py
+        python -O run_game.py
 
     A configuration file, config.ini, can be used to affect the
-    game and workaround issues. See comments within.
+    game and workaround issues. See comments within that file.
 
 
-HOW TO PLAY THE GAME:
+DEPENDENCIES
+    
+      Python 2.6:   http://python.org/download/releases/2.6.2/
+      pyglet 1.1.3: http://pyglet.org/download.html 
+      AVBin:        This is included with pyglet Windows (.msi) and Mac (.dmg)
+                    binary installers, but if you installed pyglet from source
+                    (.tar.gz or .zip, or easy_install) then you'll need to get
+                    AVBin separately from here:
+                    http://code.google.com/p/avbin/downloads/list
+
+
+HOW TO PLAY THE GAME
 
     Z to flap. Left and Right to steer.
 
@@ -69,7 +54,7 @@ HOW TO PLAY THE GAME:
     Press Esc to exit.
 
 
-COPYRIGHT
+INTELLECTUAL MONOPOLIES
 
     This whole work is published under the Creative Commons: Attribution -
     Noncommercial - Share Alike license, as detailed here:
@@ -92,6 +77,6 @@ COPYRIGHT
     Noncommercial - No derivative works license:
         http://creativecommons.org/licenses/by-nc-nd/3.0/
 
-    This game skellington code is licenced under the new BSD:
+    This game is built on PyWeek Skellington code, licenced under the new BSD:
     http://www.opensource.org/licenses/bsd-license.php
 
