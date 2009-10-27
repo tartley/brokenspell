@@ -28,6 +28,8 @@ class Bird(GameEnt):
         self.is_alive = True
         self.actions = set()
         self.foe = None
+        self.sprite.image = self.sprite_images['Player-flight-L']
+        self.update_sprite_stats()
 
 
     def reincarnate(self, x, y, feathers=3):
@@ -118,5 +120,4 @@ class Bird(GameEnt):
 
         frame = '%s-%s-%s' % (type(self).__name__, action, self.facing,)
         self.sprite.image = self.sprite_images[frame]
-        self.update_sprite_stats()
 

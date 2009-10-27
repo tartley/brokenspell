@@ -21,7 +21,8 @@ class GameEnt(object):
     is_enemy = False
     is_feather = False
 
-    dummy_image = SolidColorImagePattern(color=(0, 0, 0, 0)).create_image(64, 64)
+    dummy_image = \
+        SolidColorImagePattern(color=(0, 0, 0, 0)).create_image(64, 64)
 
     def __init__(self, x, y, dx=0, dy=0):
         self.id = GameEnt.next_id
@@ -62,7 +63,7 @@ class GameEnt(object):
 
         self.x += self.dx
         self.y += self.dy
-        
+
         if self.can_fall_off:
             if self.y < -self.height:
                 self.remove_from_game = True
@@ -77,7 +78,7 @@ class GameEnt(object):
         self.sprite.position = (self.x, self.y)
         self.sprite.draw()
 
-    
+
     def collided_with(self, other):
         self.ddx += other.dx - self.dx
         self.ddy += other.dy - self.dy

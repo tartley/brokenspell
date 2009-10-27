@@ -29,7 +29,7 @@ class Hover(State):
     def __init__(self, *args):
         State.__init__(self, *args)
         self.choose_altitude(None)
-        
+
 
     def choose_altitude(self, _):
         if not self.ent.is_alive:

@@ -25,7 +25,7 @@ class Level(object):
         self.score = 0
         self.num_enemies = 0
         GameEnt.level = self
-        self.ground = image.load(IMG_GROUND)
+        self.ground = image.load(IMG_GROUND).get_texture(rectangle=True)
         self.score_label = Label("Score: 0",
                 font_size=36, x=self.width, y=self.height,
                 anchor_x='right', anchor_y='top')
@@ -75,7 +75,7 @@ class Level(object):
         for ent in self.ents[:]:
             if ent.remove_from_game:
                 self.ents.remove(ent)
-                
+
                 if isinstance(ent, Enemy):
                     self.num_enemies -= 1
                     if self.num_enemies == 0:
