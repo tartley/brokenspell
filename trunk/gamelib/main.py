@@ -12,7 +12,7 @@ from pyglet.media import load, Player as MediaPlayer
 
 from config import settings
 from gameent import GameEnt
-from graphics import load_sprite_images
+from graphics import Graphics, load_sprite_images
 from instructions import Instructions
 from level import Level
 from meter import Meter
@@ -66,7 +66,7 @@ class UseControlsSkipsInstruction(KeyHandler):
             (key.LEFT in self.pressed or key.RIGHT in self.pressed) and
             key.Z in self.pressed
         )
-        delay = 18.25 if settings.getboolean('all', 'show_intro') else 1
+        delay = 1#18.25 if settings.getboolean('all', 'show_intro') else 1
         if all_controls_used:
             self.app.win.pop_handlers()
             self.app.user_message.set_messages(MESSAGE_WAVE1)
@@ -87,6 +87,8 @@ class Application(object):
 
     def __init__(self):
         GameEnt.sprite_images = load_sprite_images()
+        self.graphics = Graphics()
+        self.graphics.load()
 
         self.win = Window(width=1024, height=768)
         self.win.set_exclusive_mouse()
@@ -207,7 +209,7 @@ class Application(object):
         draw(len(verts) / 2, GL_QUADS,
             ('v2f', verts),
             ('c3B', colors),
-        )        
+        )
 
 
 def main():
