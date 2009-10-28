@@ -3,23 +3,10 @@ from glob import glob
 from os.path import join
 from platform import system
 
-from pyglet import options
 from pyglet.media import load
 
-from gamelib.config import settings
 
 sounds_dir = join('data', 'sounds')
-
-
-def setup():
-    force_audio = settings.get('all', 'force_audio')
-    if force_audio:
-        options['audio'] = (force_audio,)
-    else:
-        if system() == 'Windows':
-            options['audio'] = ('directsound', 'openal', 'silent')
-        else:
-            options['audio'] = ('alsa', 'openal', 'silent')
 
 
 def load_sound(name):
