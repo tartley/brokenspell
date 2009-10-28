@@ -7,6 +7,7 @@ from pyglet.sprite import Sprite
 from behaviour import Action
 from feather import Feather
 from gameent import GameEnt, LEFT, RIGHT
+from sounds import flap
 
 
 GLIDE_STEER = 0.1
@@ -44,6 +45,8 @@ class Bird(GameEnt):
                 self.dy += FLAP_LIFT
                 self.last_flap = 0
                 self.can_flap = False
+                if self.is_player:
+                    flap.play()
         else:
             self.can_flap = True
 

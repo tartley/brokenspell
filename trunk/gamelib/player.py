@@ -37,19 +37,6 @@ class Player(Bird):
         return actions
 
 
-    def act(self):
-        Bird.act(self)
-        if self.last_flap == 0:
-            self.play_flap()
-
-
-    def play_flap(self):
-        player = MediaPlayer()
-        player.queue(flap)
-        player.volume = 0.4
-        player.play()
-
-
     def collided_with(self, other):
         Bird.collided_with(self, other)
 
