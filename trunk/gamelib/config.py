@@ -10,4 +10,4 @@ class DefaultConfigParser(ConfigParser):
 
 settings = DefaultConfigParser()
 settings.read(join('data', 'config.ini'))
-        
+

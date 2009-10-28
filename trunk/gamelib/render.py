@@ -20,15 +20,6 @@ class Render(object):
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 
 
-    def draw(self):
-        self.clear()
-        self.application.level.draw()
-        self.application.user_message.draw()
-        self.application.instructions.draw()
-        self.application.meter.draw()
-        self.clockDisplay.draw()
-
-
     def clear(self):
         win = self.application.win
         verts = (
@@ -47,4 +38,13 @@ class Render(object):
             ('v2f', verts),
             ('c3B', colors),
         )
+
+
+    def draw(self):
+        self.clear()
+        self.application.level.draw()
+        self.application.user_message.draw()
+        self.application.instructions.draw()
+        self.application.meter.draw()
+        self.clockDisplay.draw()
 

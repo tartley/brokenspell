@@ -161,7 +161,6 @@ class Application(object):
             2)
 
 
-
 def main():
     application = Application()
     app.run()
