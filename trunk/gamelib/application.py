@@ -1,10 +1,5 @@
 
 from pyglet import app, clock
-from pyglet.gl import (
-    glBlendFunc, glEnable,
-    GL_BLEND, GL_ONE_MINUS_SRC_ALPHA, GL_QUADS, GL_SRC_ALPHA,
-)
-from pyglet.graphics import draw
 from pyglet.window import key, Window
 
 from config import settings
@@ -14,11 +9,9 @@ from instructions import Instructions
 from level import Level
 from meter import Meter
 from player import Player
+from render import Render
 from sounds import ohno
 from music import Music
-
-
-clockDisplay = clock.ClockDisplay()
 
 
 MESSAGE_TITLE = 'Sinister Ducks'
@@ -94,15 +87,11 @@ class Application(object):
 
         self.win = Window(width=1024, height=768)
         self.win.set_exclusive_mouse()
-        self.win.on_draw = self.draw
         self.player = None
         self.wave = 1
 
         self.music = Music()
         self.music.play()
-
-        glEnable(GL_BLEND)
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 
         self.keyhandler = key.KeyStateHandler()
         self.win.push_handlers(self.keyhandler)
@@ -111,6 +100,10 @@ class Application(object):
         self.meter = Meter(self.win.height)
 
         self.level = Level(self, self.win.width, self.win.height)
+
+        self.render = Render(self)
+        self.render.init()
+
         self.resurrecting = False
 
         self.user_message = Instructions(
@@ -167,33 +160,6 @@ class Application(object):
             lambda _: self.level.spawn_enemy(8, self.player),
             2)
 
-
-    def draw(self):
-        self.gradient_clear()
-        self.level.draw()
-        self.user_message.draw()
-        self.instructions.draw()
-        self.meter.draw()
-        clockDisplay.draw()
-
-
-    def gradient_clear(self):
-        verts = (
-            self.win.width, self.win.height,
-            0, self.win.height,
-            0, 0,
-            self.win.width, 0,
-        )
-        colors = (
-            000, 000, 127,
-            000, 000, 127,
-            064, 127, 255,
-            064, 127, 255,
-        )
-        draw(len(verts) / 2, GL_QUADS,
-            ('v2f', verts),
-            ('c3B', colors),
-        )
 
 
 def main():

@@ -25,3 +25,4 @@ class Meter(object):
     def calc_height(self):
         height = self.max_height * self.value / self.HIGH_VALUE
         return min(self.max_height, height)
+
