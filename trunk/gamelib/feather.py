@@ -9,7 +9,7 @@ from gameent import GameEnt
 
 
 class Feather(GameEnt):
-    
+
     is_feather = True
     can_fall_off = True
 

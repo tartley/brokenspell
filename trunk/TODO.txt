@@ -1,10 +1,12 @@
 BEING WORKED ON:
 
 * Sprite code is a mess
-    * understand what all this 'recalc sprite stats' stuff is
     * take sprites from a single image spritesheet
     * graphics module makes portions of spritesheet avaialble as images
     * sprite rendering should be batched
+    * use same batch to render sky, hills, feather meter?
+    * probably remove 'recalc sprite stats' stuff, or at least stop having
+      to load dummy images before being able to call it
 
 
 REFACTOR:
@@ -24,7 +26,7 @@ FEATURES:
 * fullscreen mode
 
 * HUD:
-    * Score needn't co,bntain the word 'score'
+    * Score needn't contain the word 'score'
     * add lives remaining
     * feather meter. What is it for?
 
@@ -65,6 +67,8 @@ FEATURES:
     * killing an enemy increments multiplier for a few seconds
     * display multiplier if it is >1
     * attacking an enemy increases duration of current multiplier
+
+* Achievements
 
 * Key to toggle music.
     Display this in the instructions.
