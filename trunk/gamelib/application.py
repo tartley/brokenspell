@@ -14,7 +14,8 @@ from instructions import Instructions
 from level import Level
 from meter import Meter
 from player import Player
-from sounds import play_music, toggle_music, ohno
+from sounds import ohno
+from music import Music
 
 
 clockDisplay = clock.ClockDisplay()
@@ -74,9 +75,13 @@ class UseControlsSkipsInstruction(KeyHandler):
 
 class ToggleMusic(KeyHandler):
 
+    def __init__(self, music):
+        self.music = music
+
+
     def on_key_press(self, symbol, _):
         if symbol == key.M:
-            toggle_music()
+            self.music.toggle()
 
 
 
@@ -91,20 +96,17 @@ class Application(object):
         self.win.set_exclusive_mouse()
         self.win.on_draw = self.draw
         self.player = None
-        self.music = None
         self.wave = 1
 
-        # if we play music immediately, it stutters a little at the start
-        # so we schedule it to start in a second from now
-        if settings.getboolean('all', 'music'):
-            clock.schedule_once(play_music, 1)
+        self.music = Music()
+        self.music.play()
 
         glEnable(GL_BLEND)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 
         self.keyhandler = key.KeyStateHandler()
         self.win.push_handlers(self.keyhandler)
-        self.win.push_handlers(ToggleMusic())
+        self.win.push_handlers(ToggleMusic(self.music))
 
         self.meter = Meter(self.win.height)
 
