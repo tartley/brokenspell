@@ -5,6 +5,7 @@ from os.path import join
 from pyglet import image
 
 
+IMG_GROUND = 'data/images/ground.png'
 SPRITE_FILE = 'data/spritesheet.png'
 SPRITES_DIR = join('data', 'sprites')
 
@@ -18,11 +19,18 @@ class Graphics(object):
         self.spritesheet = None
         self.player = []
         self.enemy = []
+        self.feather = None
+
 
     def load(self):
-        self.spritesheet = image.load(SPRITE_FILE).texture
+        self.ground = image.load(IMG_GROUND)
+        self.spritesheet = image.load(SPRITE_FILE)
+
         self.player = self.get_regions(BIRD_SIZE, row=0)
         self.enemy = self.get_regions(BIRD_SIZE, row=1)
+        self.feather = self.spritesheet.get_region(
+            0, 8 * 64, 16, 8 * 64 + 16)
+
 
     def get_regions(self, size, row):
         return [

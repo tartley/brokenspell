@@ -15,7 +15,7 @@ class GameEnt(object):
     AIR_RESIST_Y = 0.98
 
     can_fall_off = False
-    level = None
+    world = None
 
     is_player = False
     is_enemy = False
@@ -45,11 +45,11 @@ class GameEnt(object):
         self.ddx = 0
         self.ddy = 0
         self.remove_from_game = False
-        self.born = self.level.age
+        self.born = self.world.age
 
 
     def get_age(self):
-        return self.level.age - self.born
+        return self.world.age - self.born
 
 
     def update(self):

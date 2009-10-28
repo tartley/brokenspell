@@ -35,7 +35,7 @@ class Hover(State):
         if not self.ent.is_alive:
             return
 
-        self.desired_y = randint(100, self.ent.level.height - 100)
+        self.desired_y = randint(100, self.ent.world.height - 100)
         clock.schedule_once(self.choose_altitude, randint(3, 20))
 
 

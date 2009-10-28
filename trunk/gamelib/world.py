@@ -1,20 +1,26 @@
+
 import math
 
 from itertools import islice
 from random import randint, uniform
 
 from pyglet import clock, image
-from pyglet.text import Label
 
 from feather import Feather
 from gameent import GameEnt
 from enemy import Enemy
 
 
-IMG_GROUND = 'data/images/ground.png'
+def touching(ent1, ent2):
+    distance = math.hypot(
+        (ent1.center_x + ent1.x) - (ent2.center_x + ent2.x),
+        (ent1.center_y + ent1.y) - (ent2.center_y + ent2.y)
+    )
+    if distance < max(ent1.width, ent2.width) * 0.8:
+        return True
 
 
-class Level(object):
+class World(object):
 
     def __init__(self, app, width, height):
         self.app = app
@@ -22,17 +28,21 @@ class Level(object):
         self.height = height
         self.age = 0.0
         self.ents = []
-        self.score = 0
         self.num_enemies = 0
-        GameEnt.level = self
-        self.ground = image.load(IMG_GROUND).get_texture(rectangle=True)
-        self.score_label = Label("Score: 0",
-                font_size=36, x=self.width, y=self.height,
-                anchor_x='right', anchor_y='top')
 
 
     def add(self, ent):
         self.ents.append(ent)
+        if isinstance(ent, Enemy):
+            self.num_enemies += 1
+
+
+    def remove(self, ent):
+        self.ents.remove(ent)
+        if isinstance(ent, Enemy):
+            self.num_enemies -= 1
+            if self.num_enemies == 0:
+                self.app.next_wave()
 
 
     def spawn_enemy(self, number, player):
@@ -41,32 +51,16 @@ class Level(object):
         dx = uniform(-20, 20)
         dy = 0
         self.add(Enemy(x, y, dx=dx, dy=dy, feathers=number))
-        self.num_enemies += 1
         if number > 1:
             clock.schedule_once(
                 lambda _: self.spawn_enemy(number - 1, player),
                 1.7)
 
 
-    def draw(self):
-        self.ground.blit(0, 0)
-        self.score_label.text = 'Score: %d' % self.score
-        self.score_label.draw()
-
-        for ent in self.ents:
-            ent.draw()
-
-
-    def collision(self, ent1, ent2):
-        if math.hypot((ent1.center_x + ent1.x) - (ent2.center_x + ent2.x),
-                      (ent1.center_y + ent1.y) - (ent2.center_y + ent2.y)) < max(ent1.width, ent2.width) * 0.8:
-            return True
-
-
     def detect_collisions(self):
         for i, ent1 in enumerate(self.ents):
             for ent2 in islice(self.ents, i+1, None):
-                if self.collision(ent1, ent2):
+                if touching(ent1, ent2):
                     ent1.collided_with(ent2)
                     ent2.collided_with(ent1)
 
@@ -74,12 +68,7 @@ class Level(object):
     def remove_dead(self):
         for ent in self.ents[:]:
             if ent.remove_from_game:
-                self.ents.remove(ent)
-
-                if isinstance(ent, Enemy):
-                    self.num_enemies -= 1
-                    if self.num_enemies == 0:
-                        self.app.next_wave()
+                self.remove(ent)
 
 
     def wraparound(self, ent):

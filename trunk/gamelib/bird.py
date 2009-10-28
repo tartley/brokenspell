@@ -74,7 +74,7 @@ class Bird(GameEnt):
             self.x, self.y,
             dx, dy,
             owner=self)
-        self.level.add(feather)
+        self.world.add(feather)
 
         if self.feathers == 0:
             self.die()

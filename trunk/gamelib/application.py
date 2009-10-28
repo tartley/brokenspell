@@ -3,10 +3,10 @@ from pyglet import app, clock
 from pyglet.window import key, Window
 
 from config import settings
+from game import Game
 from gameent import GameEnt
-from graphics import Graphics, load_sprite_images
 from instructions import Instructions
-from level import Level
+from world import World
 from meter import Meter
 from player import Player
 from render import Render
@@ -62,8 +62,8 @@ class UseControlsSkipsInstruction(KeyHandler):
             self.app.win.pop_handlers()
             self.app.user_message.set_messages(MESSAGE_WAVE1)
             clock.schedule_once(
-               lambda _: self.app.level.spawn_enemy(8, self.app.player),
-               max(delay - self.app.level.age, 1))
+               lambda _: self.app.world.spawn_enemy(8, self.app.player),
+               max(delay - self.app.world.age, 1))
 
 
 class ToggleMusic(KeyHandler):
@@ -81,14 +81,10 @@ class ToggleMusic(KeyHandler):
 class Application(object):
 
     def __init__(self):
-        GameEnt.sprite_images = load_sprite_images()
-        self.graphics = Graphics()
-        self.graphics.load()
 
         self.win = Window(width=1024, height=768)
         self.win.set_exclusive_mouse()
         self.player = None
-        self.wave = 1
 
         self.music = Music()
         self.music.play()
@@ -99,7 +95,8 @@ class Application(object):
 
         self.meter = Meter(self.win.height)
 
-        self.level = Level(self, self.win.width, self.win.height)
+        self.world = World(self, self.win.width, self.win.height)
+        GameEnt.world = self.world
 
         self.render = Render(self)
         self.render.init()
@@ -115,13 +112,15 @@ class Application(object):
             'center', 'center',
             delay=0.5, repeat=True, size=20)
 
+        self.game = Game()
+
         KeyHandler.app = self
         self.win.push_handlers(AnyKeyStartsGame())
         clock.schedule(self.update)
 
 
     def get_ready(self):
-        self.player.reincarnate(self.level.width / 2, self.level.height)
+        self.player.reincarnate(self.world.width / 2, self.world.height)
         self.user_message.set_messages('Get ready...')
         clock.schedule_once(lambda _: self.spawn_player(), 1)
 
@@ -134,15 +133,16 @@ class Application(object):
         if not self.player:
             self.player = Player(
                 self.keyhandler,
-                self.level.width / 2, self.level.height)
+                self.world.width / 2, self.world.height,
+                self.game)
         self.player.remove_from_game = False
         self.player.is_alive = True
-        self.level.add(self.player)
+        self.world.add(self.player)
         self.resurrecting = False
 
 
     def update(self, dt):
-        self.level.update(dt)
+        self.world.update(dt)
         if self.player:
             self.meter.value = self.player.feathers
 
@@ -157,7 +157,7 @@ class Application(object):
         self.wave += 1
         self.user_message.set_messages('Wave %d' % (self.wave,))
         clock.schedule_once(
-            lambda _: self.level.spawn_enemy(8, self.player),
+            lambda _: self.world.spawn_enemy(8, self.player),
             2)
 
 

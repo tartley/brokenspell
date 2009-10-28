@@ -19,9 +19,10 @@ class Player(Bird):
 
     is_player = True
 
-    def __init__(self, keyhandler, x, y):
+    def __init__(self, keyhandler, x, y, game):
         Bird.__init__(self, x, y)
         self.keyhandler = keyhandler
+        self.game = game
         self.consecutive_feathers = 0
 
 
@@ -57,6 +58,6 @@ class Player(Bird):
 
         if isinstance(other, Feather) and other.owner is not self:
             self.consecutive_feathers += 1
-            self.level.score += self.consecutive_feathers
+            self.game.score += self.consecutive_feathers
             dings[min(len(dings) - 1, self.consecutive_feathers - 1)].play()
 
