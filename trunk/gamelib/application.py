@@ -1,6 +1,4 @@
 
-from os.path import join
-
 from pyglet import app, clock
 from pyglet.gl import (
     glBlendFunc, glEnable,
@@ -8,7 +6,6 @@ from pyglet.gl import (
 )
 from pyglet.graphics import draw
 from pyglet.window import key, Window
-from pyglet.media import load, Player as MediaPlayer
 
 from config import settings
 from gameent import GameEnt
@@ -17,7 +14,7 @@ from instructions import Instructions
 from level import Level
 from meter import Meter
 from player import Player
-import sounds
+from sounds import play_music, toggle_music, ohno
 
 
 clockDisplay = clock.ClockDisplay()
@@ -79,7 +76,7 @@ class ToggleMusic(KeyHandler):
 
     def on_key_press(self, symbol, _):
         if symbol == key.M:
-            self.app.toggle_music()
+            toggle_music()
 
 
 
@@ -97,8 +94,10 @@ class Application(object):
         self.music = None
         self.wave = 1
 
+        # if we play music immediately, it stutters a little at the start
+        # so we schedule it to start in a second from now
         if settings.getboolean('all', 'music'):
-            clock.schedule_once(self.play_music, 1)
+            clock.schedule_once(play_music, 1)
 
         glEnable(GL_BLEND)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
@@ -124,23 +123,6 @@ class Application(object):
         KeyHandler.app = self
         self.win.push_handlers(AnyKeyStartsGame())
         clock.schedule(self.update)
-
-
-    def play_music(self, _):
-        music_source = load(join('data', 'music3.ogg'))
-        self.music = MediaPlayer()
-        self.music.volume = 0.15
-        self.music.queue(music_source)
-        self.music.eos_action = self.music.EOS_LOOP
-        self.music.play()
-
-
-    def toggle_music(self):
-        if self.music:
-            if self.music.playing:
-                self.music.pause()
-            else:
-                self.music.play()
 
 
     def get_ready(self):
@@ -172,7 +154,7 @@ class Application(object):
         if self.player and not self.player.is_alive and not self.resurrecting:
             self.resurrecting = True
             self.user_message.set_messages('Oh no!')
-            sounds.ohno.play()
+            ohno.play()
             clock.schedule_once(lambda _: self.get_ready(), 2)
 
 
