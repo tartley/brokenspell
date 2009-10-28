@@ -2,11 +2,11 @@
 import math
 
 from pyglet.window import key
-from pyglet.media import Player as MediaPlayer
 
 from bird import Action, Bird
 from feather import Feather
 from sounds import dings, flap
+
 
 action_map = {
     key.Z:  Action.FLAP,

@@ -7,7 +7,6 @@ from game import Game
 from gameent import GameEnt
 from instructions import Instructions
 from world import World
-from meter import Meter
 from player import Player
 from render import Render
 from sounds import ohno
@@ -93,8 +92,6 @@ class Application(object):
         self.win.push_handlers(self.keyhandler)
         self.win.push_handlers(ToggleMusic(self.music))
 
-        self.meter = Meter(self.win.height)
-
         self.world = World(self, self.win.width, self.win.height)
         GameEnt.world = self.world
 
@@ -143,8 +140,6 @@ class Application(object):
 
     def update(self, dt):
         self.world.update(dt)
-        if self.player:
-            self.meter.value = self.player.feathers
 
         if self.player and not self.player.is_alive and not self.resurrecting:
             self.resurrecting = True
@@ -157,7 +152,7 @@ class Application(object):
         self.wave += 1
         self.user_message.set_messages('Wave %d' % (self.wave,))
         clock.schedule_once(
-            lambda _: self.world.spawn_enemy(8, self.player),
+            lambda _: self.world.spawn_enemy(self.wave, self.player),
             2)
 
 

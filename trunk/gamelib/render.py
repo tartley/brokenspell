@@ -60,7 +60,6 @@ class Render(object):
         self.graphics.ground.blit(0, 0)
         self.application.user_message.draw()
         self.application.instructions.draw()
-        self.application.meter.draw()
         self.score_label.text = '%d' % self.application.game.score
         self.score_label.draw()
         self.clockDisplay.draw()
