@@ -1,4 +1,6 @@
 
+from math import degrees
+
 from pyglet.image import SolidColorImagePattern
 from pyglet.sprite import Sprite
 
@@ -58,18 +60,18 @@ class GameEnt(object):
         self.y += self.dy
 
         if self.can_fall_off:
-            if self.y < -self.height:
+            if self.y < -self.height / 2:
                 self.remove_from_game = True
         else:
-            if self.y < 0:
-                self.y = 0
-                self.dy *= -0.5
+            if self.y < self.height / 2:
+                self.y = self.height / 2
+                self.dy = abs(self.dy) * 0.5
 
 
     def animate(self):
         self.sprite._x = self.x
         self.sprite._y = self.y
-        self.sprite._rotation = self.rotation
+        self.sprite._rotation = degrees(self.rotation)
         self.sprite._update_position()
 
 
