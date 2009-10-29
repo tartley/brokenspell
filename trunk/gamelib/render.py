@@ -64,5 +64,6 @@ class Render(object):
         self.score_label.draw()
         self.clockDisplay.draw()
         for ent in self.application.world.ents:
+            ent.animate()
             ent.draw()
 

@@ -44,20 +44,13 @@ class GameEnt(object):
         self.dy = dy
         self.ddx = 0
         self.ddy = 0
+        self.rotation = 0
         self.remove_from_game = False
-        self.born = self.world.age
-
-
-    def get_age(self):
-        return self.world.age - self.born
 
 
     def update(self):
-        self.dx += self.ddx
-        self.dy += self.ddy - GRAVITY
-        self.dx *= self.AIR_RESIST_X
-        self.dy *= self.AIR_RESIST_Y
-
+        self.dx = (self.dx + self.ddx) * self.AIR_RESIST_X
+        self.dy = (self.dy + self.ddy - GRAVITY) * self.AIR_RESIST_Y
         self.ddx = 0
         self.ddy = 0
 
@@ -73,9 +66,14 @@ class GameEnt(object):
                 self.dy *= -0.5
 
 
+    def animate(self):
+        self.sprite._x = self.x
+        self.sprite._y = self.y
+        self.sprite._rotation = self.rotation
+        self.sprite._update_position()
+
+
     def draw(self):
-        self.animate()
-        self.sprite.position = (self.x, self.y)
         self.sprite.draw()
 
 

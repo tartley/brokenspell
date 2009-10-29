@@ -40,7 +40,7 @@ class Player(Bird):
     def collided_with(self, other):
         Bird.collided_with(self, other)
 
-        if isinstance(other, Bird):
+        if not isinstance(other, Feather):
             self.consecutive_feathers = 0
 
         if isinstance(other, Feather) and other.owner is not self:

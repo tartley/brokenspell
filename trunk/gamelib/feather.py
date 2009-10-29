@@ -1,5 +1,5 @@
 
-from math import atan2, cos, pi, sin, degrees
+from math import atan2, cos, pi, sin
 from random import uniform
 
 from pyglet import resource
@@ -24,9 +24,6 @@ class Feather(GameEnt):
         self.update_sprite_stats()
 
 
-    def animate(self):
-        self.sprite.rotation = degrees(self.rotation)
-
 
     def update(self):
         self.ddx = self.speed * -cos(self.rotation)
@@ -36,7 +33,4 @@ class Feather(GameEnt):
         self.speed -= self.rotation / 100
         GameEnt.update(self)
 
-
-    def collided_with(self, other):
-        pass
 

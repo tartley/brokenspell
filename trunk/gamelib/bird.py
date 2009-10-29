@@ -119,8 +119,10 @@ class Bird(GameEnt):
         if flapping:
             action = 'flap'
 
-        self.sprite.rotation = -self.dx * self.dy / 2.0
+        self.rotation = -self.dx * self.dy / 2.0
 
         frame = '%s-%s-%s' % (type(self).__name__, action, self.facing,)
         self.sprite.image = self.sprite_images[frame]
+
+        GameEnt.animate(self)
 
