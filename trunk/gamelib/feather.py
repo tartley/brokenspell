@@ -13,16 +13,15 @@ class Feather(GameEnt):
     is_feather = True
     can_fall_off = True
 
-    def __init__(self, *args, **kwargs):
-        self.owner = kwargs.pop('owner')
-        GameEnt.__init__(self, *args, **kwargs)
+    def __init__(self, x, y, dx, dy, owner):
+        self.owner = owner
+        GameEnt.__init__(self, x, y, dx, dy)
         self.AIR_RESIST_Y = uniform(0.7, 0.9)
         self.AIR_RESIST_X = 0.9
         self.rotation = atan2(self.dy, self.dx)
         self.speed = uniform(1, 2)
         self.sprite.image = self.sprite_images['feather']
         self.update_sprite_stats()
-
 
 
     def update(self):

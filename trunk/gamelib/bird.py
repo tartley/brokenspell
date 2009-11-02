@@ -76,7 +76,7 @@ class Bird(GameEnt):
         feather = Feather(
             self.x, self.y,
             dx, dy,
-            owner=self)
+            self)
         self.world.add(feather)
 
         if self.feathers == 0:
