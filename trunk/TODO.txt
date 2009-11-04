@@ -1,104 +1,140 @@
-BEING WORKED ON:
 
-* Sprite code is a mess
-    * take sprites from a single image spritesheet
-    * graphics module makes portions of spritesheet avaialble as images
-    * sprite rendering should be batched
-    * use same batch to render sky, hills, feather meter?
-    * probably remove 'recalc sprite stats' stuff, or at least stop having
-      to load dummy images before being able to call it
+CURRENT TASK:
+
+Performance test mode:
+* pressing plus and minus will add or remove one enemy duck
+* Pressing backspace will 'auto find' the max number of ducks for 60fps
+* display number of ducks on the hud
 
 
-REFACTOR:
+REFACTOR
 
-* Level -> World or Arena
-* move Application into its own module
-* add new 'game' class owned by Application
+Upgrade to latest pyglet
+
+Record performance values, in windows and in linux
+
+Rendering:
+* render sprites taken from the spritesheet, without animation.
+* re-introduce animation
+* render all sprites in a single batch
+* inserting or removing a gameent from the world also adds/removes their
+  sprite from the batch
+
+Put HUD entities into (another?) collection, which is also rendered in
+the same batch. Including sky/hills.
+
+Move all the junk out of Application
+
+Probably remove 'recalc sprite stats' stuff, or at least stop having
+to load dummy images before being able to call it
+
+Refactor collision response code. Don't currently like how response to a
+single collision is split between both protagonists and their base classes.
+
+Can we use a single media player to play all sound effects, rather than
+creating a new one each time a sound is played (like flap did)?
 
 
-FEATURES:
+BUGS
 
-* Difficulty tuning
-    * Player dies rather than losing feathers
-    * zero lives = game over
-    * successive waves contain more birds
+Some people do not get vsync. Can we enforce this? Busy wait? Make game
+speed dependant on frame rate?
 
-* fullscreen mode
+Audio does not work properly on my ubuntu (crashes on 32nd play of flap)
+* can we fix this with better use of pyglet API?
+* is this an ALSA limitation - does it work if I install and use OpenAL?
+* hmmmm
 
-* HUD:
-    * Score needn't contain the word 'score'
-    * add lives remaining
-    * feather meter. What is it for?
+Review all the bugs people reported in pyweek
 
-* packaging:
-    Binary exe for Windows. Try cxfreeze.
-    Check that our source distribution works out of the box on machines
-        with python26. Should include all depencies except python itself.
-    Binary exe for Mac
+If errors occur in audio, we should run silent
 
-* Sound effects.
-    enemy spawn: subdued quack
+
+FEATURES
+
+Only show fps in performance test mode, or when outside
+acceptable range. Is built-in clockdisplay accurate for showing fps?
+In particular, does it still get short-cut when mouse events, etc come in?
+
+Difficulty tuning
+* Player dies rather than losing feathers
+* zero lives = game over
+* enemy birds should die instantly
+
+later levels should contain more birds
+
+Current 'dive on you' behaviour needs work, it does not account for
+horizontal velocities, so a diving enemy will almost always miss.
+Should only dive if higher than player (diving away when below is
+just annoying)
+
+improve accuracy of collision detection
+* Pixel perfect would be nice
+* I wouldn't mind if things (esp birds) had to overlap a smidgeon before
+  they were considered to collide. Better that than having a visible gap.
+
+Lives
+* HUD: add lives remaining
+* dying decrements
+* game over on 0
+* game reset after game over
+
+Scoring
+* feathers should score multiples of 10
+* floating numbers to show points for feather collection
+* score should use ',' as thousands separator
+
+Combos
+* HUD: display multiplier
+* killing an enemy increments multiplier
+* multiplier reduces back to 1 over time
+* feather scores are multiplied by this
+
+Sound effects.
     enemy attacked: spluttering quacks
     player attacked: urgent spluttering quacks
 
-* smarter enemies
+fullscreen mode
 
-* improve accuracy of collision detection
-    Pixel perfect would be nice
-    I wouldn't mind if things (esp birds) had to overlap a smidgeon before they
-    were considered to collide. Better that than having a visible gap.
+Binary exe for Mac
 
-* Enemy behaviour
-    Being attacked, should face and move away from the attacker.
-        They can cruise faster
-        They change altitude more rapidly:
-        They change altitude more frequently.
-        Can flap more frequently
-        They flap when approaching from the side
-        They chase feathers
-        They run when attacked
-        They dive when you are above them
-        They flap away when you are far above them
-    Current 'dive on you' behaviour needs work, it does not account for
-    horizontal velocities, so a diving enemy will almost always miss.
+Binary exe for Linux
 
-* Combos
-    * floating numbers on screen for point-scoring events
-    * killing an enemy increments multiplier for a few seconds
-    * display multiplier if it is >1
-    * attacking an enemy increases duration of current multiplier
+High scores
+* Displayed after user dies, until next game starts
+* Persisted, in 'All Users/AppData' or equivalent
 
-* Achievements
 
-* Key to toggle music.
-    Display this in the instructions.
+NOT BEING DONE
 
-* walking animation when landed
-    walking should probably be slightly quicker and more responsive than
-    gliding without flaps (but slower than flying with flaps)
+Enemy behaviour. Smarter enemies should:
+* face and move away when attacked
+* cruise faster
+* change altitude / direction more frequently
+* flap to get higher than you when approaching from the side (unless you
+  are behind them)
+* run when attacked
+* dive & move away when you are above them
+* produce more feathers when dead
 
-* Platforms
+walking animation when landed should probably be slightly quicker and more
+responsive than gliding without flaps (but slower than flying with flaps)
+
+wraparound without disappearing - requires drawing things twice if they are off
+edge of screen, and doing collision detection on the dual locations.
+
+Clouds
+    Do nothing except float across the screen, obscuring what is behind them.
+    These aren't as much value as platforms, but sure would be easy to code.
+    Maybe introduce a new cloud every three waves
+
+Platforms
     Would be nice
     But is a bunch of work.
     Affects collisions, behaviour, gameplay, graphics, etc.
     Are they worth it?
 
-* High scores
-    Displayed after user dies, until next game starts
-    Persisted, in 'All Users/AppData' or equivalent
-
-* wraparound without disappearing
-    requires drawing things twice if they are off edge of screen
-
-
-NOT BEING DONE
-
-* Clouds
-    Do nothing except float across the screen, obscuring what is behind them.
-    These aren't as much value as platforms, but sure would be easy to code.
-    Maybe introduce a new cloud every three waves
-
-* Collecting feathers improves flap power - don't like this on reflection.
+Collecting feathers improves flap power - don't like this on reflection.
     It makes control of the player very icky if flap_power is a variable
     amount. (or at least I couldn't find the right combo of values)
     Plus, it makes balancing enemy AI harder if they have to account for
