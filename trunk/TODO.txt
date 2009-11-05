@@ -96,13 +96,13 @@ Sound effects.
 
 fullscreen mode
 
-Binary exe for Mac
-
-Binary exe for Linux
-
 High scores
 * Displayed after user dies, until next game starts
 * Persisted, in 'All Users/AppData' or equivalent
+
+Binary exe for Mac
+
+Binary exe for Linux
 
 
 NOT BEING DONE
