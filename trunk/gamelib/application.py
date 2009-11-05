@@ -56,12 +56,20 @@ class UseControlsSkipsInstruction(KeyHandler):
             (key.LEFT in self.pressed or key.RIGHT in self.pressed) and
             key.Z in self.pressed
         )
-        delay = 1#18.25 if settings.getboolean('all', 'show_intro') else 1
+
+        delay = 1
+        if settings.getboolean('all', 'show_intro'):
+            delay = 18.25
+
         if all_controls_used:
             self.app.win.pop_handlers()
             self.app.user_message.set_messages(MESSAGE_WAVE1)
+
             clock.schedule_once(
-               lambda _: self.app.world.spawn_enemy(8, self.app.player),
+               lambda _: self.app.world.spawn_enemy(
+                   number=8,
+                   delay=1.7,
+                   player=self.app.player),
                max(delay - self.app.world.age, 1))
 
 
@@ -81,7 +89,11 @@ class Application(object):
 
     def __init__(self):
 
-        self.win = Window(width=1024, height=768)
+        vsync = True
+        if settings.getboolean('all', 'performance_test'):
+            vsync = False
+
+        self.win = Window(width=1024, height=768, vsync=vsync)
         self.win.set_exclusive_mouse()
         self.player = None
 
@@ -112,6 +124,13 @@ class Application(object):
         self.game = Game()
 
         KeyHandler.app = self
+
+        if settings.getboolean('all', 'performance_test'):
+            self.world.spawn_enemy(
+                number=64,
+                delay=0.01,
+                player=self.player)
+
         self.win.push_handlers(AnyKeyStartsGame())
         clock.schedule(self.update)
 
@@ -152,7 +171,7 @@ class Application(object):
         self.wave += 1
         self.user_message.set_messages('Wave %d' % (self.wave,))
         clock.schedule_once(
-            lambda _: self.world.spawn_enemy(self.wave, self.player),
+            lambda _: self.world.spawn_enemy(self.wave, 1.7, self.player),
             2)
 
 

@@ -6,12 +6,13 @@ from random import randint, uniform
 
 from pyglet import clock, image
 
+from config import settings
 from feather import Feather
 from gameent import GameEnt
 from enemy import Enemy
 
 
-def touching(ent1, ent2):
+def is_touching(ent1, ent2):
     distance = math.hypot(
         (ent1.center_x + ent1.x) - (ent2.center_x + ent2.x),
         (ent1.center_y + ent1.y) - (ent2.center_y + ent2.y)
@@ -45,22 +46,28 @@ class World(object):
                 self.app.next_wave()
 
 
-    def spawn_enemy(self, number, player):
-        x = (player.x + self.width / 2) % self.width
+    def spawn_enemy(self, number, delay, player):
+        if player is None:
+            x = uniform(0, self.width)
+        else:
+            x = (player.x + self.width / 2) % self.width
         y = self.height
         dx = uniform(-20, 20)
         dy = 0
         self.add(Enemy(x, y, dx=dx, dy=dy, feathers=number))
         if number > 1:
             clock.schedule_once(
-                lambda _: self.spawn_enemy(number - 1, player),
-                1.7)
+                lambda _: self.spawn_enemy(number - 1, delay, player),
+                delay)
 
 
     def detect_collisions(self):
+        if settings.getboolean('all', 'performance_test'):
+            return
+
         for i, ent1 in enumerate(self.ents):
             for ent2 in islice(self.ents, i+1, None):
-                if touching(ent1, ent2):
+                if is_touching(ent1, ent2):
                     ent1.collided_with(ent2)
                     ent2.collided_with(ent1)
 
