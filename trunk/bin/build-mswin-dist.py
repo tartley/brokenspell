@@ -53,7 +53,10 @@ py2exe_options = dict(
 )
 
 config = dict(
-    windows=['run_game.py'],
+    windows=[{
+        'script': 'run_game.py',
+        'icon_resources': [(1, 'data\SinisterDucks.ico')],
+    }],
     data_files=[
         ('', ['lib\\avbin.dll']),
         ('data', glob('data\\*.*')),
