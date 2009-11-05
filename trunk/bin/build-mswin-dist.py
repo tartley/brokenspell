@@ -26,6 +26,8 @@ py2exe_options = dict(
         'dummy.Process',
         'email',
         'email.utils',
+        'email.Utils',
+        'ICCProfile',
 
         # filter out unused .pyd files
         '_ssl',

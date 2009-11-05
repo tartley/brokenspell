@@ -1,15 +1,11 @@
 
 CURRENT TASK:
 
-Performance test mode:
-* pressing plus and minus will add or remove one enemy duck
-* Pressing backspace will 'auto find' the max number of ducks for 60fps
-* display number of ducks on the hud
+Upgrade to latest pyglet
+Publish a binary.
 
 
 REFACTOR
-
-Upgrade to latest pyglet
 
 Record performance values, in windows and in linux
 
