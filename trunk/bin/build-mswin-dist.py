@@ -13,7 +13,7 @@ from gamelib import NAME, VERSION
 
 
 NAME = NAME.replace(' ', '')
-WIN_BINARY = '%s-%s-mswin' % (NAME, VERSION,)
+WIN_BINARY = '%s-%s-bin-mswin' % (NAME, VERSION,)
 DIST_DIR = 'dist\\%s' % (WIN_BINARY)
 
 
@@ -28,6 +28,7 @@ py2exe_options = dict(
         'email.utils',
         'email.Utils',
         'ICCProfile',
+        'Image',
 
         # filter out unused .pyd files
         '_ssl',
@@ -53,10 +54,10 @@ py2exe_options = dict(
 )
 
 config = dict(
-    windows=[{
-        'script': 'run_game.py',
-        'icon_resources': [(1, 'data\SinisterDucks.ico')],
-    }],
+    windows=[dict(
+        script='run_game.py',
+        icon_resources=[(1, 'data\SinisterDucks.ico')],
+    )],
     data_files=[
         ('', ['lib\\avbin.dll']),
         ('data', glob('data\\*.*')),
@@ -93,10 +94,10 @@ def zip_directory():
 
 
 def main(config):
-    if not 'py2exe' in sys.argv:
-        sys.argv.append('py2exe')
     if not ('--verbose' in sys.argv or '-v' in sys.argv):
         sys.argv.append('--quiet')
+    if not 'py2exe' in sys.argv:
+        sys.argv.append('py2exe')
     setup(**config)
     zip_directory()
 
