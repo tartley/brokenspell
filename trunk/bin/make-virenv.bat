@@ -1,6 +1,8 @@
 
 virtualenv virenv-%COMPUTERNAME%
-virenv-%COMPUTERNAME%\Scripts\activate.bat
+call virenv-%COMPUTERNAME%\Scripts\activate.bat
 
-pip -E virenv-%COMPUTERNAME% install pyglet
+cd ..\pyglet-1.1.4
+python setup.py install
+cd ..\sinister-ducks
 
