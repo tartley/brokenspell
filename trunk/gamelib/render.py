@@ -4,11 +4,11 @@ from pyglet.gl import (
     glBlendFunc, glEnable,
     GL_BLEND, GL_ONE_MINUS_SRC_ALPHA, GL_QUADS, GL_SRC_ALPHA,
 )
-from pyglet.graphics import draw
+from pyglet.graphics import draw as pyglet_draw
 from pyglet.text import Label
 
 from gameent import GameEnt
-from graphics import Graphics, load_sprite_images
+from graphics import Graphics
 
 
 class Render(object):
@@ -23,8 +23,6 @@ class Render(object):
     def init(self):
         self.graphics = Graphics()
         self.graphics.load()
-        # TODO: delete this, use spritesheet instead
-        GameEnt.sprite_images = load_sprite_images()
 
         win = self.application.win
         self.score_label = Label("0",
@@ -49,7 +47,7 @@ class Render(object):
             064, 127, 255,
             064, 127, 255,
         )
-        draw(len(verts) / 2, GL_QUADS,
+        pyglet_draw(len(verts) / 2, GL_QUADS,
             ('v2f', verts),
             ('c3B', colors),
         )
@@ -57,13 +55,13 @@ class Render(object):
 
     def draw(self):
         self.clear()
-        self.graphics.ground.blit(0, 0)
+        self.graphics.images['Ground'].blit(0, 0)
         self.application.user_message.draw()
         self.application.instructions.draw()
         self.score_label.text = '%d' % self.application.game.score
         self.score_label.draw()
         self.clockDisplay.draw()
         for ent in self.application.world.ents:
-            ent.animate()
-            ent.draw()
+            ent.animate(self.graphics.images)
+            ent.sprite.draw()
 

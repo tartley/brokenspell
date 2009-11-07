@@ -8,6 +8,9 @@ from pyglet.sprite import Sprite
 GRAVITY = 0.2
 LEFT, RIGHT = 'L', 'R'
 
+_dummy_image = \
+    SolidColorImagePattern(color=(0, 0, 0, 0)).create_image(64, 64)
+
 
 class GameEnt(object):
 
@@ -23,16 +26,14 @@ class GameEnt(object):
     is_enemy = False
     is_feather = False
 
-    dummy_image = \
-        SolidColorImagePattern(color=(0, 0, 0, 0)).create_image(64, 64)
-
     def __init__(self, x, y, dx=0, dy=0):
         self.id = GameEnt.next_id
         GameEnt.next_id += 1
         GameEnt.reincarnate(self, x, y, dx, dy)
         self.width = 0
         self.height = 0
-        self.sprite = Sprite(GameEnt.dummy_image)
+        self.sprite = Sprite(_dummy_image)
+        self.frame_idx = 0
 
 
     def __str__(self):
@@ -68,15 +69,12 @@ class GameEnt(object):
                 self.dy = abs(self.dy) * 0.5
 
 
-    def animate(self):
+    def animate(self, images):
         self.sprite._x = self.x
         self.sprite._y = self.y
         self.sprite._rotation = degrees(self.rotation)
+        self.sprite.image = images[self.__class__.__name__][self.frame_idx]
         self.sprite._update_position()
-
-
-    def draw(self):
-        self.sprite.draw()
 
 
     def collided_with(self, other):

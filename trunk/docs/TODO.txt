@@ -1,22 +1,15 @@
 
 CURRENT TASK:
-
-Upgrade to latest pyglet
-Publish a binary.
+* render all sprites in a single batch for performance
+* inserting or removing a gameent from the world also adds/removes their
+  sprite from the batch
 
 
 REFACTOR
 
-Record performance values, in windows and in linux
+move 'world' into 'game'?
 
-Rendering:
-* render sprites taken from the spritesheet, without animation.
-* re-introduce animation
-* render all sprites in a single batch
-* inserting or removing a gameent from the world also adds/removes their
-  sprite from the batch
-
-Put HUD entities into (another?) collection, which is also rendered in
+Put HUD entities into same collection, which is also rendered in
 the same batch. Including sky/hills.
 
 Move all the junk out of Application
@@ -33,41 +26,35 @@ creating a new one each time a sound is played (like flap did)?
 
 BUGS
 
-Some people do not get vsync. Can we enforce this? Busy wait? Make game
+Some people do not get vsync. Can we enforce this? Or busy wait? Or make game
 speed dependant on frame rate?
 
-Audio does not work properly on my ubuntu (crashes on 32nd play of flap)
-* can we fix this with better use of pyglet API?
+Audio does not work properly on ALSA on my ubuntu (crashes on 32nd play of flap)
 * is this an ALSA limitation - does it work if I install and use OpenAL?
-* hmmmm
+* can we fix this with better use of pyglet API?
 
 Review all the bugs people reported in pyweek
 
-If errors occur in audio, we should run silent
+If errors occur in audio, we should catch and run silent
+
+Improve accuracy of collision detection
 
 
 FEATURES
 
-Only show fps in performance test mode, or when outside
-acceptable range. Is built-in clockdisplay accurate for showing fps?
-In particular, does it still get short-cut when mouse events, etc come in?
+Only show fps in performance test mode, or when outside acceptable range.
 
-Difficulty tuning
+Difficulty/gameplay tuning
 * Player dies rather than losing feathers
 * zero lives = game over
-* enemy birds should die instantly
+* enemy birds should die on first hit
 
 later levels should contain more birds
 
-Current 'dive on you' behaviour needs work, it does not account for
-horizontal velocities, so a diving enemy will almost always miss.
-Should only dive if higher than player (diving away when below is
+Current enemy attacking 'dive on you' behaviour needs work. In particular, it
+does not account for horizontal velocities, so a diving enemy will almost
+always miss. Should only dive if higher than player (diving away when below is
 just annoying)
-
-improve accuracy of collision detection
-* Pixel perfect would be nice
-* I wouldn't mind if things (esp birds) had to overlap a smidgeon before
-  they were considered to collide. Better that than having a visible gap.
 
 Lives
 * HUD: add lives remaining
@@ -86,15 +73,17 @@ Combos
 * multiplier reduces back to 1 over time
 * feather scores are multiplied by this
 
-Sound effects.
-    enemy attacked: spluttering quacks
-    player attacked: urgent spluttering quacks
+More sound effects reqd:
+* enemy attacked: spluttering quacks
+* player attacked: urgent spluttering quacks
+* birds bounce off harmlessly at equal heights
+* Game over
 
 fullscreen mode
 
 High scores
 * Displayed after user dies, until next game starts
-* Persisted, in 'All Users/AppData' or equivalent
+* Persisted
 
 Binary exe for Mac
 

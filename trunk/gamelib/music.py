@@ -15,6 +15,9 @@ class Music(object):
 
 
     def play(self):
+        if settings.get('all', 'force_audio') == 'silent':
+            return
+
         self.music = load(join('data', 'music3.ogg'))
         self.player = Player()
         self.player.volume = 0.15
@@ -28,6 +31,9 @@ class Music(object):
 
 
     def toggle(self):
+        if settings.get('all', 'force_audio') == 'silent':
+            return
+
         if self.player:
             if self.player.playing:
                 self.player.pause()

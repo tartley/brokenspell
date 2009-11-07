@@ -9,7 +9,7 @@ from instructions import Instructions
 from world import World
 from player import Player
 from render import Render
-from sounds import ohno
+from sounds import play
 from music import Music
 
 
@@ -127,7 +127,7 @@ class Application(object):
 
         if settings.getboolean('all', 'performance_test'):
             self.world.spawn_enemy(
-                number=64,
+                number=256,
                 delay=0.01,
                 player=self.player)
 
@@ -163,7 +163,7 @@ class Application(object):
         if self.player and not self.player.is_alive and not self.resurrecting:
             self.resurrecting = True
             self.user_message.set_messages('Oh no!')
-            ohno.play()
+            play('ohno')
             clock.schedule_once(lambda _: self.get_ready(), 2)
 
 

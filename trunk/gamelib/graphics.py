@@ -2,15 +2,11 @@
 from glob import glob
 from os.path import join
 
-from pyglet import image
+from pyglet.image import load
+from pyglet.image.atlas import TextureAtlas
 
 
-IMG_GROUND = 'data/images/ground.png'
-SPRITE_FILE = 'data/spritesheet.png'
-SPRITES_DIR = join('data', 'sprites')
-
-
-BIRD_SIZE = 64
+IMAGES_DIR = join('data', 'images')
 
 
 def set_anchor(image):
@@ -22,43 +18,57 @@ def set_anchor(image):
 class Graphics(object):
 
     def __init__(self):
-        self.spritesheet = None
-        self.player = []
-        self.enemy = []
-        self.feather = None
+        self.atlas = TextureAtlas(width=1024, height=256)
+        self.images = {}
+
+
+    def _split_filename(self, filename):
+        r"""
+        Splits filename 'blah\file-X.ext' into tuple ('file', X), where X
+        is any integer. Returns ('file', None) if filename does not end in
+        hyphen followed by integer.
+        """
+        basename = filename[len(IMAGES_DIR) + 1:-4]
+        name = basename
+        number = None
+        hyphen = basename.rfind('-')
+        if hyphen != -1:
+            try:
+                number = int(basename[hyphen + 1:])
+                name = basename[:hyphen]
+            except ValueError:
+                pass
+        return name, number
+
+
+    def _split_image(self, image, num_frames):
+        """
+        Expects an image to contain 1 or more frames, as a horizontal row of
+        equally sized regions. Splits the given image into its constituent
+        frames, returning them as a list of texture regions.
+        """
+        frames = []
+        frame_width = image.width / num_frames
+        for i in xrange(0, num_frames):
+            region = image.get_region(
+                frame_width * i, 0, frame_width, image.height)
+            set_anchor(region)
+            frames.append(region)
+        return frames
 
 
     def load(self):
-        self.ground = image.load(IMG_GROUND)
-        self.spritesheet = image.load(SPRITE_FILE)
-
-        self.player = self.get_regions(BIRD_SIZE, row=0)
-        self.enemy = self.get_regions(BIRD_SIZE, row=1)
-
-        self.feather = self.spritesheet.get_region(
-            0, 8 * 64, 16, 8 * 64 + 16)
-        set_anchor(self.feather)
-
-
-    def get_regions(self, size, row):
-        images = []
-        for x in xrange(0, self.spritesheet.width / size):
-            image = self.spritesheet.get_region(
-                x * size, row * size,
-                (x + 1) * size, (row + 1) * size)
-            set_anchor(image)
-            images.append(image)
-        return images
-
-
-def load_sprite_images():
-    images = {}
-    files = glob('%s/*.png' % (SPRITES_DIR))
-    for filename in files:
-        filename = filename.replace('\\', '/')
-        name = filename[len(SPRITES_DIR) + 1:-4]
-        bitmap = image.load(filename)
-        set_anchor(bitmap)
-        images[name] = bitmap
-    return images
+        """
+        Loads all files in images directory, making them available as
+        self.images[filename]. Each entry in that dictionary is a list of X
+        frames, where X, if not 1, is indicated by the filename ending in
+        '-X.png'
+        """
+        for filename in glob('%s/*.png' % (IMAGES_DIR)):
+            region = self.atlas.add(load(filename))
+            name, num_frames = self._split_filename(filename)
+            if num_frames:
+                self.images[name] = self._split_image(region, num_frames)
+            else:
+                self.images[name] = region
 

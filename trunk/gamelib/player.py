@@ -5,7 +5,7 @@ from pyglet.window import key
 
 from bird import Action, Bird
 from feather import Feather
-from sounds import dings, flap
+from sounds import play
 
 
 action_map = {
@@ -18,6 +18,7 @@ action_map = {
 class Player(Bird):
 
     is_player = True
+    image_row = 3
 
     def __init__(self, keyhandler, x, y, game):
         Bird.__init__(self, x, y)
@@ -44,7 +45,7 @@ class Player(Bird):
             if other.owner is not self:
                 self.consecutive_feathers += 1
                 self.game.score += self.consecutive_feathers
-                dings[min(len(dings) - 1, self.consecutive_feathers - 1)].play()
+                play('ding', self.consecutive_feathers - 1)
         else:
             self.consecutive_feathers = 0
 

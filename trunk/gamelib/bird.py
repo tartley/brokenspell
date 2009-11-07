@@ -7,7 +7,7 @@ from pyglet.sprite import Sprite
 from behaviour import Action
 from feather import Feather
 from gameent import GameEnt, LEFT, RIGHT
-from sounds import flap
+from sounds import play
 
 
 GLIDE_STEER = 0.1
@@ -29,7 +29,6 @@ class Bird(GameEnt):
         self.is_alive = True
         self.actions = set()
         self.foe = None
-        self.sprite.image = self.sprite_images['Player-flight-L']
         self.update_sprite_stats()
 
 
@@ -46,7 +45,7 @@ class Bird(GameEnt):
                 self.last_flap = 0
                 self.can_flap = False
                 if self.is_player:
-                    flap.play()
+                    play('flap')
         else:
             self.can_flap = True
 
@@ -62,12 +61,25 @@ class Bird(GameEnt):
             self.facing = RIGHT
 
 
+    def choose_frame(self):
+        self.frame_idx = 0
+        if self.facing == RIGHT:
+            self.frame_idx += 1
+        if self.is_alive:
+            if Action.FLAP in self.actions:
+                self.frame_idx += 2
+        else:
+            self.frame_idx += 4
+
+
     def update(self):
         GameEnt.update(self)
         self.actions = self.think()
         self.act()
+        self.choose_frame()
         if self.last_flap is not None:
             self.last_flap += 1
+        self.rotation = -self.dx * self.dy / 100.0
 
 
     def lose_feather(self, otherx, othery):
@@ -106,23 +118,4 @@ class Bird(GameEnt):
             elif other.is_feather and other.owner is not self:
                 other.remove_from_game = True
                 self.feathers += 1
-
-
-    def animate(self):
-        action = 'flight' if self.is_alive else 'dead'
-        flapping = (
-            self.is_alive and (
-                (self.last_flap is not None
-                 and self.last_flap < 5)
-                or Action.FLAP in self.actions)
-        )
-        if flapping:
-            action = 'flap'
-
-        self.rotation = -self.dx * self.dy / 100.0
-
-        frame = '%s-%s-%s' % (type(self).__name__, action, self.facing,)
-        self.sprite.image = self.sprite_images[frame]
-
-        GameEnt.animate(self)
 
