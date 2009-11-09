@@ -1,10 +1,8 @@
 
 CURRENT TASK:
 
-rename 'gameent' module to 'gameitem'. Move worlditem into its own module.
-
 rethink names of 'gameitem / worlditem' hierarchy. world class contains
-coillection of all items, but these are both worlditems and other things
+collection of all items, but these are both worlditems and other things
 (base classes of worlditems, and siblings of worlditem, eg. huditem)
 
 Put HUD entities into same world game item collection

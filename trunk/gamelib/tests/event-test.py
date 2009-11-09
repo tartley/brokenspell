@@ -3,7 +3,7 @@ from mock import Mock
 from unittestplus.testcaseplus import TestCasePlus
 from unittestplus.run import run
 
-from gamelib.event import Event
+from ..event import Event
 
 
 class EventTest(TestCasePlus):
