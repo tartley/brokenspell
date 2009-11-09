@@ -19,7 +19,6 @@ class Graphics(object):
 
     def __init__(self):
         self.atlas = TextureAtlas(width=1024, height=256)
-        self.images = {}
 
 
     def _split_filename(self, filename):
@@ -64,11 +63,13 @@ class Graphics(object):
         frames, where X, if not 1, is indicated by the filename ending in
         '-X.png'
         """
+        images = {}
         for filename in glob('%s/*.png' % (IMAGES_DIR)):
             region = self.atlas.add(load(filename))
             name, num_frames = self._split_filename(filename)
             if num_frames:
-                self.images[name] = self._split_image(region, num_frames)
+                images[name] = self._split_image(region, num_frames)
             else:
-                self.images[name] = region
+                images[name] = [region]
+        return images
 

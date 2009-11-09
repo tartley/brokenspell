@@ -7,18 +7,20 @@ from vertexlist import VertexList
 
 class Sky(GameItem):
 
+    render_layer = 0
+
     def __init__(self, width, height):
-        verts = (
+        self.verts = (
             width, height,
             0, height,
             0, 0,
             width, 0,
         )
-        colors = (
+        self.colors = (
             000, 000, 127,
             000, 000, 127,
             064, 127, 255,
             064, 127, 255,
         )
-        self.vertexlist = VertexList(verts, colors, GL_QUADS)
+        self.vertexlist = None
 

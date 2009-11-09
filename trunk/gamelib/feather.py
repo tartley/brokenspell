@@ -20,7 +20,6 @@ class Feather(WorldItem):
         self.AIR_RESIST_X = 0.9
         self.rotation = atan2(self.dy, self.dx)
         self.speed = uniform(1, 2)
-        self.update_sprite_stats()
 
 
     def update(self):

@@ -1,8 +1,6 @@
 
 CURRENT TASK:
 
-break worlditem out into its own module
-
 Render should probaby create the sprite (and vertexlist) objects
 Render should create the OrderedGroups, adding items to the correct one
 based on an integer attribute of the item.

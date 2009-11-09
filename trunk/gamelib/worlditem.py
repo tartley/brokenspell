@@ -3,7 +3,6 @@ from math import degrees
 
 from pyglet.image import SolidColorImagePattern
 from pyglet.graphics import OrderedGroup
-from pyglet.sprite import Sprite
 
 from gameitem import GameItem
 
@@ -26,15 +25,15 @@ class WorldItem(GameItem):
     is_enemy = False
     is_feather = False
 
-    group = OrderedGroup(2)
+    render_layer = 2
 
     def __init__(self, x=0, y=0, dx=0, dy=0):
         GameItem.__init__(self)
         WorldItem.reincarnate(self, x, y, dx, dy)
+        self.sprite = None
+        self.frame_idx = 0
         self.width = 0
         self.height = 0
-        self.sprite = Sprite(_dummy_image, group=WorldItem.group)
-        self.frame_idx = 0
 
 
     def __str__(self):
@@ -85,7 +84,6 @@ class WorldItem(GameItem):
         self.sprite._update_position()
 
 
-
     def collided_with(self, other):
         self.ddx += other.dx - self.dx
         self.ddy += other.dy - self.dy
@@ -93,11 +91,4 @@ class WorldItem(GameItem):
             self.y -= 2
         if self.x < other.x:
             self.x -= 2
-
-
-    def update_sprite_stats(self):
-        self.center_x = self.sprite.width/2
-        self.center_y = self.sprite.height/2
-        self.width = self.sprite.width
-        self.height = self.sprite.height
 

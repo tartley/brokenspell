@@ -1,6 +1,5 @@
 
 from pyglet.gl import GL_QUADS, GL_TRIANGLES
-from pyglet.graphics import OrderedGroup
 
 
 class VertexList(object):
@@ -8,9 +7,6 @@ class VertexList(object):
     An item that can be added to the arena, and is rendered using
     a Pyglet IndexedVertexList. For example, the sky is a large GL_QUAD.
     """
-
-    group = OrderedGroup(0)
-
 
     def __init__(self, verts, colors, primitive):
         self.verts = verts
@@ -37,15 +33,4 @@ class VertexList(object):
     @property
     def indices(self):
         return xrange(self.num_verts)
-
-
-    def get_batch_args(self):
-        return (
-            self.num_verts,
-            self.primitive,
-            self.group,
-            self.indices,
-            ('v2f/static', self.verts),
-            ('c3B/static', self.colors)
-        )
 

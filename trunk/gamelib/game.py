@@ -13,6 +13,6 @@ class Game(object):
         sky = Sky(self.arena.width, self.arena.height)
         self.arena.add(sky)
 
-        ground = Ground(images)
+        ground = Ground()
         self.arena.add(ground)
 

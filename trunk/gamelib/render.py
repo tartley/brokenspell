@@ -4,14 +4,23 @@ from pyglet.gl import (
     glBlendFunc, glEnable,
     GL_BLEND, GL_ONE_MINUS_SRC_ALPHA, GL_QUADS, GL_SRC_ALPHA,
 )
-from pyglet.graphics import Batch, draw as pyglet_draw
+from pyglet.graphics import Batch, OrderedGroup
+from pyglet.sprite import Sprite
 from pyglet.text import Label
 
 from gameitem import GameItem
 from graphics import Graphics
+from vertexlist import VertexList
 
 
 class Render(object):
+
+    groups = [
+        OrderedGroup(0), # sky
+        OrderedGroup(1), # hills
+        OrderedGroup(2), # birds & feathers
+        OrderedGroup(3), # hud
+    ]
 
     # TODO: we don't need to pass application or win here
     # just arena would be fine
@@ -29,8 +38,8 @@ class Render(object):
 
 
     def init(self, win):
-        self.graphics = Graphics()
-        self.graphics.load()
+        graphics = Graphics()
+        self.images = graphics.load()
 
         self.score_label = Label("0",
             font_size=36, x=win.width, y=win.height,
@@ -43,7 +52,7 @@ class Render(object):
     def draw(self):
         for item in self.application.arena.items:
             if hasattr(item, 'animate'):
-                item.animate(self.graphics.images)
+                item.animate(self.images)
         self.batch.draw()
 
         self.application.user_message.draw()
@@ -55,9 +64,23 @@ class Render(object):
 
     def add_item_to_batch(self, _, item):
         if hasattr(item, 'sprite'):
-            item.sprite.batch = self.batch
+            item.sprite = Sprite(
+                self.images[item.__class__.__name__][0],
+                batch=self.batch,
+                group=self.groups[item.render_layer]
+            )
+            item.update_sprite_stats()
         elif hasattr(item, 'vertexlist'):
-            self.batch.add_indexed(*item.vertexlist.get_batch_args())
+            vertexlist = VertexList(item.verts, item.colors, GL_QUADS)
+            item.vertexlist = vertexlist
+            self.batch.add_indexed(
+                vertexlist.num_verts,
+                vertexlist.primitive,
+                self.groups[item.render_layer],
+                vertexlist.indices,
+                ('v2f/static', vertexlist.verts),
+                ('c3B/static', vertexlist.colors)
+            )
 
 
     def remove_item_from_batch(self, _, item):

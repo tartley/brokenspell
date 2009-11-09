@@ -29,7 +29,6 @@ class Bird(WorldItem):
         self.is_alive = True
         self.actions = set()
         self.foe = None
-        self.update_sprite_stats()
 
 
     def reincarnate(self, x, y, feathers=3):
