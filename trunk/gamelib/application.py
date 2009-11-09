@@ -112,7 +112,7 @@ class Application(object):
         self.render.init(self.win)
         self.win.on_draw = self.render.draw
 
-        self.game.startup()
+        self.game.startup(self.render.graphics.images)
 
         self.resurrecting = False
 

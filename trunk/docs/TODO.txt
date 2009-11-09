@@ -1,8 +1,6 @@
 
 CURRENT TASK:
 
-rename 'world' as arena
-
 Put HUD entities into same world game item collection
     - hills
     - score
@@ -38,6 +36,11 @@ object instead.
 
 
 BUGS
+
+fuzzy line along top of rotated sprites, introduced when I started using
+a texture atlas
+
+rotation of player bird goes screwy at high velocity
 
 pressing 'alt' hangs the game until you press it again??? (jlappy/winxp)
 

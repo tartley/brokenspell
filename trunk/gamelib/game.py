@@ -1,5 +1,6 @@
 
 from sky import Sky
+from ground import Ground
 
 
 class Game(object):
@@ -8,7 +9,10 @@ class Game(object):
         self.arena = arena
         self.score = 0
 
-    def startup(self):
+    def startup(self, images):
         sky = Sky(self.arena.width, self.arena.height)
         self.arena.add(sky)
+
+        ground = Ground(images)
+        self.arena.add(ground)
 

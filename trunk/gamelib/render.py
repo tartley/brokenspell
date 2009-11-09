@@ -44,7 +44,7 @@ class Render(object):
         for item in self.application.arena.items:
             item.animate(self.graphics.images)
         self.batch.draw()
-        self.graphics.images['Ground'].blit(0, 0)
+
         self.application.user_message.draw()
         self.application.instructions.draw()
         self.score_label.text = '%d' % self.application.game.score
