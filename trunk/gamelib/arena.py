@@ -26,7 +26,7 @@ class ItemAdded(Event): pass
 class ItemRemoved(Event): pass
 
 
-class World(object):
+class Arena(object):
 
     def __init__(self, app=None, width=None, height=None):
         self.app = app
@@ -78,7 +78,11 @@ class World(object):
 
         for i, item1 in enumerate(self.items):
             for item2 in islice(self.items, i+1, None):
-                if is_touching(item1, item2):
+                if (
+                    isinstance(item1, WorldItem) and
+                    isinstance(item2, WorldItem) and
+                    is_touching(item1, item2)
+                ):
                     item1.collided_with(item2)
                     item2.collided_with(item1)
 

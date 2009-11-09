@@ -6,21 +6,21 @@ from unittestplus.run import run
 
 from ..gameitem import WorldItem
 from ..render import Render
-from ..world import World
+from ..arena import Arena
 
 
 class RenderTest(TestCasePlus):
 
     def test_AddItemToWorldAddsItToRenderBatchToo(self):
         item1, item2, item3 = WorldItem(), WorldItem(), WorldItem()
-        world = World(None, None, None)
+        arena = Arena(None, None, None)
         application = Mock()
-        application.world = world
+        application.arena = arena
         render = Render(application, None)
 
-        world.add(item1)
-        world.add(item2)
-        world.add(item3)
+        arena.add(item1)
+        arena.add(item2)
+        arena.add(item3)
 
         self.assertIs(item1.sprite.batch, render.batch)
         self.assertIs(item2.sprite.batch, render.batch)
@@ -29,16 +29,16 @@ class RenderTest(TestCasePlus):
 
     def test_RemoveItemFromWorldRemovesFromRenderBatchToo(self):
         item1, item2, item3 = WorldItem(), WorldItem(), WorldItem()
-        world = World(None, None, None)
+        arena = Arena(None, None, None)
         application = Mock()
-        application.world = world
+        application.arena = arena
         render = Render(application, None)
 
-        world.add(item1)
-        world.add(item2)
-        world.add(item3)
+        arena.add(item1)
+        arena.add(item2)
+        arena.add(item3)
 
-        world.remove(item2)
+        arena.remove(item2)
 
         self.assertIs(item1.sprite.batch, render.batch)
         self.assertNone(item2.sprite.batch)

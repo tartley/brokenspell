@@ -4,11 +4,11 @@ from sky import Sky
 
 class Game(object):
 
-    def __init__(self, world):
-        self.world = world
+    def __init__(self, arena):
+        self.arena = arena
         self.score = 0
 
     def startup(self):
-        sky = Sky(self.world.width, self.world.height)
-        self.world.add(sky)
+        sky = Sky(self.arena.width, self.arena.height)
+        self.arena.add(sky)
 

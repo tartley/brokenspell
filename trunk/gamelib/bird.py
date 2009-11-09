@@ -89,7 +89,7 @@ class Bird(WorldItem):
             self.x, self.y,
             dx, dy,
             self)
-        self.world.add(feather)
+        self.arena.add(feather)
 
         if self.feathers == 0:
             self.die()

@@ -2,15 +2,15 @@
 from pyglet import app, clock
 from pyglet.window import key, Window
 
+from arena import Arena
 from config import settings
 from game import Game
 from gameitem import GameItem
 from instructions import Instructions
-from world import World
+from music import Music
 from player import Player
 from render import Render
 from sounds import play
-from music import Music
 
 
 MESSAGE_TITLE = 'Sinister Ducks'
@@ -66,11 +66,11 @@ class UseControlsSkipsInstruction(KeyHandler):
             self.app.user_message.set_messages(MESSAGE_WAVE1)
 
             clock.schedule_once(
-               lambda _: self.app.world.spawn_enemy(
+               lambda _: self.app.arena.spawn_enemy(
                    number=8,
                    delay=1.7,
                    player=self.app.player),
-               max(delay - self.app.world.age, 1))
+               max(delay - self.app.arena.age, 1))
 
 
 class ToggleMusic(KeyHandler):
@@ -104,9 +104,9 @@ class Application(object):
         self.win.push_handlers(self.keyhandler)
         self.win.push_handlers(ToggleMusic(self.music))
 
-        self.world = World(self, self.win.width, self.win.height)
-        GameItem.world = self.world
-        self.game = Game(self.world)
+        self.arena = Arena(self, self.win.width, self.win.height)
+        GameItem.arena = self.arena
+        self.game = Game(self.arena)
 
         self.render = Render(self, self.win)
         self.render.init(self.win)
@@ -128,7 +128,7 @@ class Application(object):
         KeyHandler.app = self
 
         if settings.getboolean('all', 'performance_test'):
-            self.world.spawn_enemy(
+            self.arena.spawn_enemy(
                 number=256,
                 delay=0.01,
                 player=self.player)
@@ -138,7 +138,7 @@ class Application(object):
 
 
     def get_ready(self):
-        self.player.reincarnate(self.world.width / 2, self.world.height)
+        self.player.reincarnate(self.arena.width / 2, self.arena.height)
         self.user_message.set_messages('Get ready...')
         clock.schedule_once(lambda _: self.spawn_player(), 1)
 
@@ -151,16 +151,16 @@ class Application(object):
         if not self.player:
             self.player = Player(
                 self.keyhandler,
-                self.world.width / 2, self.world.height,
+                self.arena.width / 2, self.arena.height,
                 self.game)
         self.player.remove_from_game = False
         self.player.is_alive = True
-        self.world.add(self.player)
+        self.arena.add(self.player)
         self.resurrecting = False
 
 
     def update(self, dt):
-        self.world.update(dt)
+        self.arena.update(dt)
 
         if self.player and not self.player.is_alive and not self.resurrecting:
             self.resurrecting = True
@@ -173,7 +173,7 @@ class Application(object):
         self.wave += 1
         self.user_message.set_messages('Wave %d' % (self.wave,))
         clock.schedule_once(
-            lambda _: self.world.spawn_enemy(self.wave, 1.7, self.player),
+            lambda _: self.arena.spawn_enemy(self.wave, 1.7, self.player),
             2)
 
 

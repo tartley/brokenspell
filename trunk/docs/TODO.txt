@@ -1,9 +1,7 @@
 
 CURRENT TASK:
 
-rethink names of 'gameitem / worlditem' hierarchy. world class contains
-collection of all items, but these are both worlditems and other things
-(base classes of worlditems, and siblings of worlditem, eg. huditem)
+rename 'world' as arena
 
 Put HUD entities into same world game item collection
     - hills

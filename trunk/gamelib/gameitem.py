@@ -16,7 +16,7 @@ _dummy_image = \
 class GameItem(object):
 
     next_id = 0
-    world = None
+    arena = None
     remove_from_game = False
 
     def __init__(self):

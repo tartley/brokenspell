@@ -14,14 +14,14 @@ from graphics import Graphics
 class Render(object):
 
     # TODO: we don't need to pass application or win here
-    # just world would be fine
+    # just arena would be fine
     # uses of win in clear will go away when background is a gameitem
     def __init__(self, application, win):
         self.application = application
         self.win = win
 
-        self.application.world.item_added += self.add_item_to_batch
-        self.application.world.item_removed += self.remove_item_from_batch
+        self.application.arena.item_added += self.add_item_to_batch
+        self.application.arena.item_removed += self.remove_item_from_batch
 
         self.clockDisplay = clock.ClockDisplay()
         self.ground = None
@@ -41,7 +41,7 @@ class Render(object):
 
 
     def draw(self):
-        for item in self.application.world.items:
+        for item in self.application.arena.items:
             item.animate(self.graphics.images)
         self.batch.draw()
         self.graphics.images['Ground'].blit(0, 0)
