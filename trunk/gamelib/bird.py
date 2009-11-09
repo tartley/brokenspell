@@ -6,7 +6,7 @@ from pyglet.sprite import Sprite
 
 from behaviour import Action
 from feather import Feather
-from gameitem import WorldItem, LEFT, RIGHT
+from worlditem import WorldItem, LEFT, RIGHT
 from sounds import play
 
 

@@ -4,7 +4,7 @@ from mock import Mock
 from unittestplus.testcaseplus import TestCasePlus
 from unittestplus.run import run
 
-from ..gameitem import WorldItem
+from ..worlditem import WorldItem
 from ..render import Render
 from ..arena import Arena
 

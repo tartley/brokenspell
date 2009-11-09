@@ -1,16 +1,18 @@
 
 CURRENT TASK:
 
+break worlditem out into its own module
+
+Render should probaby create the sprite (and vertexlist) objects
+Render should create the OrderedGroups, adding items to the correct one
+based on an integer attribute of the item.
+
 Put HUD entities into same arena game item collection
     - score
     - startup messages
 
 
 REFACTOR
-
-Render should probaby create the sprite (and vertexlist) objects
-Render should create the OrderedGroups, adding items to the correct one
-based on an integer attribute of the item.
 
 Move all the junk out of Application
     - remove self.arena from application
