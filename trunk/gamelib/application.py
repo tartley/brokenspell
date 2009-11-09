@@ -4,7 +4,7 @@ from pyglet.window import key, Window
 
 from config import settings
 from game import Game
-from gameent import GameItem
+from gameitem import GameItem
 from instructions import Instructions
 from world import World
 from player import Player

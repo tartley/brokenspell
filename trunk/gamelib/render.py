@@ -7,7 +7,7 @@ from pyglet.gl import (
 from pyglet.graphics import Batch, draw as pyglet_draw
 from pyglet.text import Label
 
-from gameent import GameItem
+from gameitem import GameItem
 from graphics import Graphics
 
 
@@ -20,8 +20,8 @@ class Render(object):
         self.application = application
         self.win = win
 
-        self.application.world.item_added += self.add_sprite_to_batch
-        self.application.world.item_removed += self.remove_sprite_from_batch
+        self.application.world.item_added += self.add_item_to_batch
+        self.application.world.item_removed += self.remove_item_from_batch
 
         self.clockDisplay = clock.ClockDisplay()
         self.ground = None
@@ -52,16 +52,18 @@ class Render(object):
         self.clockDisplay.draw()
 
 
-    def add_sprite_to_batch(self, _, item):
+    def add_item_to_batch(self, _, item):
         if hasattr(item, 'sprite'):
             item.sprite.batch = self.batch
         elif hasattr(item, 'vertexlist'):
             self.batch.add_indexed(*item.vertexlist.get_batch_args())
 
 
-    def remove_sprite_from_batch(self, _, item):
+    def remove_item_from_batch(self, _, item):
         if hasattr(item, 'sprite'):
+            item.sprite.batch = None
             item.sprite.delete()
         elif hasattr(item, 'vertexlist'):
+            item.vertexlist.batch = None # speculative code
             item.vertexlist.delete()
 

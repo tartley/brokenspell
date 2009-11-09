@@ -4,9 +4,9 @@ from mock import Mock
 from unittestplus.testcaseplus import TestCasePlus
 from unittestplus.run import run
 
-from gamelib.gameent import WorldItem
-from gamelib.render import Render
-from gamelib.world import World
+from ..gameitem import WorldItem
+from ..render import Render
+from ..world import World
 
 
 class RenderTest(TestCasePlus):

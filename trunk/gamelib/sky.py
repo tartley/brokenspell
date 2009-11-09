@@ -1,7 +1,7 @@
 
 from pyglet.gl import GL_QUADS
 
-from gameent import GameItem
+from gameitem import GameItem
 from vertexlist import VertexList
 
 

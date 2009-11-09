@@ -5,7 +5,7 @@ from random import uniform
 from pyglet import resource
 from pyglet.sprite import Sprite
 
-from gameent import WorldItem
+from gameitem import WorldItem
 
 
 class Feather(WorldItem):

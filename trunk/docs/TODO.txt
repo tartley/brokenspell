@@ -1,21 +1,13 @@
 
 CURRENT TASK:
 
-render.add_sprite_to_batch should be generalised to deal with both sprites
-and vectoritems (plus, later on, text labels). Presumably rename function
-accordingly (to 'add_item()'?)
-
-split sky and vectoritem into separate modules
-rename vectoritem to vertices or somesuch
+rename 'gameent' module to 'gameitem'. Move worlditem into its own module.
 
 rethink names of 'gameitem / worlditem' hierarchy. world class contains
 coillection of all items, but these are both worlditems and other things
 (base classes of worlditems, and siblings of worlditem, eg. huditem)
 
-rename 'gameent' module to 'gameitem'. Move worlditem into its own module.
-
 Put HUD entities into same world game item collection
-    - sky
     - hills
     - score
     - startup messages

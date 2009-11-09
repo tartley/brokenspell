@@ -10,7 +10,7 @@ from config import settings
 from enemy import Enemy
 from event import Event
 from feather import Feather
-from gameent import WorldItem
+from gameitem import WorldItem
 
 
 def is_touching(item1, item2):
