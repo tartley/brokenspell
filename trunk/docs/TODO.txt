@@ -1,16 +1,19 @@
 
 CURRENT TASK:
 
-Put HUD entities into same world game item collection
-    - hills
+Put HUD entities into same arena game item collection
     - score
     - startup messages
 
 
 REFACTOR
 
+Render should probaby create the sprite (and vertexlist) objects
+Render should create the OrderedGroups, adding items to the correct one
+based on an integer attribute of the item.
+
 Move all the junk out of Application
-    - remove self.world from application
+    - remove self.arena from application
 
 Probably remove 'recalc sprite stats' stuff, or at least stop having
 to load dummy images before being able to call it
@@ -18,11 +21,9 @@ to load dummy images before being able to call it
 Combine the different functions which create the initial wave, create
 subsequent waves, and create the performance_test wave.
 
-Render doesn't need application nor win. Just world should do it.
+Render doesn't need application nor win. Just arena should do it.
 
-remove application's reference to world
-
-take logic from world.add and world.remove to keep count of num_enemies,
+take logic from arena.add and arena.remove to keep count of num_enemies,
 put it into game or somesuch instead, by listening for these events
 
 Refactor collision response code. Don't currently like how response to a

@@ -93,19 +93,13 @@ class Arena(object):
                 self.remove(item)
 
 
-    def wraparound(self, item):
-        if item.x < item.width:
-            item.x += self.width + item.width
-        if item.x > self.width:
-            item.x -= self.width + item.width
-
-
     def update(self, dt):
         self.age += dt
         self.detect_collisions()
         self.remove_dead()
         for item in self.items:
-            item.update()
-            if isinstance(item, WorldItem):
-                self.wraparound(item)
+            if hasattr(item, 'update'):
+                item.update()
+            if hasattr(item, 'wraparound'):
+                item.wraparound(self.width)
 

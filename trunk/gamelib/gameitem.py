@@ -23,11 +23,6 @@ class GameItem(object):
         self.id = GameItem.next_id
         GameItem.next_id += 1
 
-    def update(*_):
-        pass
-
-    def animate(*_):
-        pass
 
 
 class WorldItem(GameItem):
@@ -85,12 +80,20 @@ class WorldItem(GameItem):
                 self.dy = abs(self.dy) * 0.5
 
 
+    def wraparound(self, width):
+        if self.x < self.width:
+            self.x += width + self.width
+        if self.x > width:
+            self.x -= width + self.width
+
+
     def animate(self, images):
         self.sprite._x = self.x
         self.sprite._y = self.y
         self.sprite._rotation = degrees(self.rotation)
         self.sprite.image = images[self.__class__.__name__][self.frame_idx]
         self.sprite._update_position()
+
 
 
     def collided_with(self, other):

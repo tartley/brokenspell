@@ -42,7 +42,8 @@ class Render(object):
 
     def draw(self):
         for item in self.application.arena.items:
-            item.animate(self.graphics.images)
+            if hasattr(item, 'animate'):
+                item.animate(self.graphics.images)
         self.batch.draw()
 
         self.application.user_message.draw()
