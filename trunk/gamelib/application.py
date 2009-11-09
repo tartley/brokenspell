@@ -107,8 +107,9 @@ class Application(object):
         self.world = World(self, self.win.width, self.win.height)
         GameEnt.world = self.world
 
-        self.render = Render(self)
-        self.render.init()
+        self.render = Render(self, self.win)
+        self.render.init(self.win)
+        self.win.on_draw = self.render.draw
 
         self.resurrecting = False
 

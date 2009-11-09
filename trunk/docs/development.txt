@@ -1,0 +1,11 @@
+
+Sinister Ducks has the following dependencies you'll need to install:
+
+    Python 2.6
+    Package pyglet
+
+To run the tests, you'll also need:
+
+    Package mock
+    Package unittestplus
+

@@ -26,7 +26,7 @@ class GameEnt(object):
     is_enemy = False
     is_feather = False
 
-    def __init__(self, x, y, dx=0, dy=0):
+    def __init__(self, x=0, y=0, dx=0, dy=0):
         self.id = GameEnt.next_id
         GameEnt.next_id += 1
         GameEnt.reincarnate(self, x, y, dx, dy)

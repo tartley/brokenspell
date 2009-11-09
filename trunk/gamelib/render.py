@@ -4,7 +4,7 @@ from pyglet.gl import (
     glBlendFunc, glEnable,
     GL_BLEND, GL_ONE_MINUS_SRC_ALPHA, GL_QUADS, GL_SRC_ALPHA,
 )
-from pyglet.graphics import draw as pyglet_draw
+from pyglet.graphics import Batch, draw as pyglet_draw
 from pyglet.text import Label
 
 from gameent import GameEnt
@@ -13,33 +13,39 @@ from graphics import Graphics
 
 class Render(object):
 
-    def __init__(self, application):
+    # TODO: we don't need to pass application or win here
+    # just world would be fine
+    # uses of win in clear will go away when background is a gameent
+    def __init__(self, application, win):
         self.application = application
-        application.win.on_draw = self.draw
+        self.win = win
+
+        self.application.world.item_added += self.add_sprite_to_batch
+        self.application.world.item_removed += self.remove_sprite_from_batch
+
         self.clockDisplay = clock.ClockDisplay()
         self.ground = None
+        self.batch = Batch()
 
 
-    def init(self):
+    def init(self, win):
         self.graphics = Graphics()
         self.graphics.load()
 
-        win = self.application.win
         self.score_label = Label("0",
-                font_size=36, x=win.width, y=win.height,
-                anchor_x='right', anchor_y='top')
+            font_size=36, x=win.width, y=win.height,
+            anchor_x='right', anchor_y='top')
 
         glEnable(GL_BLEND)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 
 
     def clear(self):
-        win = self.application.win
         verts = (
-            win.width, win.height,
-            0, win.height,
+            self.win.width, self.win.height,
+            0, self.win.height,
             0, 0,
-            win.width, 0,
+            self.win.width, 0,
         )
         colors = (
             000, 000, 127,
@@ -63,5 +69,13 @@ class Render(object):
         self.clockDisplay.draw()
         for ent in self.application.world.ents:
             ent.animate(self.graphics.images)
-            ent.sprite.draw()
+        self.batch.draw()
+
+
+    def add_sprite_to_batch(self, _, item):
+        item.sprite.batch = self.batch
+
+
+    def remove_sprite_from_batch(self, _, item):
+        item.sprite.batch = None
 

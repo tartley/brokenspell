@@ -7,9 +7,10 @@ from random import randint, uniform
 from pyglet import clock, image
 
 from config import settings
+from enemy import Enemy
+from event import Event
 from feather import Feather
 from gameent import GameEnt
-from enemy import Enemy
 
 
 def is_touching(ent1, ent2):
@@ -21,21 +22,30 @@ def is_touching(ent1, ent2):
         return True
 
 
+class ItemAdded(Event): pass
+class ItemRemoved(Event): pass
+
+
 class World(object):
 
-    def __init__(self, app, width, height):
+    def __init__(self, app=None, width=None, height=None):
         self.app = app
         self.width = width
         self.height = height
+
         self.age = 0.0
         self.ents = []
         self.num_enemies = 0
+
+        self.item_added = ItemAdded()
+        self.item_removed = ItemRemoved()
 
 
     def add(self, ent):
         self.ents.append(ent)
         if isinstance(ent, Enemy):
             self.num_enemies += 1
+        self.item_added(self, ent)
 
 
     def remove(self, ent):
@@ -44,6 +54,7 @@ class World(object):
             self.num_enemies -= 1
             if self.num_enemies == 0:
                 self.app.next_wave()
+        self.item_removed(self, ent)
 
 
     def spawn_enemy(self, number, delay, player):
@@ -85,15 +96,11 @@ class World(object):
             ent.x -= self.width + ent.width
 
 
-    def update_ents(self):
-        for ent in self.ents:
-            ent.update()
-            self.wraparound(ent)
-
-
     def update(self, dt):
         self.age += dt
         self.detect_collisions()
         self.remove_dead()
-        self.update_ents()
+        for ent in self.ents:
+            ent.update()
+            self.wraparound(ent)
 
