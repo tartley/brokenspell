@@ -4,7 +4,7 @@ from pyglet.window import key, Window
 
 from config import settings
 from game import Game
-from gameent import GameEnt
+from gameent import GameItem
 from instructions import Instructions
 from world import World
 from player import Player
@@ -105,11 +105,14 @@ class Application(object):
         self.win.push_handlers(ToggleMusic(self.music))
 
         self.world = World(self, self.win.width, self.win.height)
-        GameEnt.world = self.world
+        GameItem.world = self.world
+        self.game = Game(self.world)
 
         self.render = Render(self, self.win)
         self.render.init(self.win)
         self.win.on_draw = self.render.draw
+
+        self.game.startup()
 
         self.resurrecting = False
 
@@ -121,8 +124,6 @@ class Application(object):
             MESSAGE_ANYKEY, self.win.width/2, self.win.height/2 - 20,
             'center', 'center',
             delay=0.5, repeat=True, size=20)
-
-        self.game = Game()
 
         KeyHandler.app = self
 

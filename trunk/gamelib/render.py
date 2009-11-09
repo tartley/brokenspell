@@ -7,7 +7,7 @@ from pyglet.gl import (
 from pyglet.graphics import Batch, draw as pyglet_draw
 from pyglet.text import Label
 
-from gameent import GameEnt
+from gameent import GameItem
 from graphics import Graphics
 
 
@@ -15,7 +15,7 @@ class Render(object):
 
     # TODO: we don't need to pass application or win here
     # just world would be fine
-    # uses of win in clear will go away when background is a gameent
+    # uses of win in clear will go away when background is a gameitem
     def __init__(self, application, win):
         self.application = application
         self.win = win
@@ -40,42 +40,28 @@ class Render(object):
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 
 
-    def clear(self):
-        verts = (
-            self.win.width, self.win.height,
-            0, self.win.height,
-            0, 0,
-            self.win.width, 0,
-        )
-        colors = (
-            000, 000, 127,
-            000, 000, 127,
-            064, 127, 255,
-            064, 127, 255,
-        )
-        pyglet_draw(len(verts) / 2, GL_QUADS,
-            ('v2f', verts),
-            ('c3B', colors),
-        )
-
-
     def draw(self):
-        self.clear()
+        for item in self.application.world.items:
+            item.animate(self.graphics.images)
+        self.batch.draw()
         self.graphics.images['Ground'].blit(0, 0)
         self.application.user_message.draw()
         self.application.instructions.draw()
         self.score_label.text = '%d' % self.application.game.score
         self.score_label.draw()
         self.clockDisplay.draw()
-        for ent in self.application.world.ents:
-            ent.animate(self.graphics.images)
-        self.batch.draw()
 
 
     def add_sprite_to_batch(self, _, item):
-        item.sprite.batch = self.batch
+        if hasattr(item, 'sprite'):
+            item.sprite.batch = self.batch
+        elif hasattr(item, 'vertexlist'):
+            self.batch.add_indexed(*item.vertexlist.get_batch_args())
 
 
     def remove_sprite_from_batch(self, _, item):
-        item.sprite.batch = None
+        if hasattr(item, 'sprite'):
+            item.sprite.delete()
+        elif hasattr(item, 'vertexlist'):
+            item.vertexlist.delete()
 

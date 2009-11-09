@@ -1,6 +1,7 @@
 
 from math import degrees
 
+from pyglet.graphics import OrderedGroup
 from pyglet.image import SolidColorImagePattern
 from pyglet.sprite import Sprite
 
@@ -12,27 +13,42 @@ _dummy_image = \
     SolidColorImagePattern(color=(0, 0, 0, 0)).create_image(64, 64)
 
 
-class GameEnt(object):
+class GameItem(object):
 
     next_id = 0
+    world = None
+    remove_from_game = False
+
+    def __init__(self):
+        self.id = GameItem.next_id
+        GameItem.next_id += 1
+
+    def update(*_):
+        pass
+
+    def animate(*_):
+        pass
+
+
+class WorldItem(GameItem):
 
     AIR_RESIST_X = 0.98
     AIR_RESIST_Y = 0.98
 
     can_fall_off = False
-    world = None
 
     is_player = False
     is_enemy = False
     is_feather = False
 
+    group = OrderedGroup(2)
+
     def __init__(self, x=0, y=0, dx=0, dy=0):
-        self.id = GameEnt.next_id
-        GameEnt.next_id += 1
-        GameEnt.reincarnate(self, x, y, dx, dy)
+        GameItem.__init__(self)
+        WorldItem.reincarnate(self, x, y, dx, dy)
         self.width = 0
         self.height = 0
-        self.sprite = Sprite(_dummy_image)
+        self.sprite = Sprite(_dummy_image, group=WorldItem.group)
         self.frame_idx = 0
 
 

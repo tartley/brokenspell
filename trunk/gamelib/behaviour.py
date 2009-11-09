@@ -11,8 +11,8 @@ class Action(object):
 
 
 class State(object):
-    def __init__(self, ent):
-        self.ent = ent
+    def __init__(self, item):
+        self.item = item
 
     def get_actions(self):
         return set()
@@ -32,58 +32,57 @@ class Hover(State):
 
 
     def choose_altitude(self, _):
-        if not self.ent.is_alive:
+        if not self.item.is_alive:
             return
 
-        self.desired_y = randint(100, self.ent.world.height - 100)
+        self.desired_y = randint(100, self.item.world.height - 100)
         clock.schedule_once(self.choose_altitude, randint(3, 20))
 
 
     def get_actions(self):
         foe_is_below = (
-            self.ent.foe and
-            self.ent.foe.y < self.ent.y and
-            abs(self.ent.foe.x - self.ent.x) < self.ent.width
+            self.item.foe and
+            self.item.foe.y < self.item.y and
+            abs(self.item.foe.x - self.item.x) < self.item.width
         )
         if foe_is_below:
             return set()
-        if self.ent.foe:
-            foe_x = self.ent.foe.x
-            self.ent.foe = None
-            if foe_x < self.ent.x:
+        if self.item.foe:
+            foe_x = self.item.foe.x
+            self.item.foe = None
+            if foe_x < self.item.x:
                 self.direction = Action.RIGHT
                 return set()
             else:
                 self.direction = Action.LEFT
                 return set()
 
-
         flap_rate = 15
-        if self.ent.y < self.desired_y and self.ent.last_flap > flap_rate:
+        if self.item.y < self.desired_y and self.item.last_flap > flap_rate:
             return set([Action.FLAP])
         return set()
 
 
 class Cruise(Hover):
 
-    def __init__(self, ent):
-        Hover.__init__(self, ent)
-        if self.ent.dx < 0:
+    def __init__(self, item):
+        Hover.__init__(self, item)
+        if self.item.dx < 0:
             self.direction = Action.LEFT
         else:
             self.direction = Action.RIGHT
 
     def get_actions(self):
         actions = Hover.get_actions(self)
-        if not actions and self.ent.last_flap % 2 == 1:
+        if not actions and self.item.last_flap % 2 == 1:
             actions = set([self.direction])
         return actions
 
 
 class Thinker(object):
 
-    def __init__(self, ent):
-        self.state = Cruise(ent)
+    def __init__(self, item):
+        self.state = Cruise(item)
 
     def __call__(self):
         return self.state.get_actions()

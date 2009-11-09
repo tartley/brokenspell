@@ -1,21 +1,43 @@
 
 CURRENT TASK:
-* render all sprites in a single batch for performance
-* inserting or removing a gameent from the world also adds/removes their
-  sprite from the batch
+
+render.add_sprite_to_batch should be generalised to deal with both sprites
+and vectoritems (plus, later on, text labels). Presumably rename function
+accordingly (to 'add_item()'?)
+
+split sky and vectoritem into separate modules
+rename vectoritem to vertices or somesuch
+
+rethink names of 'gameitem / worlditem' hierarchy. world class contains
+coillection of all items, but these are both worlditems and other things
+(base classes of worlditems, and siblings of worlditem, eg. huditem)
+
+rename 'gameent' module to 'gameitem'. Move worlditem into its own module.
+
+Put HUD entities into same world game item collection
+    - sky
+    - hills
+    - score
+    - startup messages
 
 
 REFACTOR
 
-move 'world' into 'game'?
-
-Put HUD entities into same collection, which is also rendered in
-the same batch. Including sky/hills.
-
 Move all the junk out of Application
+    - remove self.world from application
 
 Probably remove 'recalc sprite stats' stuff, or at least stop having
 to load dummy images before being able to call it
+
+Combine the different functions which create the initial wave, create
+subsequent waves, and create the performance_test wave.
+
+Render doesn't need application nor win. Just world should do it.
+
+remove application's reference to world
+
+take logic from world.add and world.remove to keep count of num_enemies,
+put it into game or somesuch instead, by listening for these events
 
 Refactor collision response code. Don't currently like how response to a
 single collision is split between both protagonists and their base classes.
@@ -23,8 +45,13 @@ single collision is split between both protagonists and their base classes.
 Can we use a single media player to play all sound effects, rather than
 creating a new one each time a sound is played (like flap did)?
 
+The whole 'resurrecting' nonsense needs fixing, Just create a new Player
+object instead.
+
 
 BUGS
+
+pressing 'alt' hangs the game until you press it again??? (jlappy/winxp)
 
 Some people do not get vsync. Can we enforce this? Or busy wait? Or make game
 speed dependant on frame rate?
@@ -67,6 +94,11 @@ Scoring
 * floating numbers to show points for feather collection
 * score should use ',' as thousands separator
 
+Control
+* Holding down flap lets you glide? (if speed is high enough?)
+* Holding down very briefly produces a weaker flap?
+* Enemy ducks should hold down flap a tad longer than they do
+
 Combos
 * HUD: display multiplier
 * killing an enemy increments multiplier
@@ -80,6 +112,7 @@ More sound effects reqd:
 * Game over
 
 fullscreen mode
+* button to toggle it
 
 High scores
 * Displayed after user dies, until next game starts

@@ -6,7 +6,7 @@ from pyglet.sprite import Sprite
 
 from behaviour import Action
 from feather import Feather
-from gameent import GameEnt, LEFT, RIGHT
+from gameent import WorldItem, LEFT, RIGHT
 from sounds import play
 
 
@@ -15,10 +15,10 @@ FLAP_STEER = 3
 FLAP_LIFT = 5
 
 
-class Bird(GameEnt):
+class Bird(WorldItem):
 
     def __init__(self, x, y, dx=0, dy=0, feathers=3):
-        GameEnt.__init__(self, x, y, dx, dy)
+        WorldItem.__init__(self, x, y, dx, dy)
         self.feathers = feathers
         if self.dx < 0:
             self.facing = LEFT
@@ -33,7 +33,7 @@ class Bird(GameEnt):
 
 
     def reincarnate(self, x, y, feathers=3):
-        GameEnt.reincarnate(self, x, y)
+        WorldItem.reincarnate(self, x, y)
         self.feathers = feathers
         self.can_fall_off = False
 
@@ -73,7 +73,7 @@ class Bird(GameEnt):
 
 
     def update(self):
-        GameEnt.update(self)
+        WorldItem.update(self)
         self.actions = self.think()
         self.act()
         self.choose_frame()
@@ -110,7 +110,7 @@ class Bird(GameEnt):
         if self.is_alive:
             if other.is_player or other.is_enemy:
                 if other.is_alive:
-                    GameEnt.collided_with(self, other)
+                    WorldItem.collided_with(self, other)
                     if self.y < other.y:
                         self.foe = other
                         if other.is_enemy != self.is_enemy:
