@@ -1,17 +1,11 @@
 
 from math import degrees
 
-from pyglet.image import SolidColorImagePattern
-from pyglet.graphics import OrderedGroup
-
 from gameitem import GameItem
 
 
 GRAVITY = 0.2
 LEFT, RIGHT = 'L', 'R'
-
-_dummy_image = \
-    SolidColorImagePattern(color=(0, 0, 0, 0)).create_image(64, 64)
 
 
 class WorldItem(GameItem):

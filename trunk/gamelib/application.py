@@ -177,7 +177,6 @@ class Application(object):
             2)
 
 
-def main():
-    application = Application()
-    app.run()
+    def run(self):
+        app.run()
 

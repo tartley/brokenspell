@@ -27,6 +27,7 @@ class Render(object):
     def __init__(self, application, win):
         self.application = application
         self.win = win
+        self.images = None
 
         self.application.arena.item_added += self.add_item_to_batch
         self.application.arena.item_removed += self.remove_item_from_batch

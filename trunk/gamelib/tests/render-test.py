@@ -1,12 +1,18 @@
 
 from mock import Mock
 
+from pyglet.image import SolidColorImagePattern
+
 from unittestplus.testcaseplus import TestCasePlus
 from unittestplus.run import run
 
 from ..worlditem import WorldItem
 from ..render import Render
 from ..arena import Arena
+
+
+_dummy_image = \
+    SolidColorImagePattern(color=(0, 0, 0, 0)).create_image(64, 64)
 
 
 class RenderTest(TestCasePlus):
@@ -17,6 +23,7 @@ class RenderTest(TestCasePlus):
         application = Mock()
         application.arena = arena
         render = Render(application, None)
+        render.images = dict(WorldItem=[_dummy_image])
 
         arena.add(item1)
         arena.add(item2)
@@ -33,6 +40,7 @@ class RenderTest(TestCasePlus):
         application = Mock()
         application.arena = arena
         render = Render(application, None)
+        render.images = dict(WorldItem=[_dummy_image])
 
         arena.add(item1)
         arena.add(item2)
