@@ -4,7 +4,7 @@ from pyglet.text import Label
 from gameitem import GameItem
 
 
-class ScoreHud(GameItem):
+class HudScore(GameItem):
 
     render_layer = 3
 

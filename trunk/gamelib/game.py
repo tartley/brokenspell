@@ -1,5 +1,5 @@
 
-from scorehud import ScoreHud
+from hudscore import HudScore
 from sky import Sky
 from ground import Ground
 
@@ -17,6 +17,6 @@ class Game(object):
         ground = Ground()
         self.arena.add(ground)
 
-        scoreHud = ScoreHud(self, self.arena.width, self.arena.height)
-        self.arena.add(scoreHud)
+        hudscore = HudScore(self, self.arena.width, self.arena.height)
+        self.arena.add(hudscore)
 
