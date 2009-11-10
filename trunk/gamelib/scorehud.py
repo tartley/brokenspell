@@ -1,4 +1,6 @@
 
+from pyglet.text import Label
+
 from gameitem import GameItem
 
 
@@ -24,4 +26,18 @@ class ScoreHud(GameItem):
     def update(self):
         if self.label.text != self.text:
             self.label.text = self.text
+
+
+    def add_to_batch(self, batch, groups, _):
+        self.label = Label(
+            self.text,
+            font_size=self.font_size,
+            x=self.x, y=self.y,
+            anchor_x=self.anchor_x, anchor_y=self.anchor_y,
+            batch=batch,
+            group=groups[self.render_layer] )
+
+
+    def remove_from_batch(self, batch):
+        self.label.delete()
 

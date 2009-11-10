@@ -1,6 +1,8 @@
 
 from math import degrees
 
+from pyglet.sprite import Sprite
+
 from gameitem import GameItem
 
 
@@ -32,6 +34,19 @@ class WorldItem(GameItem):
 
     def __str__(self):
         return "<%s%s>" % (type(self).__name__, self.id)
+
+
+    def add_to_batch(self, batch, groups, images):
+        self.sprite = Sprite(
+            images[self.__class__.__name__][0],
+            batch=batch,
+            group=groups[self.render_layer] )
+        self.update_sprite_stats()
+
+
+    def remove_from_batch(self, batch):
+        self.sprite.batch = None
+        self.sprite.delete()
 
 
     def reincarnate(self, x, y, dx=0, dy=0):
