@@ -33,7 +33,6 @@ class Render(object):
         self.application.arena.item_removed += self.remove_item_from_batch
 
         self.clockDisplay = clock.ClockDisplay()
-        self.ground = None
         self.batch = Batch()
 
 

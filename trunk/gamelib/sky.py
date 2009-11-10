@@ -1,8 +1,5 @@
 
-from pyglet.gl import GL_QUADS
-
 from gameitem import GameItem
-from vertexlist import VertexList
 
 
 class Sky(GameItem):
