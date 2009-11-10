@@ -1,10 +1,6 @@
 
 CURRENT TASK:
 
-Render should probaby create the sprite (and vertexlist) objects
-Render should create the OrderedGroups, adding items to the correct one
-based on an integer attribute of the item.
-
 Put HUD entities into same arena game item collection
     - score
     - startup messages

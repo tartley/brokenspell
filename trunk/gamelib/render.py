@@ -8,7 +8,6 @@ from pyglet.graphics import Batch, OrderedGroup
 from pyglet.sprite import Sprite
 from pyglet.text import Label
 
-from gameitem import GameItem
 from graphics import Graphics
 from vertexlist import VertexList
 
@@ -40,10 +39,6 @@ class Render(object):
         graphics = Graphics()
         self.images = graphics.load()
 
-        self.score_label = Label("0",
-            font_size=36, x=win.width, y=win.height,
-            anchor_x='right', anchor_y='top')
-
         glEnable(GL_BLEND)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 
@@ -52,34 +47,50 @@ class Render(object):
         for item in self.application.arena.items:
             if hasattr(item, 'animate'):
                 item.animate(self.images)
+
         self.batch.draw()
 
         self.application.user_message.draw()
         self.application.instructions.draw()
-        self.score_label.text = '%d' % self.application.game.score
-        self.score_label.draw()
         self.clockDisplay.draw()
+
+
+    def create_item_sprite(self, item):
+        item.sprite = Sprite(
+            self.images[item.__class__.__name__][0],
+            batch=self.batch,
+            group=self.groups[item.render_layer] )
+        item.update_sprite_stats()
+
+
+    def create_item_vertexlist(self, item):
+        item.vertexlist = VertexList(item.verts, item.colors, GL_QUADS)
+        self.batch.add_indexed(
+            item.vertexlist.num_verts,
+            item.vertexlist.primitive,
+            self.groups[item.render_layer],
+            item.vertexlist.indices,
+            ('v2f/static', item.vertexlist.verts),
+            ('c3B/static', item.vertexlist.colors) )
+
+
+    def create_item_label(self, item):
+        item.label = Label(
+            item.text,
+            font_size=item.font_size,
+            x=item.x, y=item.y,
+            anchor_x=item.anchor_x, anchor_y=item.anchor_y,
+            batch=self.batch,
+            group=self.groups[item.render_layer] )
 
 
     def add_item_to_batch(self, _, item):
         if hasattr(item, 'sprite'):
-            item.sprite = Sprite(
-                self.images[item.__class__.__name__][0],
-                batch=self.batch,
-                group=self.groups[item.render_layer]
-            )
-            item.update_sprite_stats()
+            self.create_item_sprite(item)
         elif hasattr(item, 'vertexlist'):
-            vertexlist = VertexList(item.verts, item.colors, GL_QUADS)
-            item.vertexlist = vertexlist
-            self.batch.add_indexed(
-                vertexlist.num_verts,
-                vertexlist.primitive,
-                self.groups[item.render_layer],
-                vertexlist.indices,
-                ('v2f/static', vertexlist.verts),
-                ('c3B/static', vertexlist.colors)
-            )
+            self.create_item_vertexlist(item)
+        elif hasattr(item, 'label'):
+            self.create_item_label(item)
 
 
     def remove_item_from_batch(self, _, item):
@@ -87,6 +98,7 @@ class Render(object):
             item.sprite.batch = None
             item.sprite.delete()
         elif hasattr(item, 'vertexlist'):
-            item.vertexlist.batch = None # speculative code
             item.vertexlist.delete()
+        elif hasattr(item, 'label'):
+            item.label.delete()
 
