@@ -1,6 +1,6 @@
 
-from gamelib.pre_run import pre_run
-pre_run()
+from gamelib.startup import startup
+startup()
 
 
 from pyglet import app

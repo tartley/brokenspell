@@ -44,7 +44,7 @@ def setup_audio():
             options['audio'] = ('alsa', 'openal', 'silent')
 
 
-def pre_run():
+def startup():
     setup_environment_variables()
     setup_audio()
 

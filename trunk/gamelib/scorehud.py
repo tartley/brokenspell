@@ -22,7 +22,6 @@ class ScoreHud(GameItem):
 
 
     def update(self):
-        new_text  = self.text
-        if self.label.text != new_text:
-            self.label.text = new_text
+        if self.label.text != self.text:
+            self.label.text = self.text
 
