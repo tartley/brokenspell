@@ -15,7 +15,7 @@ action_map = {
 }
 
 
-class Player(Bird):
+class Player(Bird, key.KeyStateHandler):
 
     is_player = True
     image_row = 3
@@ -24,7 +24,6 @@ class Player(Bird):
         Bird.__init__(self, x, y)
         self.game = game
         self.consecutive_feathers = 0
-        self.keyhandler = key.KeyStateHandler()
 
 
     def think(self):
@@ -33,7 +32,7 @@ class Player(Bird):
 
         actions = set()
         for keypress, action in action_map.iteritems():
-            if self.keyhandler[keypress]:
+            if self[keypress]:
                 actions.add(action)
         return actions
 

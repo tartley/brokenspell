@@ -46,8 +46,6 @@ class Arena(object):
 
         if hasattr(item, 'on_key_press'):
             self.app.win.push_handlers(item)
-        if hasattr(item, 'keyhandler'):
-            self.app.win.push_handlers(item.keyhandler)
 
         if isinstance(item, Enemy):
             self.num_enemies += 1
@@ -60,8 +58,6 @@ class Arena(object):
 
         if hasattr(item, 'on_key_press'):
             self.app.win.remove_handlers(item)
-        if hasattr(item, 'keyhandler'):
-            self.app.win.remove_handlers(item.keyhandler)
 
         if isinstance(item, Enemy):
             self.num_enemies -= 1
