@@ -20,11 +20,11 @@ class Player(Bird):
     is_player = True
     image_row = 3
 
-    def __init__(self, keyhandler, x, y, game):
+    def __init__(self, x, y, game):
         Bird.__init__(self, x, y)
-        self.keyhandler = keyhandler
         self.game = game
         self.consecutive_feathers = 0
+        self.keyhandler = key.KeyStateHandler()
 
 
     def think(self):

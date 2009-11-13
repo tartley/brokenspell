@@ -1,15 +1,11 @@
 
 CURRENT TASK:
 
-Put HUD entities into same arena game item collection
-    - startup messages
+Combine the different functions which create the initial wave, create
+subsequent waves, and create the performance_test wave.
 
 
 REFACTOR
-
-move 'build-mswin-dist.py' to 'setup.py', think about adding a makefile
-or make-bin.bat which invokes it with the correct args. While we're at it
-a make clean wouldn't go amiss either.
 
 Move all the junk out of Application
     - remove self.arena from application
@@ -17,9 +13,6 @@ Render doesn't need application nor win. Just arena should do it.
 
 Probably remove 'recalc sprite stats' stuff, or at least stop having
 to load dummy images before being able to call it
-
-Combine the different functions which create the initial wave, create
-subsequent waves, and create the performance_test wave.
 
 take logic from arena.add and arena.remove to keep count of num_enemies,
 put it into game or somesuch instead, by listening for these events
@@ -32,6 +25,11 @@ creating a new one each time a sound is played (like flap did)?
 
 The whole 'resurrecting' nonsense needs fixing, Just create a new Player
 object instead.
+
+move 'build-mswin-dist.py' to 'setup.py', think about adding a makefile
+or make-bin.bat which invokes it with the correct args. While we're at it
+a make clean wouldn't go amiss either.
+
 
 
 BUGS

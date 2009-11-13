@@ -7,7 +7,6 @@ from config import settings
 from game import Game
 from gameitem import GameItem
 from music import Music
-from player import Player
 from render import Render
 from sounds import play
 
@@ -48,23 +47,17 @@ class Application(object):
         self.music = Music()
         self.music.play()
 
-        self.keyhandler = key.KeyStateHandler()
-        self.win.push_handlers(self.keyhandler)
-        self.win.push_handlers(ToggleMusic(self.music))
-
-        self.player = None
+        # self.win.push_handlers(ToggleMusic(self.music))
 
         self.arena = Arena(self, self.win.width, self.win.height)
         GameItem.arena = self.arena
-        self.game = Game(self.arena, self.player)
+        self.game = Game(self.arena)
 
         self.render = Render(self, self.win)
         self.render.init(self.win)
         self.win.on_draw = self.render.draw
 
         self.game.init(self.render.images)
-
-        self.resurrecting = False
 
         KeyHandler.app = self
 
@@ -82,24 +75,11 @@ class Application(object):
         clock.schedule_once(lambda _: self.spawn_player(), 1)
 
 
-    def spawn_player(self):
-        if not self.player:
-            self.player = Player(
-                self.keyhandler,
-                self.arena.width / 2, self.arena.height,
-                self.game)
-        self.player.remove_from_game = False
-        self.player.is_alive = True
-        self.arena.add(self.player)
-        self.resurrecting = False
-        return self.player
-
-
     def update(self, dt):
         self.arena.update(dt)
 
-        if self.player and not self.player.is_alive and not self.resurrecting:
-            self.resurrecting = True
+        if self.game.player and not self.game.player.is_alive and not self.game.resurrecting:
+            self.game.resurrecting = True
             play('ohno')
             clock.schedule_once(lambda _: self.get_ready(), 2)
 
