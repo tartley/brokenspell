@@ -29,11 +29,11 @@ class ItemRemoved(Event): pass
 class Arena(object):
 
     def __init__(self, app=None, width=None, height=None):
+        # TODO: Arena does not need access to app. Maybe just to game
         self.app = app
         self.width = width
         self.height = height
 
-        self.age = 0.0
         self.items = []
         self.num_enemies = 0
 
@@ -43,17 +43,27 @@ class Arena(object):
 
     def add(self, item):
         self.items.append(item)
+
+        if hasattr(item, 'on_key_press'):
+            self.app.win.push_handlers(item)
+
         if isinstance(item, Enemy):
             self.num_enemies += 1
+
         self.item_added(self, item)
 
 
     def remove(self, item):
         self.items.remove(item)
+
+        if hasattr(item, 'on_key_press'):
+            self.app.win.remove_handlers(item)
+
         if isinstance(item, Enemy):
             self.num_enemies -= 1
             if self.num_enemies == 0:
-                self.app.next_wave()
+                self.app.next_wave() # TODO: game.next_wave, surely?
+
         self.item_removed(self, item)
 
 
@@ -94,7 +104,6 @@ class Arena(object):
 
 
     def update(self, dt):
-        self.age += dt
         self.detect_collisions()
         self.remove_dead()
         for item in self.items:
@@ -102,4 +111,3 @@ class Arena(object):
                 item.update()
             if hasattr(item, 'wraparound'):
                 item.wraparound(self.width)
-

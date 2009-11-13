@@ -20,7 +20,6 @@ class Render(object):
 
     # TODO: we don't need to pass application or win here
     # just arena would be fine
-    # uses of win in clear will go away when background is a gameitem
     def __init__(self, application, win):
         self.application = application
         self.win = win
@@ -48,8 +47,6 @@ class Render(object):
 
         self.batch.draw()
 
-        self.application.user_message.draw()
-        self.application.instructions.draw()
         self.clockDisplay.draw()
 
 

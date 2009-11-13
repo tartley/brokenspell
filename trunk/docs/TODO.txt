@@ -7,9 +7,12 @@ Put HUD entities into same arena game item collection
 
 REFACTOR
 
+move 'build-mswin-dist.py' to 'setup.py', think about adding a makefile
+or make-bin.bat which invokes it with the correct args. While we're at it
+a make clean wouldn't go amiss either.
+
 Move all the junk out of Application
     - remove self.arena from application
-
 Render doesn't need application nor win. Just arena should do it.
 
 Probably remove 'recalc sprite stats' stuff, or at least stop having
@@ -35,7 +38,7 @@ BUGS
 
 Improve accuracy of collision detection
 
-is there a slight pause on player's first flap?
+there is a slight pause on player's first flap
 
 fuzzy line along top of rotated sprites, introduced when I started using
 a texture atlas
