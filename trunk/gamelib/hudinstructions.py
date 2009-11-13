@@ -7,12 +7,22 @@ from gameitem import GameItem
 
 
 text = [
-    'Left and Right to steer',
+    '',
     'Press Z to flap',
+    'Left and Right to steer',
 ]
 
 all_done = [
     set(), set([key.LEFT]), set([key.RIGHT])
+]
+
+
+# TODO: unused
+MESSAGE_WAVE1 = [
+    '',
+    'Attack from above',
+    'Avoid enemies above you',
+    'Lowest bird loses feathers',
 ]
 
 
@@ -36,7 +46,7 @@ class HudInstructions(GameItem):
             anchor_x='left', anchor_y='top',
             batch=batch,
             group=groups[self.render_layer] )
-        self.next_text(None)
+        clock.schedule_once(self.next_text, 5)
 
 
     def remove_from_batch(self, batch):
@@ -57,3 +67,4 @@ class HudInstructions(GameItem):
             self.need_pressing.remove(symbol)
         if self.need_pressing in all_done:
             self.remove_from_game = True
+

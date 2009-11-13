@@ -8,15 +8,6 @@ from game import Game
 from gameitem import GameItem
 from music import Music
 from render import Render
-from sounds import play
-
-
-MESSAGE_WAVE1 = [
-    '',
-    'Attack from above',
-    'Avoid enemies above you',
-    'Lowest bird loses feathers',
-]
 
 
 class Application(object):
@@ -51,28 +42,12 @@ class Application(object):
                 delay=0.01,
                 player=self.player)
 
-        clock.schedule(self.update)
+        clock.schedule(self.arena.update)
 
 
     def on_key_press(self, symbol, _):
         if symbol == key.M:
             self.music.toggle()
-
-
-    def get_ready(self):
-        self.player.reincarnate(self.arena.width / 2, self.arena.height)
-        clock.schedule_once(lambda _: self.spawn_player(), 1)
-
-
-    def update(self, dt):
-        self.arena.update(dt)
-
-        if self.game.player and not self.game.player.is_alive and not self.game.resurrecting:
-            self.game.resurrecting = True
-            play('ohno')
-            clock.schedule_once(lambda _: self.get_ready(), 2)
-
-
-    def run(self):
-        app.run()
+        elif symbol == key.ESCAPE:
+            self.win.close()
 
