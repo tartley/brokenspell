@@ -19,20 +19,6 @@ MESSAGE_WAVE1 = [
 ]
 
 
-class KeyHandler(object):
-    app = None
-
-
-class ToggleMusic(KeyHandler):
-
-    def __init__(self, music):
-        self.music = music
-
-    def on_key_press(self, symbol, _):
-        if symbol == key.M:
-            self.music.toggle()
-
-
 class Application(object):
 
     def __init__(self):
@@ -47,7 +33,7 @@ class Application(object):
         self.music = Music()
         self.music.play()
 
-        # self.win.push_handlers(ToggleMusic(self.music))
+        self.win.push_handlers(self)
 
         self.arena = Arena(self, self.win.width, self.win.height)
         GameItem.arena = self.arena
@@ -59,8 +45,6 @@ class Application(object):
 
         self.game.init(self.render.images)
 
-        KeyHandler.app = self
-
         if settings.getboolean('all', 'performance_test'):
             self.arena.spawn_enemy(
                 number=256,
@@ -68,6 +52,11 @@ class Application(object):
                 player=self.player)
 
         clock.schedule(self.update)
+
+
+    def on_key_press(self, symbol, _):
+        if symbol == key.M:
+            self.music.toggle()
 
 
     def get_ready(self):

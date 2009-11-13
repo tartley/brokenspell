@@ -25,8 +25,8 @@ class Render(object):
         self.win = win
         self.images = None
 
-        self.application.arena.item_added += self.add_item_to_batch
-        self.application.arena.item_removed += self.remove_item_from_batch
+        self.application.arena.item_added += self.on_add_item
+        self.application.arena.item_removed += self.on_remove_item
 
         self.clockDisplay = clock.ClockDisplay()
         self.batch = Batch()
@@ -50,10 +50,10 @@ class Render(object):
         self.clockDisplay.draw()
 
 
-    def add_item_to_batch(self, _, item):
+    def on_add_item(self, _, item):
         item.add_to_batch(self.batch, self.groups, self.images)
 
 
-    def remove_item_from_batch(self, _, item):
+    def on_remove_item(self, _, item):
         item.remove_from_batch(self.batch)
 

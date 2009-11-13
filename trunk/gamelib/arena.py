@@ -35,7 +35,6 @@ class Arena(object):
         self.height = height
 
         self.items = []
-        self.num_enemies = 0
 
         self.item_added = ItemAdded()
         self.item_removed = ItemRemoved()
@@ -47,9 +46,6 @@ class Arena(object):
         if hasattr(item, 'on_key_press'):
             self.app.win.push_handlers(item)
 
-        if isinstance(item, Enemy):
-            self.num_enemies += 1
-
         self.item_added(self, item)
 
 
@@ -59,14 +55,10 @@ class Arena(object):
         if hasattr(item, 'on_key_press'):
             self.app.win.remove_handlers(item)
 
-        if isinstance(item, Enemy):
-            self.num_enemies -= 1
-            if self.num_enemies == 0:
-                self.app.next_wave() # TODO: game.next_wave, surely?
-
         self.item_removed(self, item)
 
 
+    # TODO: put in game, surely?
     def spawn_enemy(self, number, delay, player):
         if player is None:
             x = uniform(0, self.width)
