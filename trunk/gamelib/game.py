@@ -44,7 +44,8 @@ class Game(object):
         self.arena.add(hudtitle)
 
         if settings.getboolean('all', 'performance_test'):
-            self.spawn_wave(number=256)
+            for n in xrange(256):
+                clock.schedule_once(lambda _: self.spawn_enemy(), 0.00 * n)
 
         clock.schedule(self.arena.update)
 
