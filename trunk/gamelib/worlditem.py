@@ -85,7 +85,11 @@ class WorldItem(GameItem):
         self.sprite._x = self.x
         self.sprite._y = self.y
         self.sprite._rotation = degrees(self.rotation)
-        self.sprite.image = images[self.__class__.__name__][self.frame_idx]
+        image = images[self.__class__.__name__][self.frame_idx]
+        if self.sprite.image != image:
+            self.sprite.image = image
+        else:
+            self.sprite._update_position()
 
 
     def collided_with(self, other):
