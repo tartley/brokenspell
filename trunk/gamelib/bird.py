@@ -11,8 +11,8 @@ from sounds import play
 
 
 GLIDE_STEER = 0.1
-FLAP_STEER = 3
-FLAP_LIFT = 5
+FLAP_STEER = 4
+FLAP_LIFT = 6
 
 
 class Bird(WorldItem):
