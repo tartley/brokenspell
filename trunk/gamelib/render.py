@@ -18,15 +18,12 @@ class Render(object):
         OrderedGroup(3), # hud
     ]
 
-    # TODO: we don't need to pass application or win here
-    # just arena would be fine
-    def __init__(self, application, win):
-        self.application = application
-        self.win = win
+    def __init__(self, arena):
+        self.arena = arena
         self.images = None
 
-        self.application.arena.item_added += self.on_add_item
-        self.application.arena.item_removed += self.on_remove_item
+        arena.item_added += self.on_add_item
+        arena.item_removed += self.on_remove_item
 
         self.clockDisplay = clock.ClockDisplay()
         self.batch = Batch()
@@ -39,9 +36,12 @@ class Render(object):
         glEnable(GL_BLEND)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 
+        win.on_draw = self.draw
+
 
     def draw(self):
-        for item in self.application.arena.items:
+        # TODO: move this to update instead of draw
+        for item in self.arena.items:
             if hasattr(item, 'animate'):
                 item.animate(self.images)
 

@@ -17,9 +17,8 @@ FLAP_LIFT = 5
 
 class Bird(WorldItem):
 
-    def __init__(self, x, y, dx=0, dy=0, feathers=3):
+    def __init__(self, x, y, dx=0, dy=0):
         WorldItem.__init__(self, x, y, dx, dy)
-        self.feathers = feathers
         if self.dx < 0:
             self.facing = LEFT
         else:
@@ -29,6 +28,7 @@ class Bird(WorldItem):
         self.is_alive = True
         self.actions = set()
         self.foe = None
+        self.feathers = 3
 
 
     def reincarnate(self, x, y, feathers=3):

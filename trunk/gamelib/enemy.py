@@ -9,8 +9,8 @@ class Enemy(Bird):
 
     is_enemy = True
 
-    def __init__(self, x, y, dx=0, dy=0, feathers=2):
-        Bird.__init__(self, x, y, dx, dy, feathers)
+    def __init__(self, x, y, dx=0, dy=0):
+        Bird.__init__(self, x, y, dx, dy)
         self.think = Thinker(self)
         self.last_flap = 0
 

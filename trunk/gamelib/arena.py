@@ -2,7 +2,6 @@
 import math
 
 from itertools import islice
-from random import randint, uniform
 
 from pyglet import clock, image
 
@@ -28,11 +27,9 @@ class ItemRemoved(Event): pass
 
 class Arena(object):
 
-    def __init__(self, app=None, width=None, height=None):
-        # TODO: Arena does not need access to app. Maybe just to game
-        self.app = app
-        self.width = width
-        self.height = height
+    def __init__(self, win, game):
+        self.win = win
+        self.game = game
 
         self.items = []
 
@@ -44,7 +41,7 @@ class Arena(object):
         self.items.append(item)
 
         if hasattr(item, 'on_key_press'):
-            self.app.win.push_handlers(item)
+            self.win.push_handlers(item)
 
         self.item_added(self, item)
 
@@ -53,25 +50,9 @@ class Arena(object):
         self.items.remove(item)
 
         if hasattr(item, 'on_key_press'):
-            self.app.win.remove_handlers(item)
+            self.win.remove_handlers(item)
 
         self.item_removed(self, item)
-
-
-    # TODO: put in game, surely?
-    def spawn_enemy(self, number, delay, player):
-        if player is None:
-            x = uniform(0, self.width)
-        else:
-            x = (player.x + self.width / 2) % self.width
-        y = self.height
-        dx = uniform(-20, 20)
-        dy = 0
-        self.add(Enemy(x, y, dx=dx, dy=dy, feathers=number))
-        if number > 1:
-            clock.schedule_once(
-                lambda _: self.spawn_enemy(number - 1, delay, player),
-                delay)
 
 
     def detect_collisions(self):
@@ -97,9 +78,10 @@ class Arena(object):
 
     def update(self, dt):
         self.detect_collisions()
-        self.remove_dead()
         for item in self.items:
             if hasattr(item, 'update'):
                 item.update()
             if hasattr(item, 'wraparound'):
-                item.wraparound(self.width)
+                item.wraparound(self.win.width)
+        self.remove_dead()
+
