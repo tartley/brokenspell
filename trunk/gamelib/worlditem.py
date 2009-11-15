@@ -25,7 +25,14 @@ class WorldItem(GameItem):
 
     def __init__(self, x=0, y=0, dx=0, dy=0):
         GameItem.__init__(self)
-        WorldItem.reincarnate(self, x, y, dx, dy)
+        self.x = x
+        self.y = y
+        self.dx = dx
+        self.dy = dy
+        self.ddx = 0
+        self.ddy = 0
+        self.rotation = 0
+        self.remove_from_game = False
         self.sprite = None
         self.frame_idx = 0
         self.width = 0
@@ -47,17 +54,6 @@ class WorldItem(GameItem):
     def remove_from_batch(self, batch):
         self.sprite.batch = None
         self.sprite.delete()
-
-
-    def reincarnate(self, x, y, dx=0, dy=0):
-        self.x = x
-        self.y = y
-        self.dx = dx
-        self.dy = dy
-        self.ddx = 0
-        self.ddy = 0
-        self.rotation = 0
-        self.remove_from_game = False
 
 
     def update(self):

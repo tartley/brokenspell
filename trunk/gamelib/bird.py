@@ -28,13 +28,7 @@ class Bird(WorldItem):
         self.is_alive = True
         self.actions = set()
         self.foe = None
-        self.feathers = 3
-
-
-    def reincarnate(self, x, y, feathers=3):
-        WorldItem.reincarnate(self, x, y)
-        self.feathers = feathers
-        self.can_fall_off = False
+        self.feathers = 1
 
 
     def act(self):
