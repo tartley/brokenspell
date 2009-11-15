@@ -64,9 +64,7 @@ class Game(object):
 
 
     def get_ready(self):
-        self.arena.add(
-            HudMessage('Get Ready!',
-                self, self.width, self.height))
+        self.arena.add(HudMessage('Get Ready!', self))
         clock.schedule_once(lambda _: self.spawn_player(), 2)
 
 
@@ -81,9 +79,7 @@ class Game(object):
         if number is None:
             number = 4
 
-        self.arena.add(
-            HudMessage('Here they come...',
-                self, self.width, self.height))
+        self.arena.add(HudMessage('Here they come...', self))
 
         for n in xrange(number):
             clock.schedule_once(lambda _: self.spawn_enemy(), 1.7 * n)
@@ -94,14 +90,6 @@ class Game(object):
         y = self.height + 32
         dx = uniform(-20, 20)
         self.arena.add(Enemy(x, y, dx=dx, dy=0))
-
-
-    def player_died(self):
-        self.arena.add(
-            HudMessage('Oh no!',
-                self, self.width, self.height))
-        play('ohno')
-        clock.schedule_once(lambda _: self.get_ready(), 2)
 
 
     def on_add_item(self, _, item):
@@ -116,5 +104,5 @@ class Game(object):
                 self.spawn_wave()
 
         if isinstance(item, Player):
-            self.player_died()
+            clock.schedule_once(lambda _: self.get_ready(), 2)
 

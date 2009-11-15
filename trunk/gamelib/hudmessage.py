@@ -9,11 +9,9 @@ class HudMessage(GameItem):
 
     render_layer = 3
 
-    def __init__(self, text, game, screen_width, screen_height):
+    def __init__(self, text, game):
         self.text = text
         self.game = game
-        self.screen_width = screen_width
-        self.screen_height = screen_height
         self.label = None
 
 
@@ -21,7 +19,7 @@ class HudMessage(GameItem):
         self.label = Label(
             self.text,
             font_size=36,
-            x=self.screen_width / 2, y=self.screen_height / 2,
+            x=self.game.width / 2, y=self.game.height / 2,
             anchor_x='center', anchor_y='center',
             batch=batch,
             group=groups[self.render_layer] )

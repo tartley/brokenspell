@@ -5,6 +5,7 @@ from pyglet.window import key
 
 from bird import Action, Bird
 from feather import Feather
+from hudmessage import HudMessage
 from sounds import play
 
 
@@ -48,4 +49,9 @@ class Player(Bird, key.KeyStateHandler):
         else:
             self.consecutive_feathers = 0
 
+
+    def die(self):
+        Bird.die(self)
+        self.arena.add(HudMessage('Oh no!', self.game))
+        play('ohno')
 
