@@ -8,9 +8,8 @@ def main():
     startup()
 
     from gamelib.application import Application
-    import pyglet
-    Application()
-    pyglet.app.run()
+    application = Application()
+    application.launch()
 
 
 if __name__ == '__main__':

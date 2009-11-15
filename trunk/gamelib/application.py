@@ -1,5 +1,5 @@
 
-from pyglet import app, clock
+import pyglet
 from pyglet.window import key, Window
 
 from config import settings
@@ -11,6 +11,13 @@ from render import Render
 class Application(object):
 
     def __init__(self):
+        self.win = None
+        self.game = None
+        self.render = None
+        self.music = None
+
+
+    def launch(self):
 
         vsync = True
         if settings.getboolean('all', 'performance_test'):
@@ -18,7 +25,6 @@ class Application(object):
 
         self.win = Window(width=1024, height=768, vsync=vsync)
         self.win.set_exclusive_mouse()
-
         self.win.push_handlers(self)
 
         self.game = Game(self.win)
@@ -30,6 +36,8 @@ class Application(object):
 
         self.music = Music()
         self.music.play()
+
+        pyglet.app.run()
 
 
     def on_key_press(self, symbol, _):
