@@ -36,5 +36,5 @@ class Application(object):
         if symbol == key.M:
             self.music.toggle()
         elif symbol == key.ESCAPE:
-            self.win.close()
+            self.win.has_exit = True
 

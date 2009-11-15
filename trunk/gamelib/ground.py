@@ -14,7 +14,7 @@ class Ground(GameItem):
 
 
     # TODO: these method are identical to those in WorldItem
-    # Is GameItem a WorldItem? Or some other tweak to the inheritance?
+    # Is Ground a WorldItem? Or some other tweak to the inheritance?
     def add_to_batch(self, batch, groups, images):
         self.sprite = Sprite(
             images[self.__class__.__name__][0],

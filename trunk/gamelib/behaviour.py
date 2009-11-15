@@ -24,15 +24,13 @@ class Plummet(State):
 
 class Hover(State):
 
-    scheduled = {}
-
     def __init__(self, *args):
         State.__init__(self, *args)
         self.choose_altitude(None)
 
 
     def choose_altitude(self, _):
-        if not self.item.is_alive:
+        if not self.item.is_alive or self.item.arena.win.has_exit:
             return
 
         self.desired_y = randint(100, self.item.arena.win.height - 100)

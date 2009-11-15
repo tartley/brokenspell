@@ -1,15 +1,12 @@
 
 CURRENT TASK:
 
-Combine the different functions which create the initial wave, create
-subsequent waves, and create the performance_test wave.
-
 
 REFACTOR
 
-Move all the junk out of Application
-    - remove self.arena from application
 Render doesn't need application nor win. Just arena should do it.
+
+Can fps display be put into render.batch as well?
 
 Probably remove 'recalc sprite stats' stuff, or at least stop having
 to load dummy images before being able to call it
