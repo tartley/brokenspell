@@ -40,13 +40,10 @@ class Render(object):
 
 
     def draw(self):
-        # TODO: move this to update instead of draw
         for item in self.arena.items:
             if hasattr(item, 'animate'):
                 item.animate(self.images)
-
         self.batch.draw()
-
         self.clockDisplay.draw()
 
 
