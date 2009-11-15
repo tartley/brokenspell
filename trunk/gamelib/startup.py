@@ -1,17 +1,10 @@
 
-from os import environ
+from os import environ, pathsep
 from platform import system
 
 from pyglet import options
 
 from gamelib.config import settings
-
-
-def get_separator():
-    if system() == 'Windows':
-        return ';'
-    else:
-        return ':'
 
 
 def get_env_name():
@@ -24,7 +17,7 @@ def get_env_name():
 def append(name, suffix):
     value = environ.get(name, '')
     if value:
-        value += get_separator()
+        value += pathsep
     value += suffix
     environ[name] = value
 
