@@ -45,7 +45,7 @@ class Game(object):
 
         if settings.getboolean('all', 'performance_test'):
             for n in xrange(256):
-                clock.schedule_once(lambda _: self.spawn_enemy(), 0.00 * n)
+                clock.schedule_once(lambda _: self.spawn_enemy(), 0.01 * n)
 
         clock.schedule(self.arena.update)
 
