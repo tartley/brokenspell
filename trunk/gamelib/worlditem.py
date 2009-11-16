@@ -8,8 +8,7 @@ LEFT, RIGHT = 'L', 'R'
 
 class WorldItem(SpriteItem):
 
-    AIR_RESIST_X = 0.98
-    AIR_RESIST_Y = 0.98
+    AIR_RESIST = 0.98
 
     is_player = False
     is_enemy = False
@@ -26,14 +25,18 @@ class WorldItem(SpriteItem):
 
 
     def update(self):
-        self.dx = (self.dx + self.ddx) * self.AIR_RESIST_X
-        self.dy = (self.dy + self.ddy - GRAVITY) * self.AIR_RESIST_Y
+        self.dx = (self.dx + self.ddx) * self.AIR_RESIST
+        self.dy = (self.dy + self.ddy - GRAVITY) * self.AIR_RESIST
         self.ddx = 0
         self.ddy = 0
 
         self.x += self.dx
         self.y += self.dy
 
+        self.test_for_fall_off_screen()
+
+
+    def test_for_fall_off_screen(self):
         if self.can_fall_off:
             if self.y < -self.height / 2:
                 self.remove_from_game = True
