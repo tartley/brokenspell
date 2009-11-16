@@ -111,4 +111,5 @@ class Bird(WorldItem):
             elif other.is_feather and other.owner is not self:
                 other.remove_from_game = True
                 self.feathers += 1
+                self.feathers = min(3, self.feathers + 1)
 
