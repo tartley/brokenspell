@@ -2,9 +2,12 @@
 from os.path import join
 
 from pyglet import clock
-from pyglet.media import load, Player
 
 from gamelib.config import settings
+
+
+load = None
+Player = None
 
 
 class Music(object):
@@ -14,15 +17,26 @@ class Music(object):
         self.player = None
 
 
+    def load(self):
+        try:
+            global load, Player
+            from pyglet import media
+            load = media.load
+            Player = media.Player
+            self.music = load(join('data', 'music3.ogg'))
+        except Exception:
+            print "WARNING: can't start music"
+            settings.set('all', 'force_audio', 'silent')
+
+
     def play(self):
         if settings.get('all', 'force_audio') == 'silent':
             return
 
-        self.music = load(join('data', 'music3.ogg'))
         self.player = Player()
         self.player.volume = 0.15
-        self.player.queue(self.music)
         self.player.eos_action = self.player.EOS_LOOP
+        self.player.queue(self.music)
 
         # if we play music immediately, it stutters a little at the start
         # so schedule it to start a second from now
@@ -31,12 +45,8 @@ class Music(object):
 
 
     def toggle(self):
-        if settings.get('all', 'force_audio') == 'silent':
-            return
-
-        if self.player:
+        if self.player and settings.get('all', 'force_audio') != 'silent':
             if self.player.playing:
                 self.player.pause()
             else:
                 self.player.play()
-

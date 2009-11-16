@@ -4,14 +4,31 @@ from os.path import join
 from platform import system
 from random import randint
 
-from pyglet.media import load
-
 from config import settings
 
 
 sounds_dir = join('data', 'sounds')
-
 sounds = {}
+
+load = None
+
+
+def init():
+    if settings.get('all', 'force_audio') != 'silent':
+
+        try:
+            global load
+            from pyglet import media
+            load = media.load
+        except Exception:
+            print "WARNING: can't start audio"
+            settings.set('all', 'force_audio', 'silent')
+
+        sounds['quack'] = _load_sounds_matching('quack?.ogg')
+        sounds['ding'] = _load_sounds_matching('ding?.ogg')
+        sounds['die'] = _load_sounds_matching('die?.ogg')
+        sounds['ohno'] = [_load_sound('ohno.ogg')]
+        sounds['flap'] = [_load_sound('flap.ogg')]
 
 
 def _load_sound(name):
@@ -34,13 +51,3 @@ def play(name, index=None):
     else:
         index = min(index, len(sounds[name]) - 1)
     sounds[name][index].play()
-
-
-def init():
-    if settings.get('all', 'force_audio') != 'silent':
-        sounds['quack'] = _load_sounds_matching('quack?.ogg')
-        sounds['ding'] = _load_sounds_matching('ding?.ogg')
-        sounds['die'] = _load_sounds_matching('die?.ogg')
-        sounds['ohno'] = [_load_sound('ohno.ogg')]
-        sounds['flap'] = [_load_sound('flap.ogg')]
-
