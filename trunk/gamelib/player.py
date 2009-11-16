@@ -44,7 +44,7 @@ class Player(Bird, key.KeyStateHandler):
         if isinstance(other, Feather):
             if other.owner is not self:
                 self.consecutive_feathers += 1
-                self.game.score += self.consecutive_feathers
+                self.game.score += self.consecutive_feathers * 10
                 play('ding', self.consecutive_feathers - 1)
         else:
             self.consecutive_feathers = 0

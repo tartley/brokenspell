@@ -25,6 +25,7 @@ class Game(object):
         self.height = win.height
         self.score = 0
         self.num_enemies = 0
+        self.wave = 0
 
         self.arena = Arena(win, self)
         GameItem.arena = self.arena
@@ -85,13 +86,14 @@ class Game(object):
 
 
     def spawn_wave(self, number=None):
+        self.wave += 1
         if number is None:
-            number = 1
+            number = self.wave
 
-        self.arena.add(HudMessage('Here they come...', self))
+        self.arena.add(HudMessage('Wave %d' % (self.wave), self))
 
         for n in xrange(number):
-            clock.schedule_once(lambda _: self.spawn_enemy(), 1.7 * n)
+            clock.schedule_once(lambda _: self.spawn_enemy(), n)
 
 
     def spawn_enemy(self):

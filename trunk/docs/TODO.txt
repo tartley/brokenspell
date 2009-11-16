@@ -4,19 +4,11 @@ CURRENT TASK:
 
 REFACTOR
 
-Find a way to assign each worlditem class its height and width
-based on size of images[__class__.__name__][0]
-
-Probably remove 'recalc sprite stats' stuff
-
 Refactor collision response code. Don't currently like how response to a
 single collision is split between both protagonists and their base classes.
 
 Can we use a single media player to play all sound effects, rather than
 creating a new one each time a sound is played (like flap did)?
-
-The whole 'resurrecting' nonsense needs fixing, Just create a new Player
-object instead.
 
 move 'build-mswin-dist.py' to 'setup.py', think about adding a makefile
 or make-bin.bat which invokes it with the correct args.
@@ -25,8 +17,6 @@ Can fps display be put into render.batch as well?
 
 
 BUGS
-
-Improve accuracy of collision detection
 
 there is a slight pause on player's first flap
 

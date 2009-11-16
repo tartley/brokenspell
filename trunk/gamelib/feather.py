@@ -16,7 +16,7 @@ class Feather(WorldItem):
     def __init__(self, x, y, dx, dy, owner):
         self.owner = owner
         WorldItem.__init__(self, x, y, dx, dy)
-        self.AIR_RESIST_Y = uniform(0.7, 0.9)
+        self.AIR_RESIST_Y = 0.7
         self.AIR_RESIST_X = 0.9
         self.rotation = atan2(self.dy, self.dx)
         self.speed = uniform(1, 2)
