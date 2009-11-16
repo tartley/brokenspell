@@ -2,10 +2,77 @@
 CURRENT TASK:
 
 
+FEATURES
+
+Lives
+* store on Game
+* HUD: display lives remaining
+* dying decrements number of lives
+* game over on 0
+* back to titles after game over
+
+fullscreen mode
+* button to toggle it
+* persist it between runs
+
+Difficulty/gameplay tuning
+* Player dies rather than losing feathers
+* OR Player collects up to 3 'shield feathers', which need a HUD
+
+All feathers need to be collectable. Make a feather's
+owner reset to None once the feather is no longer colliding with it's owner.
+
+Current enemy attacking 'dive on you' behaviour needs work. In particular, it
+does not account for horizontal velocities, so a diving enemy will almost
+always miss. Should only dive if higher than player (diving away when below is
+just annoying)
+
+Birds that collect feathers have more behaviours available to them:
+* fly faster
+
+Scoring
+* score should use ',' as thousands separator
+
+* Enemy ducks should hold down flap a tad longer than they do
+
+More sound effects reqd:
+* player attacked: urgent cries
+* birds bounce off harmlessly at equal heights
+* Game over
+
+Only show fps in performance test mode, or when outside acceptable range.
+
+Combos
+* HUD: display multiplier
+* killing an enemy increments multiplier
+* multiplier reduces back to 1 over time
+* feather scores are multiplied by this
+
+Control
+* Holding down flap lets you glide? (if speed is high enough?)
+* Holding down very briefly produces a weaker flap?
+
+High scores?
+* Displayed after user dies, until next game starts
+* Persisted
+
+Binary exe for Mac
+
+Binary exe for Linux
+
+
+
 REFACTOR
 
 Refactor collision response code. Don't currently like how response to a
 single collision is split between both protagonists and their base classes.
+Maybe collision detection should not immediately invoke collision response,
+but should leave a collection of touching worlditems on each item. Then
+it is up to the item's to respond to that in update() ??? THINK about this
+before implementing. Maybe each worlditem defines a list of other worlditem
+classes that it cares about colliding with?
+
+Consider that a worlditem has-a sprite holder, rather than is-a.
 
 Can we use a single media player to play all sound effects, rather than
 creating a new one each time a sound is played (like flap did)?
@@ -15,10 +82,11 @@ or make-bin.bat which invokes it with the correct args.
 
 Can fps display be put into render.batch as well?
 
+Behaviour code is a bit wonky. Examine the state maching inthe Python
+Game book to see if it could be better that way.
+
 
 BUGS
-
-there is a slight pause on player's first flap
 
 fuzzy line along top of rotated sprites, introduced when I started using
 a texture atlas
@@ -37,63 +105,8 @@ Audio does not work properly on ALSA on my ubuntu (crashes on 32nd play of flap)
 Review all the bugs people reported in pyweek
 
 If errors occur in audio, we should catch and run silent
-
-
-FEATURES
-
-Only show fps in performance test mode, or when outside acceptable range.
-
-Difficulty/gameplay tuning
-* Player dies rather than losing feathers
-* zero lives = game over
-* enemy birds should die on first hit
-
-later levels should contain more birds
-
-Current enemy attacking 'dive on you' behaviour needs work. In particular, it
-does not account for horizontal velocities, so a diving enemy will almost
-always miss. Should only dive if higher than player (diving away when below is
-just annoying)
-
-Lives
-* store on Game
-* dying decrements number of lives
-* HUD: add lives remaining
-* game over on 0
-* game reset after game over
-
-Scoring
-* feathers should score multiples of 10
-* floating numbers to show points for feather collection
-* score should use ',' as thousands separator
-
-Control
-* Holding down flap lets you glide? (if speed is high enough?)
-* Holding down very briefly produces a weaker flap?
-* Enemy ducks should hold down flap a tad longer than they do
-
-Combos
-* HUD: display multiplier
-* killing an enemy increments multiplier
-* multiplier reduces back to 1 over time
-* feather scores are multiplied by this
-
-More sound effects reqd:
-* enemy attacked: spluttering quacks
-* player attacked: urgent spluttering quacks
-* birds bounce off harmlessly at equal heights
-* Game over
-
-fullscreen mode
-* button to toggle it
-
-High scores
-* Displayed after user dies, until next game starts
-* Persisted
-
-Binary exe for Mac
-
-Binary exe for Linux
+    - if no audio device: OK, handled
+    - if wrong driver selected: not handled
 
 
 NOT BEING DONE

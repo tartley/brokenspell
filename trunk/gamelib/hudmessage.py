@@ -31,7 +31,8 @@ class HudMessage(GameItem):
             anchor_x='center', anchor_y='center',
             color=self.color,
             batch=batch,
-            group=groups[self.render_layer] )
+            group=groups[self.render_layer]
+        )
 
         def remove(_):
             self.remove_from_game = True
