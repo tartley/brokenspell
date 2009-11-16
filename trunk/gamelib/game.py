@@ -10,8 +10,9 @@ from gameitem import GameItem
 from ground import Ground
 from hudmessage import HudMessage
 from hudscore import HudScore
-from hudtitle import HudPressAnyKey
+from hudtitle import HudTitle
 from hudinstructions import HudInstructions
+from feather import Feather
 from player import Player
 from sky import Sky
 from sounds import play
@@ -29,7 +30,15 @@ class Game(object):
         GameItem.arena = self.arena
 
 
-    def init(self, win):
+    def set_worlditem_images_and_sizes(self, images):
+        for klass in [Ground, Player, Enemy, Feather]:
+            klass.images = images[klass.__name__]
+            klass.width = klass.images[0].width
+            klass.height = klass.images[0].height
+
+
+    def init(self, images):
+        self.set_worlditem_images_and_sizes(images)
 
         self.arena.item_added += self.on_add_item
         self.arena.item_removed += self.on_remove_item
@@ -40,7 +49,7 @@ class Game(object):
         ground = Ground()
         self.arena.add(ground)
 
-        hudtitle = HudPressAnyKey(self, self.width, self.height)
+        hudtitle = HudTitle(self, self.width, self.height)
         self.arena.add(hudtitle)
 
         if settings.getboolean('all', 'performance_test'):
@@ -77,7 +86,7 @@ class Game(object):
 
     def spawn_wave(self, number=None):
         if number is None:
-            number = 4
+            number = 1
 
         self.arena.add(HudMessage('Here they come...', self))
 

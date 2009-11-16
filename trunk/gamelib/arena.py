@@ -13,12 +13,19 @@ from worlditem import WorldItem
 
 
 def is_touching(item1, item2):
-    distance = math.hypot(
-        (item1.center_x + item1.x) - (item2.center_x + item2.x),
-        (item1.center_y + item1.y) - (item2.center_y + item2.y)
+    if not isinstance(item1, WorldItem) or not isinstance(item2, WorldItem):
+        return False
+    border = 6
+    w1 = item1.width / 2 - border
+    w2 = item2.width / 2 - border
+    h1 = item1.height / 2 - border
+    h2 = item2.height / 2 - border
+    return (
+        (item1.x - w1) < (item2.x + w2) and
+        (item2.x - w2) < (item1.x + w1) and
+        (item1.y - h1) < (item2.y + h2) and
+        (item2.y - h2) < (item1.y + h1)
     )
-    if distance < max(item1.width, item2.width) * 0.8:
-        return True
 
 
 class ItemAdded(Event): pass
@@ -61,11 +68,7 @@ class Arena(object):
 
         for i, item1 in enumerate(self.items):
             for item2 in islice(self.items, i+1, None):
-                if (
-                    isinstance(item1, WorldItem) and
-                    isinstance(item2, WorldItem) and
-                    is_touching(item1, item2)
-                ):
+                if is_touching(item1, item2):
                     item1.collided_with(item2)
                     item2.collided_with(item1)
 

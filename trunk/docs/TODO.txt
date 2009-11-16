@@ -4,15 +4,10 @@ CURRENT TASK:
 
 REFACTOR
 
-Render doesn't need application nor win. Just arena should do it.
+Find a way to assign each worlditem class its height and width
+based on size of images[__class__.__name__][0]
 
-Can fps display be put into render.batch as well?
-
-Probably remove 'recalc sprite stats' stuff, or at least stop having
-to load dummy images before being able to call it
-
-take logic from arena.add and arena.remove to keep count of num_enemies,
-put it into game or somesuch instead, by listening for these events
+Probably remove 'recalc sprite stats' stuff
 
 Refactor collision response code. Don't currently like how response to a
 single collision is split between both protagonists and their base classes.
@@ -24,9 +19,9 @@ The whole 'resurrecting' nonsense needs fixing, Just create a new Player
 object instead.
 
 move 'build-mswin-dist.py' to 'setup.py', think about adding a makefile
-or make-bin.bat which invokes it with the correct args. While we're at it
-a make clean wouldn't go amiss either.
+or make-bin.bat which invokes it with the correct args.
 
+Can fps display be put into render.batch as well?
 
 
 BUGS

@@ -9,6 +9,7 @@ class HudScore(GameItem):
     render_layer = 3
 
     def __init__(self, game, screen_width, screen_height):
+        GameItem.__init__(self)
         self.game = game
         self.screen_width = screen_width
         self.screen_height = screen_height
@@ -20,7 +21,7 @@ class HudScore(GameItem):
         return str(self.game.score)
 
 
-    def add_to_batch(self, batch, groups, _):
+    def add_to_batch(self, batch, groups):
         self.label = Label(
             self.text,
             font_size=36,

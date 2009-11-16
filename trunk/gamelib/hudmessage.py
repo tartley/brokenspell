@@ -10,12 +10,13 @@ class HudMessage(GameItem):
     render_layer = 3
 
     def __init__(self, text, game):
+        GameItem.__init__(self)
         self.text = text
         self.game = game
         self.label = None
 
 
-    def add_to_batch(self, batch, groups, _):
+    def add_to_batch(self, batch, groups):
         self.label = Label(
             self.text,
             font_size=36,

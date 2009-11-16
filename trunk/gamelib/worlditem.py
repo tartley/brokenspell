@@ -1,59 +1,28 @@
 
-from math import degrees
-
-from pyglet.sprite import Sprite
-
-from gameitem import GameItem
+from spriteitem import SpriteItem
 
 
 GRAVITY = 0.2
 LEFT, RIGHT = 'L', 'R'
 
 
-class WorldItem(GameItem):
+class WorldItem(SpriteItem):
 
     AIR_RESIST_X = 0.98
     AIR_RESIST_Y = 0.98
 
-    can_fall_off = False
-
     is_player = False
     is_enemy = False
     is_feather = False
+    can_fall_off = False
 
-    render_layer = 2
 
     def __init__(self, x=0, y=0, dx=0, dy=0):
-        GameItem.__init__(self)
-        self.x = x
-        self.y = y
+        SpriteItem.__init__(self, x, y)
         self.dx = dx
         self.dy = dy
         self.ddx = 0
         self.ddy = 0
-        self.rotation = 0
-        self.remove_from_game = False
-        self.sprite = None
-        self.frame_idx = 0
-        self.width = 0
-        self.height = 0
-
-
-    def __str__(self):
-        return "<%s%s>" % (type(self).__name__, self.id)
-
-
-    def add_to_batch(self, batch, groups, images):
-        self.sprite = Sprite(
-            images[self.__class__.__name__][0],
-            batch=batch,
-            group=groups[self.render_layer] )
-        self.update_sprite_stats()
-
-
-    def remove_from_batch(self, batch):
-        self.sprite.batch = None
-        self.sprite.delete()
 
 
     def update(self):
@@ -79,17 +48,6 @@ class WorldItem(GameItem):
             self.x += width + self.width
         if self.x > width:
             self.x -= width + self.width
-
-
-    def animate(self, images):
-        self.sprite._x = self.x
-        self.sprite._y = self.y
-        self.sprite._rotation = degrees(self.rotation)
-        image = images[self.__class__.__name__][self.frame_idx]
-        if self.sprite.image != image:
-            self.sprite.image = image
-        else:
-            self.sprite._update_position()
 
 
     def collided_with(self, other):

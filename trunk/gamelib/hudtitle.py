@@ -11,11 +11,12 @@ colors = [
 ]
 
 
-class HudPressAnyKey(GameItem):
+class HudTitle(GameItem):
 
     render_layer = 3
 
     def __init__(self, game, screen_width, screen_height):
+        GameItem.__init__(self)
         self.game = game
         self.screen_width = screen_width
         self.screen_height = screen_height
@@ -23,7 +24,7 @@ class HudPressAnyKey(GameItem):
         self.pressAnyKeyLabel = None
 
 
-    def add_to_batch(self, batch, groups, _):
+    def add_to_batch(self, batch, groups):
         self.titleLabel = Label(
             'Sinister Ducks',
             font_size=36,

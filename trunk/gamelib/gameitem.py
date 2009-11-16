@@ -3,17 +3,13 @@ class GameItem(object):
 
     next_id = 0
     arena = None
-    remove_from_game = False
 
     def __init__(self):
         self.id = GameItem.next_id
         GameItem.next_id += 1
+        self.remove_from_game = False
 
 
-    def update_sprite_stats(self):
-        self.center_x = self.sprite.width/2
-        self.center_y = self.sprite.height/2
-        self.width = self.sprite.width
-        self.height = self.sprite.height
-
+    def __str__(self):
+        return "<%s%s>" % (type(self).__name__, self.id)
 

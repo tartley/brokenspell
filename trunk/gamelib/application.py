@@ -32,7 +32,7 @@ class Application(object):
         self.render = Render(self.game.arena)
         self.render.init(self.win)
 
-        self.game.init(self.win)
+        self.game.init(self.render.images)
 
         self.music = Music()
         self.music.play()

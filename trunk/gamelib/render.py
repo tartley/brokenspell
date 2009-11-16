@@ -42,13 +42,13 @@ class Render(object):
     def draw(self):
         for item in self.arena.items:
             if hasattr(item, 'animate'):
-                item.animate(self.images)
+                item.animate()
         self.batch.draw()
         self.clockDisplay.draw()
 
 
     def on_add_item(self, _, item):
-        item.add_to_batch(self.batch, self.groups, self.images)
+        item.add_to_batch(self.batch, self.groups)
 
 
     def on_remove_item(self, _, item):

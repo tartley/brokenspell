@@ -10,6 +10,7 @@ class Sky(GameItem):
     render_layer = 0
 
     def __init__(self, width, height):
+        GameItem.__init__(self)
         self.verts = (
             width, height,
             0, height,
@@ -25,7 +26,7 @@ class Sky(GameItem):
         self.vertexlist = None
 
 
-    def add_to_batch(self, batch, groups, _):
+    def add_to_batch(self, batch, groups):
         # TODO: add_indexed returns a vertexlist. It is this we should be
         # deleting to remove from batch. We must rename VertexList to
         # something else.

@@ -30,4 +30,3 @@ class Feather(WorldItem):
         self.speed -= self.rotation / 100
         WorldItem.update(self)
 
-
