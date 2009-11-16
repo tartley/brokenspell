@@ -73,7 +73,7 @@ class Game(object):
 
 
     def get_ready(self):
-        self.arena.add(HudMessage('Get Ready!', self))
+        self.arena.add(HudMessage('Get Ready!', 36))
         clock.schedule_once(lambda _: self.spawn_player(), 1)
 
 
@@ -89,7 +89,7 @@ class Game(object):
         if number is None:
             number = self.wave * 2 - 1
 
-        self.arena.add(HudMessage('Wave %d' % (self.wave), self))
+        self.arena.add(HudMessage('Wave %d' % (self.wave,), 36))
 
         for n in xrange(number):
             clock.schedule_once(lambda _: self.spawn_enemy(), n)

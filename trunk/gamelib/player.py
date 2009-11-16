@@ -6,6 +6,7 @@ from pyglet.window import key
 from bird import Action, Bird
 from feather import Feather
 from hudmessage import HudMessage
+from hudpoints import HudPoints
 from sounds import play
 
 
@@ -45,9 +46,13 @@ class Player(Bird, key.KeyStateHandler):
 
         if isinstance(other, Feather):
             if other.owner is not self:
-                score_idx = min(self.consecutive_feathers, len(scores) - 1)
-                self.game.score += scores[score_idx]
                 play('ding', self.consecutive_feathers)
+                idx = min(self.consecutive_feathers, len(scores) - 1)
+                points = scores[idx]
+                self.game.score += points
+                size = 12 + self.consecutive_feathers ** 2
+                hudpoints = HudPoints(str(points), size, self.x, self.y)
+                self.arena.add(hudpoints)
                 self.consecutive_feathers += 1
         else:
             self.consecutive_feathers = 0
@@ -55,6 +60,6 @@ class Player(Bird, key.KeyStateHandler):
 
     def die(self):
         Bird.die(self)
-        self.arena.add(HudMessage('Oh no!', self.game))
+        self.arena.add(HudMessage('Oh no!', 36))
         play('ohno')
 

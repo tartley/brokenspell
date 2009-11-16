@@ -8,20 +8,28 @@ from gameitem import GameItem
 class HudMessage(GameItem):
 
     render_layer = 3
+    color = (255, 255, 255, 255)
 
-    def __init__(self, text, game):
+    def __init__(self, text, size, x=None, y=None):
         GameItem.__init__(self)
         self.text = text
-        self.game = game
+        self.size = size
         self.label = None
+        if x is None:
+            x = self.arena.win.width / 2
+        self.x = x
+        if y is None:
+            y = self.arena.win.height / 2
+        self.y = y
 
 
     def add_to_batch(self, batch, groups):
         self.label = Label(
             self.text,
-            font_size=36,
-            x=self.game.width / 2, y=self.game.height / 2,
+            font_size=self.size,
+            x=self.x, y=self.y,
             anchor_x='center', anchor_y='center',
+            color=self.color,
             batch=batch,
             group=groups[self.render_layer] )
 
