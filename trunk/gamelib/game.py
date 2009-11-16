@@ -87,7 +87,7 @@ class Game(object):
     def spawn_wave(self, number=None):
         self.wave += 1
         if number is None:
-            number = self.wave
+            number = self.wave * 2 - 1
 
         self.arena.add(HudMessage('Wave %d' % (self.wave), self))
 
