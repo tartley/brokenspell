@@ -15,6 +15,8 @@ action_map = {
     key.RIGHT: Action.RIGHT,
 }
 
+scores = [10, 25, 50, 100, 250, 500, 1000, 2500]
+
 
 class Player(Bird, key.KeyStateHandler):
 
@@ -43,9 +45,10 @@ class Player(Bird, key.KeyStateHandler):
 
         if isinstance(other, Feather):
             if other.owner is not self:
-                self.consecutive_feathers += 1
-                self.game.score += self.consecutive_feathers * 10
+                score_idx = min(self.consecutive_feathers, len(scores) - 1)
+                self.game.score += scores[score_idx]
                 play('ding', self.consecutive_feathers - 1)
+                self.consecutive_feathers += 1
         else:
             self.consecutive_feathers = 0
 
