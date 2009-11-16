@@ -13,7 +13,7 @@ sounds = {}
 load = None
 
 
-def init():
+def load():
     if settings.get('all', 'force_audio') != 'silent':
 
         try:
@@ -42,8 +42,6 @@ def _load_sounds_matching(pattern):
 
 
 def play(name, index=None):
-    if len(sounds) == 0:
-        init()
     if settings.get('all', 'force_audio') == 'silent':
         return
     if index is None:
@@ -51,3 +49,4 @@ def play(name, index=None):
     else:
         index = min(index, len(sounds[name]) - 1)
     sounds[name][index].play()
+

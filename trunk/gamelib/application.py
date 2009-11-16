@@ -4,6 +4,7 @@ from pyglet.window import key, Window
 
 from config import settings
 from game import Game
+from sounds import load as load_sounds
 from music import Music
 from render import Render
 
@@ -23,7 +24,7 @@ class Application(object):
         if settings.getboolean('all', 'performance_test'):
             vsync = False
 
-        self.win = Window(width=1024, height=768, vsync=vsync)
+        self.win = Window(width=1024, height=768, vsync=vsync, visible=False)
         self.win.set_exclusive_mouse()
         self.win.push_handlers(self)
 
@@ -34,10 +35,13 @@ class Application(object):
 
         self.game.init(self.render.images)
 
+        load_sounds()
+
         self.music = Music()
         self.music.load()
         self.music.play()
 
+        self.win.set_visible()
         pyglet.app.run()
 
 
