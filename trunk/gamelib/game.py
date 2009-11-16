@@ -63,19 +63,18 @@ class Game(object):
     def start(self):
         self.get_ready()
 
-        hudscore = HudScore(self, self.width, self.height)
-        self.arena.add(hudscore)
-
-        hudinstructions = HudInstructions(
-            self, self.width, self.height)
+        hudinstructions = HudInstructions(self)
         self.arena.add(hudinstructions)
+
+        hudscore = HudScore(self, self.width, self.height)
+        clock.schedule_once(lambda _: self.arena.add(hudscore), 1)
 
         clock.schedule_once(lambda _: self.spawn_wave(), 3)
 
 
     def get_ready(self):
         self.arena.add(HudMessage('Get Ready!', self))
-        clock.schedule_once(lambda _: self.spawn_player(), 2)
+        clock.schedule_once(lambda _: self.spawn_player(), 1)
 
 
     def spawn_player(self):

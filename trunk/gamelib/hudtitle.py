@@ -57,7 +57,7 @@ class HudTitle(GameItem):
 
 
     def on_key_press(self, _, __):
-        self.game.start()
+        clock.schedule_once(lambda _: self.game.start(), 1)
         self.remove_from_game = True
 
 

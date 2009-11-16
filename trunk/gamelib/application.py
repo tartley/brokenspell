@@ -35,6 +35,7 @@ class Application(object):
         self.game.init(self.render.images)
 
         self.music = Music()
+        self.music.load()
         self.music.play()
 
         pyglet.app.run()
