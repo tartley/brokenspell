@@ -37,7 +37,12 @@ def setup_audio():
             options['audio'] = ('alsa', 'openal', 'silent')
 
 
+def turn_gl_debug_off():
+    options['gl_debug'] = False
+
+
 def startup():
     setup_environment_variables()
     setup_audio()
+    turn_gl_debug_off()
 
