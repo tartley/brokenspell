@@ -1,5 +1,5 @@
 
-from math import atan2, cos, pi, sin, sqrt
+from math import atan2, copysign, cos, pi, sin, sqrt
 from random import uniform
 
 from pyglet import clock, resource
@@ -8,7 +8,7 @@ from pyglet.sprite import Sprite
 from worlditem import GRAVITY, WorldItem
 
 
-AIR_RESIST = 0.995
+AIR_RESIST = 0.99
 
 
 class Feather(WorldItem):
@@ -16,10 +16,10 @@ class Feather(WorldItem):
     is_feather = True
     can_fall_off = True
 
-    def __init__(self, x, y, dx, dy, owner):
-        WorldItem.__init__(self, x, y, dx, dy)
-        self.rotation = uniform(-0.5, 0.5)
-        self.speed = uniform(5, 12)
+    def __init__(self, x, y, dx, _, owner):
+        WorldItem.__init__(self, x, y, 0, 0)
+        self.rotation = 0
+        self.speed = copysign(uniform(5, 12), -dx)
         self.curve = uniform(0.002, 0.02)
         self.owner = owner
         clock.schedule_once(lambda _: self.reset_owner(), 1)

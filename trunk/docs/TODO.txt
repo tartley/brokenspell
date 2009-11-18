@@ -4,6 +4,12 @@ CURRENT TASK:
 
 FEATURES
 
+Hudscores are a bit ugly, consider changing font and tweaking fontsizes.
+
+Hudscores (or something) seemed slow when I spawned many feathers.
+
+Enemy ducks should not collect feathers, it's just annoying.
+
 Lives
 * store on Game
 * HUD: display lives remaining
@@ -19,19 +25,17 @@ Difficulty/gameplay tuning
 * Player dies rather than losing feathers
 * OR Player collects up to 3 'shield feathers', which need a HUD
 
-All feathers need to be collectable. Make a feather's
-owner reset to None once the feather is no longer colliding with it's owner.
-
 Current enemy attacking 'dive on you' behaviour needs work. In particular, it
 does not account for horizontal velocities, so a diving enemy will almost
 always miss. Should only dive if higher than player (diving away when below is
 just annoying)
 
-Birds that collect feathers have more behaviours available to them:
+Some Birds in higher waves have more behaviours available to them:
 * fly faster
 
-Scoring
-* score should use ',' as thousands separator
+* Extra lives after X points?
+
+* hudscore should use ',' as thousands separator
 
 * Enemy ducks should hold down flap a tad longer than they do
 
@@ -39,6 +43,7 @@ More sound effects reqd:
 * player attacked: urgent cries
 * birds bounce off harmlessly at equal heights
 * Game over
+* Extra life
 
 Only show fps in performance test mode, or when outside acceptable range.
 
@@ -62,30 +67,6 @@ Binary exe for Linux
 
 
 
-REFACTOR
-
-Refactor collision response code. Don't currently like how response to a
-single collision is split between both protagonists and their base classes.
-Maybe collision detection should not immediately invoke collision response,
-but should leave a collection of touching worlditems on each item. Then
-it is up to the item's to respond to that in update() ??? THINK about this
-before implementing. Maybe each worlditem defines a list of other worlditem
-classes that it cares about colliding with?
-
-Consider that a worlditem has-a sprite holder, rather than is-a.
-
-Can we use a single media player to play all sound effects, rather than
-creating a new one each time a sound is played (like flap did)?
-
-move 'build-mswin-dist.py' to 'setup.py', think about adding a makefile
-or make-bin.bat which invokes it with the correct args.
-
-Can fps display be put into render.batch as well?
-
-Behaviour code is a bit wonky. Examine the state maching inthe Python
-Game book to see if it could be better that way.
-
-
 BUGS
 
 fuzzy line along top of rotated sprites, introduced when I started using
@@ -100,13 +81,47 @@ speed dependant on frame rate?
 
 Audio does not work properly on ALSA on my ubuntu (crashes on 32nd play of flap)
 * is this an ALSA limitation - does it work if I install and use OpenAL?
-* can we fix this with better use of pyglet API?
+* can we fix this with better use of pyglet API? Review how many media players
+  we create, etc. 'flap' used to create a new one for each play, does it still?
 
-Review all the bugs people reported in pyweek
+Review the bugs people reported in pyweek
 
 If errors occur in audio, we should catch and run silent
     - if no audio device: OK, handled
     - if wrong driver selected: not handled
+
+
+
+REFACTOR
+
+Are hudscores slow? Do they re-render the label every time we change its
+color? Can we prevent that, but still render the label with decreasing
+alpha over time?
+
+review what happens in worlditem.on_collide()
+
+Refactor collision response code. Don't currently like how response to a
+single collision is split between both protagonists and their base classes.
+Maybe collision detection should not immediately invoke collision response,
+but should leave a collection of touching worlditems on each item. Then
+it is up to the item's to respond to that in update() ??? THINK about this
+before implementing. Maybe each worlditem defines a list of other worlditem
+classes that it cares about colliding with?
+
+Consider that a worlditem has-a spriteholder, rather than is-a spriteitem.
+
+Similarly, huditems have-a labelholder. hudtitle has two.
+Can we now generalise all huditems to be instances of labelholder? And
+a huditem has-a labelholder?
+
+move 'build-mswin-dist.py' to 'setup.py', think about adding a makefile
+or make-bin.bat which invokes it with the correct args.
+
+Can fps display be put into render.batch as well?
+
+Behaviour code is a bit wonky. Examine the state maching inthe Python
+Game book to see if it could be better that way.
+
 
 
 NOT BEING DONE

@@ -77,7 +77,8 @@ class Bird(WorldItem):
 
     def lose_feather(self, otherx, othery):
         self.feathers -= 1
-        dx, dy = self.get_collision_opposite(otherx, othery)
+        dx = self.x - otherx
+        dy = self.y - othery
         feather = Feather(
             self.x, self.y,
             dx, dy,
@@ -86,12 +87,6 @@ class Bird(WorldItem):
 
         if self.feathers == 0:
             self.die()
-
-
-    def get_collision_opposite(self, otherx, othery):
-        directionx = self.x - otherx
-        directiony = self.y - othery
-        return self.dx + directionx / 3.0, self.dy + directiony / 5.0
 
 
     def die(self):
