@@ -1,4 +1,6 @@
 
+import locale
+
 from pyglet.text import Label
 
 from gameitem import GameItem
@@ -14,11 +16,18 @@ class HudScore(GameItem):
         self.screen_width = screen_width
         self.screen_height = screen_height
         self.label = None
+        self.old_source = None
+
+
+    @property
+    def source(self):
+        return self.game.score
 
 
     @property
     def text(self):
-        return str(self.game.score)
+        locale.setlocale(locale.LC_ALL, "")
+        return locale.format('%d', self.source, True)
 
 
     def add_to_batch(self, batch, groups):
@@ -29,6 +38,7 @@ class HudScore(GameItem):
             anchor_x='right', anchor_y='top',
             batch=batch,
             group=groups[self.render_layer] )
+        self.old_source = self.source
 
 
     def remove_from_batch(self, batch):
@@ -36,6 +46,7 @@ class HudScore(GameItem):
 
 
     def update(self):
-        if self.label and self.label.text != self.text:
+        if self.source != self.old_source:
             self.label.text = self.text
+            self.old_source = self.source
 
