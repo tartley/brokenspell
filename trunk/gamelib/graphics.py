@@ -18,7 +18,7 @@ def set_anchor(image):
 class Graphics(object):
 
     def __init__(self):
-        self.atlas = TextureAtlas(width=1024, height=256)
+        self.atlas = TextureAtlas(width=1024, height=512)
 
 
     def _split_filename(self, filename):

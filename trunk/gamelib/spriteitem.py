@@ -10,7 +10,7 @@ class SpriteItem(GameItem):
     '''GameItem that is rendered as a single sprite'''
 
     images = None
-    render_layer = 2
+    render_layer = 2 # birds and feathers
 
 
     def __init__(self, x=0, y=0):
