@@ -17,16 +17,14 @@ class Application(object):
         self.game = None
         self.render = None
         self.music = None
+        self.vsync = True
 
 
     def launch(self):
 
-        vsync = True
-        if settings.getboolean('all', 'performance_test'):
-            vsync = False
-
-        self.win = Window(width=1024, height=768, vsync=vsync, visible=False)
-        self.win.set_exclusive_mouse()
+        self.win = Window(
+            width=1024, height=768, vsync=self.vsync, visible=False)
+        self.win.set_mouse_visible(False)
 
         self.win.push_handlers(self)
 
@@ -51,4 +49,7 @@ class Application(object):
             self.music.toggle()
         elif symbol == key.ESCAPE:
             self.win.has_exit = True
+        elif symbol == key.F4:
+            self.vsync = not self.vsync
+            self.win.set_vsync(self.vsync)
 
