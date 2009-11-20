@@ -10,7 +10,12 @@ class HudMessage(GameItem):
     render_layer = 3
     color = (255, 255, 255, 255)
 
-    def __init__(self, text, size, x=None, y=None):
+    def __init__(self,
+        text, size,
+        x=None, y=None,
+        font_name=None,
+        remove_after=2
+    ):
         GameItem.__init__(self)
         self.text = text
         self.size = size
@@ -21,11 +26,14 @@ class HudMessage(GameItem):
         if y is None:
             y = self.arena.win.height / 2
         self.y = y
+        self.font_name = font_name
+        self.remove_after = remove_after
 
 
     def add_to_batch(self, batch, groups):
         self.label = Label(
             self.text,
+            font_name=self.font_name,
             font_size=self.size,
             x=self.x, y=self.y,
             anchor_x='center', anchor_y='center',
@@ -37,7 +45,8 @@ class HudMessage(GameItem):
         def remove(_):
             self.remove_from_game = True
 
-        clock.schedule_once(remove, 2)
+        if self.remove_after:
+            clock.schedule_once(remove, self.remove_after)
 
 
     def remove_from_batch(self, batch):
