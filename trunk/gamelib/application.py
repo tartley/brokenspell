@@ -33,7 +33,7 @@ class Application(object):
         self.render = Render(self.game.arena)
         self.render.init(self.win)
 
-        self.game.init(self.render.images)
+        self.game.init()
 
         load_sounds()
 

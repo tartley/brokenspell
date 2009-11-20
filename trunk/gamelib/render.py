@@ -6,7 +6,12 @@ from pyglet.gl import (
 )
 from pyglet.graphics import Batch, OrderedGroup
 
+from enemy import Enemy
+from feather import Feather
 from graphics import Graphics
+from ground import Ground
+from hudpoints import HudPoints
+from player import Player
 
 
 class Render(object):
@@ -20,7 +25,6 @@ class Render(object):
 
     def __init__(self, arena):
         self.arena = arena
-        self.images = None
 
         arena.item_added += self.on_add_item
         arena.item_removed += self.on_remove_item
@@ -29,12 +33,21 @@ class Render(object):
         self.batch = Batch()
 
 
-    def init(self, win):
-        graphics = Graphics()
-        self.images = graphics.load()
+    def assign_images_and_sizes(self, images):
+        for klass in [Ground, Player, Enemy, Feather]:
+            klass.images = images[klass.__name__]
+            klass.width = klass.images[0].width
+            klass.height = klass.images[0].height
 
+
+    def init(self, win):
         glEnable(GL_BLEND)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+
+        graphics = Graphics()
+        images = graphics.load()
+        self.assign_images_and_sizes(images)
+        HudPoints.create_images(graphics.atlas)
 
         win.on_draw = self.draw
 
@@ -43,6 +56,7 @@ class Render(object):
         for item in self.arena.items:
             if hasattr(item, 'animate'):
                 item.animate()
+
         self.batch.draw()
         self.clockDisplay.draw()
 
