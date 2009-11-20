@@ -63,9 +63,6 @@ class Arena(object):
 
 
     def detect_collisions(self):
-        if settings.getboolean('all', 'performance_test'):
-            return
-
         for i, item1 in enumerate(self.items):
             for item2 in islice(self.items, i+1, None):
                 if is_touching(item1, item2):
