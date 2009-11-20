@@ -18,10 +18,8 @@ def _text2image(text, size):
     label = Label(
         text,
         font_size=size,
-        color = (255, 0, 0, 255),
     )
-    image = label2texture(label).get_image_data()
-    return image
+    return label2texture(label)
 
 
 class HudPoints(SpriteItem):
@@ -29,10 +27,8 @@ class HudPoints(SpriteItem):
     Represents a number floating in the sky, instanciated whenever the player
     scores some points.
 
-    This used to be implemented using a pyglet.text.Label, but making them
-    fade to invisibility by modifying the color caused the text to be
-    re-rendered every frame, so now we pre-generate a few bitmaps to use
-    instead of Labels.
+    For performance, we generate bitmaps from Labels on startup, and
+    display these during gameplay as sprites.
     '''
 
     render_layer = 3 # hud
@@ -47,14 +43,13 @@ class HudPoints(SpriteItem):
 
 
     @classmethod
-    def create_images(cls, atlas):
+    def create_images(cls):
         '''
         Generate the bitmaps that will later be used as Sprite images when
         instances of HudPoints get rendered to the screen.
         '''
         for i, score in enumerate(scores):
             image = _text2image(str(score), 16 + i * i)
-            image = atlas.add(image)
             image.anchor_x = image.width / 2
             image.anchor_y = image.height / 2
             cls.images[i] = image

@@ -1,9 +1,10 @@
 
-from random import uniform
+from random import randint, uniform
 
 from pyglet import clock
+from pyglet.window import key
 
-from arena import Arena
+from bird import Bird
 from config import settings
 from enemy import Enemy
 from gameitem import GameItem
@@ -19,47 +20,73 @@ from sky import Sky
 from sounds import play
 
 
+
+class GameControls(key.KeyStateHandler):
+
+    def __init__(self, win, game, arena):
+        self.win = win
+        self.game = game
+        self.arena = arena
+
+
+    def update(self):
+        if self[key.F1]:
+            hudpoints = HudPoints(
+                randint(0, self.win.width),
+                randint(0, self.win.height),
+                randint(0, 8))
+            self.arena.add(hudpoints)
+
+        if self[key.F2]:
+            self.game.spawn_enemy(dx=5)
+
+        if self[key.F3]:
+            for item in self.arena.items:
+                if isinstance(item, Bird):
+                    item.feathers += 1
+                    item.lose_feather(item.x + 30, item.y + 30)
+
+
+
 class Game(object):
 
     def __init__(self, win):
-        self.width = win.width
-        self.height = win.height
+        self.win = win
         self.score = 0
-        self.num_enemies = 0
         self.wave = 0
+        self.num_enemies = 0
+        self.gamecontrols = None
+        self.arena = None
 
-        self.arena = Arena(win, self)
-        GameItem.arena = self.arena
 
+    def init(self, arena):
+        self.arena = GameItem.arena = arena
 
-    def init(self):
+        arena.item_added += self.on_add_item
+        arena.item_removed += self.on_remove_item
 
-        self.arena.item_added += self.on_add_item
-        self.arena.item_removed += self.on_remove_item
-
-        sky = Sky(self.width, self.height)
-        self.arena.add(sky)
+        sky = Sky(self.win.width, self.win.height)
+        arena.add(sky)
 
         ground = Ground()
-        self.arena.add(ground)
+        arena.add(ground)
 
-        hudtitle = HudTitle(self, self.width, self.height)
-        self.arena.add(hudtitle)
+        hudtitle = HudTitle(self, self.win.width, self.win.height)
+        arena.add(hudtitle)
 
-        if settings.getboolean('all', 'performance_test'):
-            for n in xrange(256):
-                clock.schedule_once(lambda _: self.spawn_enemy(), 0.01 * n)
+        self.gamecontrols = GameControls(self.win, self, arena)
+        self.win.push_handlers(self.gamecontrols)
 
-        clock.schedule(self.arena.update)
+        clock.schedule(self.update)
 
 
     def start(self):
         self.get_ready()
 
-        hudinstructions = HudInstructions(self)
-        self.arena.add(hudinstructions)
+        self.arena.add(
+            HudInstructions(self, self.win.width, self.win.height))
 
-        hudscore = HudScore(self, self.width, self.height)
+        hudscore = HudScore(self, self.win.width, self.win.height)
         clock.schedule_once(lambda _: self.arena.add(hudscore), 1)
 
         clock.schedule_once(lambda _: self.spawn_wave(), 3)
@@ -71,7 +98,7 @@ class Game(object):
 
 
     def spawn_player(self):
-        player = Player(self.width / 2, self.height, self)
+        player = Player(self.win.width / 2, self.win.height, self)
         player.remove_from_game = False
         player.is_alive = True
         self.arena.add(player)
@@ -88,11 +115,21 @@ class Game(object):
             clock.schedule_once(lambda _: self.spawn_enemy(), n)
 
 
-    def spawn_enemy(self):
-        x = uniform(0, self.width)
-        y = self.height + 32
-        dx = uniform(-20, 20)
+    def spawn_enemy(self, x=None, y=None, dx=None, dy=None):
+        if x is None:
+            x = uniform(0, self.win.width)
+        if y is None:
+            y = self.win.height + 32
+        if dx is None:
+            dx = uniform(-20, 20)
+        if dy is None:
+            dy = 0
         self.arena.add(Enemy(x, y, dx=dx, dy=0))
+
+
+    def update(self, _):
+        self.arena.update()
+        self.gamecontrols.update()
 
 
     def on_add_item(self, _, item):

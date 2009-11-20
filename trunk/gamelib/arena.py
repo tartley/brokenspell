@@ -79,7 +79,7 @@ class Arena(object):
                 self.remove(item)
 
 
-    def update(self, dt):
+    def update(self):
         self.detect_collisions()
         for item in self.items:
             if hasattr(item, 'update'):

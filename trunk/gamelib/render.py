@@ -1,7 +1,7 @@
 
 from pyglet import clock
 from pyglet.gl import (
-    glBlendFunc, glEnable,
+    glBlendFunc, glEnable, glColor3ub,
     GL_BLEND, GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA,
 )
 from pyglet.graphics import Batch, OrderedGroup
@@ -47,7 +47,7 @@ class Render(object):
         graphics = Graphics()
         images = graphics.load()
         self.assign_images_and_sizes(images)
-        HudPoints.create_images(graphics.atlas)
+        HudPoints.create_images()
 
         win.on_draw = self.draw
 

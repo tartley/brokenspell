@@ -54,17 +54,6 @@ class Player(Bird, key.KeyStateHandler):
             self.consecutive_feathers = 0
 
 
-    # TODO: delete this
-    def update(self):
-        from random import randint
-        Bird.update(self)
-        if self[key.SPACE]:
-            for item in self.arena.items:
-                if isinstance(item, Bird):
-                    item.feathers += 1
-                    item.lose_feather(item.x + 30, item.y + 30)
-
-
     def die(self):
         Bird.die(self)
         self.arena.add(HudMessage('Oh no!', 36))

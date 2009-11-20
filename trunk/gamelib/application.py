@@ -2,6 +2,7 @@
 import pyglet
 from pyglet.window import key, Window
 
+from arena import Arena
 from config import settings
 from game import Game
 from sounds import load as load_sounds
@@ -26,14 +27,14 @@ class Application(object):
 
         self.win = Window(width=1024, height=768, vsync=vsync, visible=False)
         self.win.set_exclusive_mouse()
+
         self.win.push_handlers(self)
 
         self.game = Game(self.win)
-
-        self.render = Render(self.game.arena)
+        arena = Arena(self.win, self)
+        self.render = Render(arena)
         self.render.init(self.win)
-
-        self.game.init()
+        self.game.init(arena)
 
         load_sounds()
 
