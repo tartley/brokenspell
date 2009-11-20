@@ -18,10 +18,14 @@ class Application(object):
         self.render = None
         self.music = None
         self.vsync = True
+        if (
+            settings.has_option('all', 'vsync') and
+            not settings.getboolean('all', 'vsync')
+        ):
+            self.vsync = False
 
 
     def launch(self):
-
         self.win = Window(
             width=1024, height=768, vsync=self.vsync, visible=False)
         self.win.set_mouse_visible(False)
