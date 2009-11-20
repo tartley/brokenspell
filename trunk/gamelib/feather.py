@@ -31,7 +31,7 @@ class Feather(WorldItem):
 
     def update(self):
         self.rotation += self.speed * self.curve
-        self.speed *= AIR_RESIST
+        self.speed *= (1 - (abs(self.speed) * self.curve))
         self.speed -= sin(self.rotation) / 2
 
         self.x += self.speed * -cos(self.rotation)
