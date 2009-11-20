@@ -1,12 +1,12 @@
 
 CURRENT TASK:
 
+Hudscores are slow when rendered as Label objects. Render them as sprites
+instead. Construct an image for each possible score at startup time,
+using the new 'Digits-10.png' file, loaded as images['Digits'][0:9]
+
 
 FEATURES
-
-Hudscores are a bit ugly, consider changing font and tweaking fontsizes.
-
-Hudscores (or something) seemed slow when I spawned many feathers.
 
 Enemy ducks should not collect feathers, it's just annoying.
 

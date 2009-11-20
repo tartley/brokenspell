@@ -1,11 +1,16 @@
 
-Sinister Ducks has the following dependencies you'll need to install:
+Sinister Ducks has the following dependencies you'll need to run the game
+from source:
 
     Python 2.6
-    Package pyglet
+    Python Package pyglet
 
-To run the tests, you'll also need:
+Binaries for libavbin are included in the tree, so you don't need to install
+that.
 
-    Package mock
-    Package unittestplus
+To run the tests, you'll need:
+
+    Python Package mock
+    Python Package unittestplus
+    Python Package nose (for test discovery)
 
