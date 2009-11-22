@@ -61,6 +61,14 @@ class Hover(State):
         return set()
 
 
+    def face_away(self, other):
+        if self.item.x < other.x:
+            self.direction = Action.LEFT
+        else:
+            self.direction = Action.RIGHT
+
+
+
 class Cruise(Hover):
 
     def __init__(self, item):
@@ -79,8 +87,10 @@ class Cruise(Hover):
 
 class Thinker(object):
 
-    def __init__(self, item):
-        self.state = Cruise(item)
+    def __init__(self, item, behaviour=None):
+        if behaviour is None:
+            behaviour = Cruise(item)
+        self.state = behaviour
 
     def __call__(self):
         return self.state.get_actions()

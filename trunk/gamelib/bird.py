@@ -5,9 +5,8 @@ from pyglet import resource
 from pyglet.sprite import Sprite
 
 from behaviour import Action
-from feather import Feather
-from worlditem import WorldItem, LEFT, RIGHT
 from sounds import play
+from worlditem import WorldItem, LEFT, RIGHT
 
 
 GLIDE_STEER = 0.1
@@ -75,36 +74,24 @@ class Bird(WorldItem):
         self.rotation = -self.dx * self.dy / 100.0
 
 
-    def lose_feather(self, otherx, othery):
-        self.feathers -= 1
-        dx = self.x - otherx
-        dy = self.y - othery
-        feather = Feather(
-            self.x, self.y,
-            dx, dy,
-            self)
-        self.arena.add(feather)
-
-        if self.feathers == 0:
-            self.die()
-
-
     def die(self):
         self.is_alive = False
         self.can_fall_off = True
 
 
     def collided_with(self, other):
-        if self.is_alive:
-            if other.is_player or other.is_enemy:
-                if other.is_alive:
-                    WorldItem.collided_with(self, other)
-                    if self.y < other.y:
-                        self.foe = other
-                        if other.is_enemy != self.is_enemy:
-                            self.lose_feather(other.x, other.y)
-            elif other.is_feather and other.owner is not self:
-                other.remove_from_game = True
-                self.feathers += 1
-                self.feathers = min(3, self.feathers + 1)
+        # TODO: both type check and 'is_alive' test can be moved to collision
+        # detection code, to cull collisions before doing the geometry checks
+        if isinstance(other, Bird) and other.is_alive and self.is_alive:
+            if (
+                self.y < other.y and
+                (self.is_player or other.is_player)
+            ):
+                self.hit(other)
+                other.consecutive_feathers = 0
+                self.consecutive_feathers = 0
+            else:
+                WorldItem.collided_with(self, other)
+                if self.is_enemy:
+                    self.think.state.face_away(other)
 

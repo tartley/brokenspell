@@ -17,6 +17,7 @@ action_map = {
 }
 
 
+# TODO: Player *has-a* KeyStateHandler, doesn't need to *be* one
 class Player(Bird, key.KeyStateHandler):
 
     is_player = True
@@ -39,23 +40,27 @@ class Player(Bird, key.KeyStateHandler):
         return actions
 
 
+    def collect(self, feather):
+        play('ding', self.consecutive_feathers)
+        feather.remove_from_game = True
+        idx = min(self.consecutive_feathers, len(scores) - 1)
+        self.game.score += scores[idx]
+        hudpoints = HudPoints(self.x, self.y, self.consecutive_feathers)
+        self.arena.add(hudpoints)
+        self.consecutive_feathers += 1
+
+
     def collided_with(self, other):
         Bird.collided_with(self, other)
 
         if isinstance(other, Feather):
             if other.owner is not self:
-                play('ding', self.consecutive_feathers)
-                idx = min(self.consecutive_feathers, len(scores) - 1)
-                self.game.score += scores[idx]
-                hudpoints = HudPoints(self.x, self.y, self.consecutive_feathers)
-                self.arena.add(hudpoints)
-                self.consecutive_feathers += 1
-        else:
-            self.consecutive_feathers = 0
+                self.collect(other)
 
 
-    def die(self):
+    def hit(self, other):
         Bird.die(self)
-        self.arena.add(HudMessage('Oh no!', 36))
+        play('die')
         play('ohno')
+        self.arena.add(HudMessage('Oh no!', 36))
 
