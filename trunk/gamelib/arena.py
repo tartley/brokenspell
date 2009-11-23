@@ -38,6 +38,8 @@ class Arena(object):
         self.win = win
         self.game = game
 
+        self.width = win.width
+        self.height = win.height
         self.items = []
 
         self.item_added = ItemAdded()
@@ -76,12 +78,19 @@ class Arena(object):
                 self.remove(item)
 
 
+    def wraparound(self, item):
+        if item.x < -item.width / 2:
+            item.x += self.width + item.width
+        if item.x > self.width + item.width / 2:
+            item.x -= self.width + item.width
+
+
     def update(self):
         self.detect_collisions()
         for item in self.items:
             if hasattr(item, 'update'):
                 item.update()
-            if hasattr(item, 'wraparound'):
-                item.wraparound(self.win.width)
+            if isinstance(item, WorldItem):
+                self.wraparound(item)
         self.remove_dead()
 

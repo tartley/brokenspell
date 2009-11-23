@@ -5,7 +5,6 @@ from pyglet import clock
 from pyglet.window import key
 
 from bird import Bird
-from config import settings
 from enemy import Enemy
 from gameitem import GameItem
 from ground import Ground
@@ -38,7 +37,7 @@ class GameControls(key.KeyStateHandler):
             self.arena.add(hudpoints)
 
         if self[key.F2]:
-            self.game.spawn_enemy(dx=5)
+            clock.schedule_once(self.game.spawn_enemy, 0 * 0.1)
 
         if self[key.F3]:
             for item in self.arena.items:

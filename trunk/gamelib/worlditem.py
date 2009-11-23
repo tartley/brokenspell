@@ -28,14 +28,14 @@ class WorldItem(SpriteItem):
 
 
     def update(self):
-        self.dx = (self.dx + self.ddx) * self.AIR_RESIST
-        self.dy = (self.dy + self.ddy - GRAVITY) * self.AIR_RESIST
+        self.dx += self.ddx
+        self.dx *= self.AIR_RESIST
+        self.dy += self.ddy - GRAVITY
+        self.dy *= self.AIR_RESIST
         self.ddx = 0
         self.ddy = 0
-
         self.x += self.dx
         self.y += self.dy
-
         self.test_for_fall_off_screen()
 
 
@@ -49,17 +49,15 @@ class WorldItem(SpriteItem):
                 self.dy = abs(self.dy) * 0.5
 
 
-    def wraparound(self, width):
-        if self.x < self.width:
-            self.x += width + self.width
-        if self.x > width:
-            self.x -= width + self.width
-
-
     def collided_with(self, other):
         pass
 
 
+    # TODO: make collisions detection stop detecting each collision after the
+    # first impact, until the two items have un-collided again.
+    # TODO: make collision detection call this function once per collision
+    # (not once per worlditem), so we can apply all this to both items
+    # together.
     @staticmethod
     def bounce(one, two):
         '''
