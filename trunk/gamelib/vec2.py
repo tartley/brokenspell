@@ -71,14 +71,21 @@ class Vec2(object):
     def length(self):
         return sqrt(self.x * self.x + self.y * self.y)
 
-    def normalize(self):
-        length = self.length
-        self.x /= length
-        self.y /= length
+    def normalize(self, raise_on_zero=False):
+        if not raise_on_zero and self.x == 0 and self.y == 0:
+            self.x = 1
+            self.y = 0
+        else:
+            length = self.length
+            self.x /= length
+            self.y /= length
 
-    def normalized(self):
-        length = self.length
-        return Vec2(self.x / length, self.y / length)
+    def normalized(self, raise_on_zero=False):
+        if not raise_on_zero and self.x == 0 and self.y == 0:
+            return Vec2(1, 0)
+        else:
+            length = self.length
+            return Vec2(self.x / length, self.y / length)
 
     def dot(self, other):
         return (self.x * other.x + self.y * other.y)

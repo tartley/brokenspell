@@ -122,15 +122,30 @@ class Vec2Test(TestCasePlus):
         self.assertEquals(v.normalize(), None)
         self.assertEquals(v, Vec2(3 / 5, 4 / 5))
 
+    def test_normalize_zero(self):
+        v = Vec2(0, 0)
+        self.assertEquals(v.normalize(), None)
+        self.assertEquals(v, Vec2(1, 0))
+
     def test_normalized(self):
         v = Vec2(3, 4)
         self.assertEquals(v.normalized(), Vec2(3 / 5, 4 / 5))
         self.assertEquals(v, Vec2(3, 4))
 
-    def test_normalize_zero(self):
+    def test_normalized_zero(self):
         v = Vec2(0, 0)
-        self.assertRaises(v.normalize, ZeroDivisionError)
-        self.assertRaises(v.normalized, ZeroDivisionError)
+        self.assertEquals(v.normalized(), Vec2(1, 0))
+        self.assertEquals(v, Vec2(0, 0))
+
+    def test_normalize_zero_raises(self):
+        v = Vec2(0, 0)
+        self.assertRaises(
+            lambda: v.normalize(raise_on_zero=True), ZeroDivisionError)
+
+    def test_normalized_zero_raises(self):
+        v = Vec2(0, 0)
+        self.assertRaises(
+            lambda: v.normalized(raise_on_zero=True), ZeroDivisionError)
 
     def test_dot(self):
         a = Vec2(3, 4)
