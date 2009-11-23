@@ -1,25 +1,10 @@
 
-from pyglet import clock
-from pyglet.image import create, ImageData
-from pyglet.text import Label
-
-from label2texture import label2texture
+from label2texture import StringTextureAtlas
 from spriteitem import SpriteItem
 
 
 # scores for consecutive feather collections
 scores = [5, 10, 25, 50, 100, 250, 500, 1000]
-
-
-def _text2image(text, size):
-    '''
-    Create an image of the given score.
-    '''
-    label = Label(
-        text,
-        font_size=size,
-    )
-    return label2texture(label)
 
 
 class HudPoints(SpriteItem):
@@ -33,6 +18,7 @@ class HudPoints(SpriteItem):
 
     render_layer = 3 # hud
     images = {}
+    atlas = StringTextureAtlas()
 
     def __init__(self, x, y, consecutive_feather):
         SpriteItem.__init__(self, x, y)
@@ -49,7 +35,7 @@ class HudPoints(SpriteItem):
         instances of HudPoints get rendered to the screen.
         '''
         for i, score in enumerate(scores):
-            image = _text2image(str(score), 16 + i * i)
+            image = HudPoints.atlas.label(text=str(score), font_size=16 + i * i)
             image.anchor_x = image.width / 2
             image.anchor_y = image.height / 2
             cls.images[i] = image
