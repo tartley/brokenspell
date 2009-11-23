@@ -98,7 +98,9 @@ class Game(object):
 
 
     def spawn_player(self):
-        player = Player(self.win.width / 2, self.win.height, self)
+        player = Player(
+            self.win.width / 2, self.win.height + Player.height / 2,
+            self)
         player.remove_from_game = False
         player.is_alive = True
         self.arena.add(player)
