@@ -1,5 +1,8 @@
 
+from math import atan2
+
 from spriteitem import SpriteItem
+from vec2 import Vec2
 
 
 GRAVITY = 0.2
@@ -54,10 +57,31 @@ class WorldItem(SpriteItem):
 
 
     def collided_with(self, other):
-        self.ddx += other.dx - self.dx
-        self.ddy += other.dy - self.dy
-        if self.y < other.y:
-            self.y -= 2
-        if self.x < other.x:
-            self.x -= 2
+        pass
+
+
+    @staticmethod
+    def bounce(one, two):
+        '''
+        perfect elastic collision between bodies one and two, described at:
+        http://www.gamasutra.com/view/feature/3015/pool_hall_lessons_fast_accurate_.php
+        '''
+        # masses
+        m1 = m2 = 1
+
+        # offset of body two from body one
+        offset = Vec2(two.x, two.y) - Vec2(one.x, one.y)
+        n = offset.normalized()
+
+        # velocities
+        v1 = Vec2(one.dx, one.dy)
+        v2 = Vec2(two.dx, two.dy)
+
+        # momentum exchanged
+        delta_p = 2 * (v1.dot(n)- v2.dot(n)) * n / (m1 + m2)
+
+        # acceleration
+        a1 = delta_p * m2
+        one.ddx -= a1.x
+        one.ddy -= a1.y
 

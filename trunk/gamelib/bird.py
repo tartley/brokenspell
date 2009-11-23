@@ -83,6 +83,7 @@ class Bird(WorldItem):
         # TODO: both type check and 'is_alive' test can be moved to collision
         # detection code, to cull collisions before doing the geometry checks
         if isinstance(other, Bird) and other.is_alive and self.is_alive:
+            WorldItem.bounce(self, other)
             if (
                 self.y < other.y and
                 (self.is_player or other.is_player)
@@ -91,7 +92,6 @@ class Bird(WorldItem):
                 other.consecutive_feathers = 0
                 self.consecutive_feathers = 0
             else:
-                WorldItem.collided_with(self, other)
                 if self.is_enemy:
                     self.think.state.face_away(other)
 
