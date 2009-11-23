@@ -1,6 +1,7 @@
 
 from os import environ, pathsep
 from platform import system
+from sys import argv
 
 from pyglet import options
 
@@ -41,8 +42,22 @@ def turn_gl_debug_off():
     options['gl_debug'] = False
 
 
+def launch():
+    from gamelib.application import Application
+    application = Application()
+    application.launch()
+
+
 def startup():
+    # these functions must be exectued before importing Application
     setup_environment_variables()
     setup_audio()
     turn_gl_debug_off()
+
+    if '-p' in argv or '--profile' in argv:
+        import cProfile
+        command = 'launch()'
+        cProfile.runctx(command, globals(), locals(), filename='profile.out')
+    else:
+        launch()
 
