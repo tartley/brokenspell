@@ -1,35 +1,14 @@
 
 import math
 
-from itertools import islice
-
 from pyglet import clock, image
 
 from config import settings
+from collision import Collision
 from enemy import Enemy
 from event import Event
 from feather import Feather
 from worlditem import WorldItem
-
-
-def is_touching(item1, item2):
-    if not isinstance(item1, WorldItem) or not isinstance(item2, WorldItem):
-        return False
-    border = 6
-    w1 = item1.width / 2 - border
-    w2 = item2.width / 2 - border
-    h1 = item1.height / 2 - border
-    h2 = item2.height / 2 - border
-    return (
-        (item1.x - w1) < (item2.x + w2) and
-        (item2.x - w2) < (item1.x + w1) and
-        (item1.y - h1) < (item2.y + h2) and
-        (item2.y - h2) < (item1.y + h1)
-    )
-
-
-class ItemAdded(Event): pass
-class ItemRemoved(Event): pass
 
 
 class Arena(object):
@@ -42,8 +21,10 @@ class Arena(object):
         self.height = win.height
         self.items = []
 
-        self.item_added = ItemAdded()
-        self.item_removed = ItemRemoved()
+        self.item_added = Event()
+        self.item_removed = Event()
+
+        self.collision = Collision()
 
 
     def add(self, item):
@@ -64,14 +45,6 @@ class Arena(object):
         self.item_removed(self, item)
 
 
-    def detect_collisions(self):
-        for i, item1 in enumerate(self.items):
-            for item2 in islice(self.items, i+1, None):
-                if is_touching(item1, item2):
-                    item1.collided_with(item2)
-                    item2.collided_with(item1)
-
-
     def remove_dead(self):
         for item in self.items[:]:
             if item.remove_from_game:
@@ -86,11 +59,12 @@ class Arena(object):
 
 
     def update(self):
-        self.detect_collisions()
         for item in self.items:
             if hasattr(item, 'update'):
                 item.update()
+        self.remove_dead()
+        self.collision.detect(self.items)
+        for item in self.items:
             if isinstance(item, WorldItem):
                 self.wraparound(item)
-        self.remove_dead()
 
