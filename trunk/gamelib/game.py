@@ -40,10 +40,11 @@ class GameControls(key.KeyStateHandler):
             clock.schedule_once(self.game.spawn_enemy, 0 * 0.1)
 
         if self[key.F3]:
-            for item in self.arena.items:
-                if isinstance(item, Bird):
-                    item.feathers += 1
-                    item.lose_feather(item.x + 30, item.y + 30)
+            for bird in self.arena.items[Enemy]:
+                bird.feathers += 1
+                bird.lose_feather(
+                    bird.x + bird.width / 2,
+                    bird.y + bird.height / 2)
 
 
 

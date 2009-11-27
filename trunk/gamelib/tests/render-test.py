@@ -19,11 +19,12 @@ class RenderTest(TestCasePlus):
 
     def test_AddItemToWorldAddsItToRenderBatchToo(self):
         item1, item2, item3 = WorldItem(), WorldItem(), WorldItem()
-        arena = Arena(None, None, None)
+        arena = Arena(None, None)
         application = Mock()
         application.arena = arena
-        render = Render(application, None)
+        render = Render(arena)
         render.images = dict(WorldItem=[_dummy_image])
+        WorldItem.images = [_dummy_image]
 
         arena.add(item1)
         arena.add(item2)
@@ -36,11 +37,12 @@ class RenderTest(TestCasePlus):
 
     def test_RemoveItemFromWorldRemovesFromRenderBatchToo(self):
         item1, item2, item3 = WorldItem(), WorldItem(), WorldItem()
-        arena = Arena(None, None, None)
+        arena = Arena(None, None)
         application = Mock()
         application.arena = arena
-        render = Render(application, None)
+        render = Render(arena)
         render.images = dict(WorldItem=[_dummy_image])
+        WorldItem.images = [_dummy_image]
 
         arena.add(item1)
         arena.add(item2)

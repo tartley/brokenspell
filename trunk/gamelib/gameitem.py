@@ -10,6 +10,6 @@ class GameItem(object):
         self.remove_from_game = False
 
 
-    def __str__(self):
+    def __repr__(self):
         return "<%s%s>" % (type(self).__name__, self.id)
 

@@ -53,6 +53,8 @@ class Render(object):
 
 
     def draw(self):
+        # TODO, can this be over items[SpriteItem] or something, and
+        # hence drop the hasattr check?
         for item in self.arena.items:
             if hasattr(item, 'animate'):
                 item.animate()

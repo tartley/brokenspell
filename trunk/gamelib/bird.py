@@ -6,6 +6,7 @@ from pyglet.sprite import Sprite
 
 from behaviour import Action
 from sounds import play
+from vec2 import Vec2
 from worlditem import WorldItem, LEFT, RIGHT
 
 
@@ -74,24 +75,39 @@ class Bird(WorldItem):
         self.rotation = -self.dx * self.dy / 100.0
 
 
+    # TODO: make collisions detection stop detecting each collision after the
+    # first impact, until the two items have un-collided again.
+    @staticmethod
+    def bounce(one, two):
+        '''
+        perfect elastic collision between bodies one and two, described at:
+        http://www.gamasutra.com/view/feature/3015/
+            pool_hall_lessons_fast_accurate_.php
+        '''
+        # masses
+        m1 = m2 = 1
+
+        # offset of body two from body one
+        offset = Vec2(two.x, two.y) - Vec2(one.x, one.y)
+        n = offset.normalized()
+
+        # velocities
+        v1 = Vec2(one.dx, one.dy)
+        v2 = Vec2(two.dx, two.dy)
+
+        # momentum exchanged
+        delta_p = 2 * (v1.dot(n)- v2.dot(n)) * n / (m1 + m2)
+
+        # accelerations
+        a1 = delta_p * m2
+        one.ddx -= a1.x
+        one.ddy -= a1.y
+        a2 = delta_p * m1
+        two.ddx += a2.x
+        two.ddy += a2.y
+
+
     def die(self):
         self.is_alive = False
         self.can_fall_off = True
-
-
-    def collided_with(self, other):
-        # TODO: both type check and 'is_alive' test can be moved to collision
-        # detection code, to cull collisions before doing the geometry checks
-        if isinstance(other, Bird) and other.is_alive and self.is_alive:
-            WorldItem.bounce(self, other)
-            if (
-                self.y < other.y and
-                (self.is_player or other.is_player)
-            ):
-                self.hit(other)
-                other.consecutive_feathers = 0
-                self.consecutive_feathers = 0
-            else:
-                if self.is_enemy:
-                    self.think.state.face_away(other)
 

@@ -1,15 +1,23 @@
 
 from itertools import islice
 
+from bird import Bird
+from enemy import Enemy
+from feather import Feather
+from player import Player
 from worlditem import WorldItem
+
+
+collision_handlers = {
+    (Player, Feather): Player.collide_feather,
+    (Player, Enemy): Player.collide_enemy,
+}
 
 
 def is_touching(item1, item2):
     '''
-    compare axis aligned rectangles, size of item.width/height minus a border
+    compare axis aligned rectangles, using item.width/height minus a border
     '''
-    if not isinstance(item1, WorldItem) or not isinstance(item2, WorldItem):
-        return False
     border = 6
     w1 = item1.width / 2 - border
     h1 = item1.height / 2 - border
@@ -26,9 +34,12 @@ def is_touching(item1, item2):
 class Collision(object):
 
     def detect(self, items):
-        for i, item1 in enumerate(items):
-            for item2 in islice(items, i+1, None):
-                if is_touching(item1, item2):
-                    item1.collided_with(item2)
-                    item2.collided_with(item1)
+        for (type1, type2), handler in collision_handlers.iteritems():
+            for index, item1 in enumerate(items[type1]):
+                type2_items = items[type2]
+                if type1 == type2:
+                    type2_items = islice(type2_items, index + 1, None)
+                for item2 in type2_items:
+                    if is_touching(item1, item2):
+                        handler(item1, item2)
 

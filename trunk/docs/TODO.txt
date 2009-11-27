@@ -1,17 +1,43 @@
 
 CURRENT TASK:
 
+Refactor collision detection code. Suspect this is cause of slowdown when
+injecting many ducks or feathers into the arena.
+Maybe arena could keep entities in a dictionary instead of a set, keyed on
+the item type. Then collision detection could just test all entries in
+items[Bird] against entries in items[Feather], etc. This is a great idea.
+
+Maybe collision detection should not immediately invoke collision response,
+but should leave a collection of touching worlditems on each item. Then
+it is up to the items to respond to that in update()
+
+make collision detection call one collision response function per collision
+(not one per worlditem in the collision), so we can centralise the handling
+of a particular collision type (eg. one function to handle player collecting
+a feather, eg2, apply 'bounce()' logic to both items together.)
 
 
 FEATURES
 
-Difficulty/gameplay tuning
-* Player dies rather than losing feathers
-* OR Player collects up to 3 'shield feathers', which need a HUD
+Refactor collision response code. Don't like how response to a
+single collision is split between both protagonists and their base classes.
 
-Enemy ducks should not collect feathers, it's just annoying.
+* enemies should collect feathers after all, and drop all held feathers
+when killed
+
+Difficulty/gameplay tuning
+* consider Player collects up to 3 'shield feathers', which need a HUD
 
 Each wave gets a special message
+
+make collisions detection stop detecting each collision after the
+first impact, until the two items have un-collided again.
+
+* Bounces sometimes result in enemies getting caught embedded in each other.
+Try (pos -= vel) before applying bounce logic.
+
+current wraparound implimentation can result in worlditems deeply
+interpenetrating
 
 Lives
 * store on Game
@@ -69,6 +95,8 @@ Binary exe for Linux
 
 BUGS
 
+spawn_enemy() should not create interpenetrating ducks.
+
 fuzzy line along top of rotated sprites, introduced when I started using
 a texture atlas.
 
@@ -90,25 +118,10 @@ If errors occur in audio, we should catch and run silent
     - if no audio device: OK, handled
     - if wrong driver selected: not handled
 
+Three-body collisions are probably not handled correctly
 
 
 REFACTOR
-
-review what happens in worlditem.on_collide(). Why do ducks go crazy when
-you inject lots of them?
-
-Refactor collision detection code. Suspect this is cause of slowdown when
-injecting many ducks or feathers into the arena.
-Maybe arena could keep entities in a dictionary instead of a set, keyed on
-the item type. Then collision detection could just test all entries in
-items[Bird] against entries in items[Feather], etc. This is a great idea.
-
-Refactor collision response code. Don't like how response to a
-single collision is split between both protagonists and their base classes.
-
-Maybe collision detection should not immediately invoke collision response,
-but should leave a collection of touching worlditems on each item. Then
-it is up to the items to respond to that in update()
 
 Consider that a worlditems have-a displayable, rather than being one.
 Displayable is root class, derived into SpriteHolder, LabelHolder,

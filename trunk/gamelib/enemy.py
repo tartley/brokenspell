@@ -19,11 +19,11 @@ class Enemy(Bird):
     def hit(self, other):
         Bird.die(self)
         self.think.state = Plummet(self)
+        play('quack')
         self.lose_feather(other.x, other.y)
 
 
     def lose_feather(self, otherx, othery):
-        play('quack')
         self.feathers -= 1
         dx = self.x - otherx
         dy = self.y - othery

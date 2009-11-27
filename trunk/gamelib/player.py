@@ -40,7 +40,9 @@ class Player(Bird, key.KeyStateHandler):
         return actions
 
 
-    def collect(self, feather):
+    def collide_feather(self, feather):
+        if feather.owner is self:
+            return
         play('ding', self.consecutive_feathers)
         feather.remove_from_game = True
         idx = min(self.consecutive_feathers, len(scores) - 1)
@@ -50,15 +52,17 @@ class Player(Bird, key.KeyStateHandler):
         self.consecutive_feathers += 1
 
 
-    def collided_with(self, other):
-        Bird.collided_with(self, other)
+    def collide_enemy(self, enemy):
+        if self.is_alive and enemy.is_alive:
+            Bird.bounce(self, enemy)
+            self.consecutive_feathers = 0
+            if self.y < enemy.y:
+                self.hit(enemy)
+            else:
+                enemy.hit(self)
 
-        if isinstance(other, Feather):
-            if other.owner is not self:
-                self.collect(other)
 
-
-    def hit(self, other):
+    def hit(self, _):
         Bird.die(self)
         play('die')
         play('ohno')
