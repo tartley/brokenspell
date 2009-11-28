@@ -1,59 +1,50 @@
 
+from ..event import Event
+from ..gameitem import GameItem
+from ..render import Render
+from ..worlditem import WorldItem
+
 from mock import Mock
-
-from pyglet.image import SolidColorImagePattern
-
 from unittestplus.testcaseplus import TestCasePlus
 from unittestplus.run import run
-
-from ..worlditem import WorldItem
-from ..render import Render
-from ..arena import Arena
-
-
-_dummy_image = \
-    SolidColorImagePattern(color=(0, 0, 0, 0)).create_image(64, 64)
 
 
 class RenderTest(TestCasePlus):
 
-    def test_AddItemToWorldAddsItToRenderBatchToo(self):
-        item1, item2, item3 = WorldItem(), WorldItem(), WorldItem()
-        arena = Arena(None, None)
-        application = Mock()
-        application.arena = arena
-        render = Render(arena)
-        render.images = dict(WorldItem=[_dummy_image])
-        WorldItem.images = [_dummy_image]
+    def test_on_add_item(self):
+        game = Mock()
+        game.item_added = Event()
+        game.item_removed = Event()
+        render = Render(game)
+        item = GameItem()
 
-        arena.add(item1)
-        arena.add(item2)
-        arena.add(item3)
+        render.on_add_item(item)
+        # item.add_to_batch doesn't exist and is not called
 
-        self.assertIs(item1.sprite.batch, render.batch)
-        self.assertIs(item2.sprite.batch, render.batch)
-        self.assertIs(item3.sprite.batch, render.batch)
+        item.add_to_batch = Mock()
+        render.on_add_item(item)
+        self.assertEquals(
+            item.add_to_batch.call_args,
+            ((render.batch, render.groups), {})
+        )
 
 
-    def test_RemoveItemFromWorldRemovesFromRenderBatchToo(self):
-        item1, item2, item3 = WorldItem(), WorldItem(), WorldItem()
-        arena = Arena(None, None)
-        application = Mock()
-        application.arena = arena
-        render = Render(arena)
-        render.images = dict(WorldItem=[_dummy_image])
-        WorldItem.images = [_dummy_image]
+    def test_on_remove_item(self):
+        game = Mock()
+        game.item_added = Event()
+        game.item_removed = Event()
+        render = Render(game)
+        item = GameItem()
 
-        arena.add(item1)
-        arena.add(item2)
-        arena.add(item3)
+        render.on_remove_item(item)
+        # item.remove_from_batch doesn't exist and is not called
 
-        arena.remove(item2)
-
-        self.assertIs(item1.sprite.batch, render.batch)
-        self.assertNone(item2.sprite.batch)
-        self.assertIs(item3.sprite.batch, render.batch)
-
+        item.remove_from_batch = Mock()
+        render.on_remove_item(item)
+        self.assertEquals(
+            item.remove_from_batch.call_args,
+            ((render.batch, ), {})
+        )
 
 
 if __name__ == '__main__':
