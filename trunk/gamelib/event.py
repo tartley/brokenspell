@@ -1,10 +1,8 @@
 
 class Event(object):
 
-    def __init__(self, listener=None):
+    def __init__(self):
         self.listeners = set()
-        if listener:
-            self += listener
 
 
     def __iadd__(self, listener):

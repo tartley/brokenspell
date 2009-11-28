@@ -6,10 +6,8 @@ from gameitem import GameItem
 
 class GameControls(GameItem):
 
-    def __init__(self, win, game):
+    def __init__(self):
         GameItem.__init__(self)
-        self.win = win
-        self.game = game
         self.hudpoints_shower = False
 
 
@@ -28,7 +26,7 @@ class GameControls(GameItem):
     def update(self):
         if self.hudpoints_shower:
             self.game.add(HudPoints(
-                randint(0, self.win.width),
-                randint(0, self.win.height),
+                randint(0, self.game.width),
+                randint(0, self.game.height),
                 randint(0, 8)))
 

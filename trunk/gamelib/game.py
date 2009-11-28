@@ -1,10 +1,6 @@
 
-from random import randint, uniform
-
 from pyglet import clock
-from pyglet.window import key
 
-from bird import Bird
 from collision import Collision
 from enemy import Enemy
 from event import Event
@@ -12,14 +8,11 @@ from gamecontrols import GameControls
 from gameitem import GameItem
 from ground import Ground
 from hudmessage import HudMessage
-from hudpoints import HudPoints
 from hudscore import HudScore
 from hudtitle import HudTitle
 from hudinstructions import HudInstructions
-from feather import Feather
 from player import Player
 from sky import Sky
-from sounds import play
 from typebag import TypeBag
 from worlditem import WorldItem
 
@@ -29,15 +22,15 @@ class Game(object):
 
     def __init__(self, win):
         self.win = win
-        HudMessage.win_width = win.width
-        HudMessage.win_height = win.height
+        self.width = win.width
+        self.height = win.height
         self.score = 0
         self.wave = 0
         self.num_enemies = 0
         self.gamecontrols = None
         self._items = TypeBag()
-        self.item_added = Event(self.on_add_item)
-        self.item_removed = Event(self.on_remove_item)
+        self.item_added = Event()
+        self.item_removed = Event()
         self.collision = Collision()
         GameItem.game = self
 
@@ -48,6 +41,12 @@ class Game(object):
 
     def add(self, item):
         self._items.add(item)
+
+        if isinstance(item, Enemy):
+            self.num_enemies += 1
+        if hasattr(item, 'on_key_press'):
+            self.win.push_handlers(item)
+
         self.item_added(item)
 
 
@@ -56,14 +55,25 @@ class Game(object):
         if item is None:
             item = self._items[itemid]
         self._items.remove(item)
+
+        if isinstance(item, Enemy):
+            self.num_enemies -= 1
+            if self.num_enemies == 0:
+                self.spawn_wave()
+        if hasattr(item, 'on_key_press'):
+            self.win.remove_handlers(item)
+
+        if isinstance(item, Player):
+            clock.schedule_once(lambda _: self.get_ready(), 1.5)
+
         self.item_removed(item)
 
 
     def init(self):
-        self.add(Sky(self.win.width, self.win.height))
+        self.add(Sky())
         self.add(Ground())
-        self.add(HudTitle(self, self.win.width, self.win.height))
-        self.gamecontrols = GameControls(self.win, self)
+        self.add(HudTitle())
+        self.gamecontrols = GameControls()
         self.add(self.gamecontrols)
         clock.schedule(self.update)
 
@@ -121,23 +131,4 @@ class Game(object):
             self.remove(itemid=itemid)
 
         self.collision.detect(self._items)
-
-
-    def on_add_item(self, item):
-        if isinstance(item, Enemy):
-            self.num_enemies += 1
-        if hasattr(item, 'on_key_press'):
-            self.win.push_handlers(item)
-
-
-    def on_remove_item(self, item):
-        if isinstance(item, Enemy):
-            self.num_enemies -= 1
-            if self.num_enemies == 0:
-                self.spawn_wave()
-        if hasattr(item, 'on_key_press'):
-            self.win.remove_handlers(item)
-
-        if isinstance(item, Player):
-            clock.schedule_once(lambda _: self.get_ready(), 1.5)
 

@@ -23,10 +23,10 @@ class HudMessage(GameItem):
         self.size = size
         self.label = None
         if x is None:
-            x = HudMessage.win_width / 2
+            x = self.game.width / 2
         self.x = x
         if y is None:
-            y = HudMessage.win_height / 2
+            y = self.game.height / 2
         self.y = y
         self.font_name = font_name
         self.remove_after = remove_after

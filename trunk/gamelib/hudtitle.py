@@ -15,11 +15,8 @@ class HudTitle(GameItem):
 
     render_layer = 3
 
-    def __init__(self, game, screen_width, screen_height):
+    def __init__(self):
         GameItem.__init__(self)
-        self.game = game
-        self.screen_width = screen_width
-        self.screen_height = screen_height
         self.titleLabel = None
         self.pressAnyKeyLabel = None
 
@@ -28,14 +25,14 @@ class HudTitle(GameItem):
         self.titleLabel = Label(
             'Sinister Ducks',
             font_size=36,
-            x=self.screen_width / 2, y=self.screen_height / 2 + 30,
+            x=self.game.width / 2, y=self.game.height / 2 + 30,
             anchor_x='center', anchor_y='center',
             batch=batch,
             group=groups[self.render_layer] )
         self.pressAnyKeyLabel = Label(
             'Press any key',
             font_size=18,
-            x=self.screen_width / 2, y=self.screen_height / 2 - 20,
+            x=self.game.width / 2, y=self.game.height / 2 - 20,
             anchor_x='center', anchor_y='center',
             batch=batch,
             group=groups[self.render_layer] )

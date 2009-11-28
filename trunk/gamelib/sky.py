@@ -9,13 +9,13 @@ class Sky(GameItem):
 
     render_layer = 0
 
-    def __init__(self, width, height):
+    def __init__(self):
         GameItem.__init__(self)
         self.verts = (
-            width, height,
-            0, height,
+            self.game.width, self.game.height,
+            0, self.game.height,
             0, 0,
-            width, 0,
+            self.game.width, 0,
         )
         self.colors = (
             000, 000, 127,
