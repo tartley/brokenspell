@@ -9,6 +9,7 @@ from sounds import play
 class Enemy(Bird):
 
     is_enemy = True
+    count = 0
 
     def __init__(self, x, y, dx=0, dy=0):
         Bird.__init__(self, x, y, dx, dy)
@@ -25,8 +26,14 @@ class Enemy(Bird):
         Enemy.game.add(Enemy(x, y, dx=dx, dy=0))
 
 
-    def add(self):
-        pass
+    def added(self):
+        Enemy.count += 1
+
+
+    def removed(self):
+        Enemy.count -= 1
+        if Enemy.count == 0:
+            self.game.spawn_wave()
 
 
     def hit(self, other):

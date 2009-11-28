@@ -42,8 +42,9 @@ class Game(object):
     def add(self, item):
         self._items.add(item)
 
-        if isinstance(item, Enemy):
-            self.num_enemies += 1
+        item.added()
+
+        # TODO: can we impliemtn all of these in item.added() methods?
         if hasattr(item, 'on_key_press'):
             self.win.push_handlers(item)
 
@@ -56,13 +57,11 @@ class Game(object):
             item = self._items[itemid]
         self._items.remove(item)
 
-        if isinstance(item, Enemy):
-            self.num_enemies -= 1
-            if self.num_enemies == 0:
-                self.spawn_wave()
+        item.removed()
+
+        # TODO: can we impliemtn all of these in item.removed() methods?
         if hasattr(item, 'on_key_press'):
             self.win.remove_handlers(item)
-
         if isinstance(item, Player):
             clock.schedule_once(lambda _: self.get_ready(), 1.5)
 
