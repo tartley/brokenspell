@@ -113,16 +113,14 @@ class Game(object):
             item.update()
             if item.remove_from_game:
                 to_remove.add(id(item))
+            # TODO, can we find a way to iterate through WorldItems?
+            if isinstance(item, WorldItem):
+                self.wraparound(item)
 
         for itemid in to_remove:
             self.remove(itemid=itemid)
 
         self.collision.detect(self._items)
-
-        # TODO, can we find a way to iterate through WorldItems?
-        for item in self._items:
-            if isinstance(item, WorldItem):
-                self.wraparound(item)
 
 
     def on_add_item(self, item):
@@ -140,7 +138,6 @@ class Game(object):
         if hasattr(item, 'on_key_press'):
             self.win.remove_handlers(item)
 
-
         if isinstance(item, Player):
-            clock.schedule_once(lambda _: self.get_ready(), 2)
+            clock.schedule_once(lambda _: self.get_ready(), 1.5)
 

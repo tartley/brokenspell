@@ -1,26 +1,15 @@
 
 CURRENT TASK:
 
-Refactor collision detection code. Suspect this is cause of slowdown when
-injecting many ducks or feathers into the arena.
-Maybe arena could keep entities in a dictionary instead of a set, keyed on
-the item type. Then collision detection could just test all entries in
-items[Bird] against entries in items[Feather], etc. This is a great idea.
-
-Maybe collision detection should not immediately invoke collision response,
-but should leave a collection of touching worlditems on each item. Then
-it is up to the items to respond to that in update()
-
-make collision detection call one collision response function per collision
-(not one per worlditem in the collision), so we can centralise the handling
-of a particular collision type (eg. one function to handle player collecting
-a feather, eg2, apply 'bounce()' logic to both items together.)
+Lives
+* store on Game
+* HUD: display lives remaining
+* dying decrements number of lives
+* game over on 0
+* back to titles after game over
 
 
 FEATURES
-
-Refactor collision response code. Don't like how response to a
-single collision is split between both protagonists and their base classes.
 
 * enemies should collect feathers after all, and drop all held feathers
 when killed
@@ -39,13 +28,6 @@ Try (pos -= vel) before applying bounce logic.
 current wraparound implimentation can result in worlditems deeply
 interpenetrating
 
-Lives
-* store on Game
-* HUD: display lives remaining
-* dying decrements number of lives
-* game over on 0
-* back to titles after game over
-
 fullscreen mode
 * button to toggle it
 
@@ -59,7 +41,6 @@ always miss.
 * Should only dive is bird is higher than player (diving away when below is
   just annoying)
 
-* waves have n*n birds in them?
 * higher waves have birds that fly faster?
 
 * Enemy ducks should hold down flap a tad longer than they do, just for the
@@ -94,8 +75,6 @@ Binary exe for Linux
 
 
 BUGS
-
-spawn_enemy() should not create interpenetrating ducks.
 
 fuzzy line along top of rotated sprites, introduced when I started using
 a texture atlas.
@@ -150,6 +129,9 @@ our own.
 Behaviour code is a bit wonky. Examine the state machine in the Python
 Game book to see if it could be better that way.
 
+Maybe collision detection should not immediately invoke collision response,
+but should leave a collection of touching worlditems on each item. Then
+it is up to the items to respond to that in update()
 
 
 NOT BEING DONE
