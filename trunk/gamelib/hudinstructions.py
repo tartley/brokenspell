@@ -30,10 +30,8 @@ class HudInstructions(GameItem):
 
     render_layer = 3
 
-    def __init__(self, game, win_width, win_height):
+    def __init__(self):
         GameItem.__init__(self)
-        self.screen_width = win_width
-        self.screen_height = win_height
         self.label = None
         self.textidx = 0
         self.need_pressing = set([key.LEFT, key.RIGHT, key.Z])
@@ -43,7 +41,7 @@ class HudInstructions(GameItem):
         self.label = Label(
             text[self.textidx],
             font_size=24,
-            x=10, y=self.screen_height - 5,
+            x=10, y=self.game.height - 5,
             anchor_x='left', anchor_y='top',
             batch=batch,
             group=groups[self.render_layer] )

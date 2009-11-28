@@ -42,7 +42,7 @@ class Game(object):
 
         item.added()
 
-        # TODO: can we impliemtn all of these in item.added() methods?
+        # TODO: can we impliment all of these in item.added() methods?
         if hasattr(item, 'on_key_press'):
             self.win.push_handlers(item)
 
@@ -57,11 +57,9 @@ class Game(object):
 
         item.removed()
 
-        # TODO: can we impliemtn all of these in item.removed() methods?
+        # TODO: can we impliment all of these in item.removed() methods?
         if hasattr(item, 'on_key_press'):
             self.win.remove_handlers(item)
-        if isinstance(item, Player):
-            clock.schedule_once(lambda _: self.get_ready(), 1.5)
 
         self.item_removed(item)
 
@@ -76,19 +74,11 @@ class Game(object):
 
 
     def start(self):
-        self.get_ready()
-
-        # TODO: probably all WorldItems need to know win.width/height
-        # as a class attribute, so we don't have to pass these in all over
-        self.add(HudInstructions(self, self.win.width, self.win.height))
+        Player.get_ready()
+        self.add(HudInstructions())
         Player.score = 0
         clock.schedule_once(lambda _: self.add(HudScore()), 1)
         clock.schedule_once(lambda _: self.spawn_wave(), 3)
-
-
-    def get_ready(self):
-        self.add(HudMessage('Get Ready!', 36))
-        clock.schedule_once(lambda _: Player.spawn(self), 1)
 
 
     def spawn_wave(self):

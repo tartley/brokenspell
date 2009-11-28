@@ -1,6 +1,7 @@
 
 import math
 
+from pyglet import clock
 from pyglet.window import key
 
 from bird import Action, Bird
@@ -17,23 +18,32 @@ action_map = {
 }
 
 
-# TODO: Player *has-a* KeyStateHandler, doesn't need to *be* one
+# TODO: consider Player *has-a* KeyStateHandler, doesn't need to *be* one
 class Player(Bird, key.KeyStateHandler):
 
     is_player = True
     score = 0
 
-    def __init__(self, x, y, game):
+    def __init__(self, x, y):
         Bird.__init__(self, x, y)
-        self.game = game
         self.consecutive_feathers = 0
 
 
     @staticmethod
-    def spawn(game):
-        x = game.win.width / 2
-        y = game.win.height + Player.height / 2
-        game.add(Player(x, y, game))
+    def get_ready():
+        Player.game.add(HudMessage('Get Ready!', 36))
+        clock.schedule_once(lambda _: Player.spawn(), 1)
+
+
+    @staticmethod
+    def spawn():
+        x = Player.game.width / 2
+        y = Player.game.height + Player.height / 2
+        Player.game.add(Player(x, y))
+
+
+    def removed(self):
+        clock.schedule_once(lambda _: Player.get_ready(), 1.5)
 
 
     def think(self):
