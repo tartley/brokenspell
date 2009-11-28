@@ -26,7 +26,6 @@ class Game(object):
         self.height = win.height
         self.score = 0
         self.wave = 0
-        self.num_enemies = 0
         self.gamecontrols = None
         self._items = TypeBag()
         self.item_added = Event()
@@ -94,7 +93,7 @@ class Game(object):
         clock.schedule_once(lambda _: Player.spawn(self), 1)
 
 
-    def spawn_wave(self, number=None):
+    def spawn_wave(self):
         self.wave += 1
         if number is None:
             number = self.wave * self.wave

@@ -21,7 +21,6 @@ action_map = {
 class Player(Bird, key.KeyStateHandler):
 
     is_player = True
-    image_row = 3
 
     def __init__(self, x, y, game):
         Bird.__init__(self, x, y)
