@@ -26,7 +26,7 @@ MESSAGE_WAVE1 = [
 ]
 
 
-class HudInstructions(GameItem):
+class HudInstructions(GameItem, key.KeyStateHandler):
 
     render_layer = 3
 

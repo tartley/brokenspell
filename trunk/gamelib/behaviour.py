@@ -29,12 +29,10 @@ class Hover(State):
         self.choose_altitude(None)
 
 
-    # TODO: Demeter violation
     def choose_altitude(self, _):
-        if not self.item.is_alive or self.item.game.win.has_exit:
+        if not self.item.is_alive:
             return
-
-        self.desired_y = randint(100, self.item.game.win.height - 100)
+        self.desired_y = randint(100, self.item.game.height - 100)
         clock.schedule_once(self.choose_altitude, randint(3, 20))
 
 

@@ -1,6 +1,7 @@
 
 from pyglet import clock
 from pyglet.text import Label
+from pyglet.window import key
 
 from gameitem import GameItem
 
@@ -15,8 +16,9 @@ class HudTitle(GameItem):
 
     render_layer = 3
 
-    def __init__(self):
+    def __init__(self, win):
         GameItem.__init__(self)
+        self.win = win
         self.titleLabel = None
         self.pressAnyKeyLabel = None
 

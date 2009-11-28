@@ -18,8 +18,7 @@ action_map = {
 }
 
 
-# TODO: consider Player *has-a* KeyStateHandler, doesn't need to *be* one
-class Player(Bird, key.KeyStateHandler):
+class Player(Bird):
 
     is_player = True
     score = 0
@@ -46,13 +45,15 @@ class Player(Bird, key.KeyStateHandler):
         clock.schedule_once(lambda _: Player.get_ready(), 1.5)
 
 
+    # TODO,impliment Player.think() as a behaviour think state
+    # and have it replaced with 'plummet' on death, just like enemy is
     def think(self):
         if not self.is_alive:
             return set()
 
         actions = set()
         for keypress, action in action_map.iteritems():
-            if self[keypress]:
+            if self.game.keystate[keypress]:
                 actions.add(action)
         return actions
 
@@ -72,11 +73,11 @@ class Player(Bird, key.KeyStateHandler):
     def collide_enemy(self, enemy):
         if self.is_alive and enemy.is_alive:
             Bird.bounce(self, enemy)
-            self.consecutive_feathers = 0
             if self.y < enemy.y:
                 self.hit(enemy)
             else:
                 enemy.hit(self)
+                self.consecutive_feathers = 0
 
 
     def hit(self, _):

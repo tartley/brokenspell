@@ -4,7 +4,7 @@ from pyglet import clock
 from collision import Collision
 from enemy import Enemy
 from event import Event
-from gamecontrols import GameControls
+from stresstest import StressTest
 from gameitem import GameItem
 from ground import Ground
 from hudmessage import HudMessage
@@ -20,15 +20,16 @@ from worlditem import WorldItem
 
 class Game(object):
 
-    def __init__(self, win):
-        self.win = win
-        self.width = win.width
-        self.height = win.height
+    def __init__(self, keystate, width, height):
+        self.keystate = keystate
+        self.width = width
+        self.height = height
         self.wave = 0
-        self.gamecontrols = None
+        self.stresstest = None
         self._items = TypeBag()
         self.item_added = Event()
         self.item_removed = Event()
+        self._to_be_added = []
         self.collision = Collision()
         GameItem.game = self
 
@@ -38,14 +39,12 @@ class Game(object):
 
 
     def add(self, item):
+        self._to_be_added.append(item)
+
+
+    def _add(self, item):
         self._items.add(item)
-
         item.added()
-
-        # TODO: can we impliment all of these in item.added() methods?
-        if hasattr(item, 'on_key_press'):
-            self.win.push_handlers(item)
-
         self.item_added(item)
 
 
@@ -56,20 +55,15 @@ class Game(object):
         self._items.remove(item)
 
         item.removed()
-
-        # TODO: can we impliment all of these in item.removed() methods?
-        if hasattr(item, 'on_key_press'):
-            self.win.remove_handlers(item)
-
         self.item_removed(item)
 
 
-    def init(self):
+    def startup(self, win):
         self.add(Sky())
         self.add(Ground())
-        self.add(HudTitle())
-        self.gamecontrols = GameControls()
-        self.add(self.gamecontrols)
+        self.add(HudTitle(win))
+        self.stresstest = StressTest()
+        self.add(self.stresstest)
         clock.schedule(self.update)
 
 
@@ -94,24 +88,26 @@ class Game(object):
 
     def wraparound(self, item):
         if item.x < -item.width / 2:
-            item.x += self.win.width + item.width
-        if item.x > self.win.width + item.width / 2:
-            item.x -= self.win.width + item.width
+            item.x += self.width + item.width
+        if item.x > self.width + item.width / 2:
+            item.x -= self.width + item.width
 
 
     def update(self, _):
-        self.gamecontrols.update()
-
-        to_remove = set()
+        # iterate through self._items, updating each
+        ids_to_remove = set()
         for item in self._items:
             item.update()
             if item.remove_from_game:
-                to_remove.add(id(item))
+                ids_to_remove.add(id(item))
             # TODO, can we find a way to iterate through WorldItems?
             if isinstance(item, WorldItem):
                 self.wraparound(item)
 
-        for itemid in to_remove:
+        # Add and remove from self._items here
+        while self._to_be_added:
+            self._add(self._to_be_added.pop())
+        for itemid in ids_to_remove:
             self.remove(itemid=itemid)
 
         self.collision.detect(self._items)

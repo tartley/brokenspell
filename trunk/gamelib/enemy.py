@@ -20,13 +20,14 @@ class Enemy(Bird):
     @staticmethod
     def spawn(_):
         x = uniform(0, Enemy.game.width)
-        y = Enemy.game.win.height + 32
+        y = Enemy.game.height + 32
         dx = uniform(-20, 20)
         dy = 0
         Enemy.game.add(Enemy(x, y, dx=dx, dy=0))
 
 
     def added(self):
+        Bird.added(self)
         Enemy.count += 1
 
 
