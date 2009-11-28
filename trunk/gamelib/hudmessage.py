@@ -9,6 +9,8 @@ class HudMessage(GameItem):
 
     render_layer = 3
     color = (255, 255, 255, 255)
+    win_width = None
+    win_height = None
 
     def __init__(self,
         text, size,
@@ -21,10 +23,10 @@ class HudMessage(GameItem):
         self.size = size
         self.label = None
         if x is None:
-            x = self.arena.win.width / 2
+            x = HudMessage.win_width / 2
         self.x = x
         if y is None:
-            y = self.arena.win.height / 2
+            y = HudMessage.win_height / 2
         self.y = y
         self.font_name = font_name
         self.remove_after = remove_after

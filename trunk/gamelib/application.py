@@ -2,7 +2,6 @@
 import pyglet
 from pyglet.window import key, Window
 
-from arena import Arena
 from config import settings
 from game import Game
 from sounds import load as load_sounds
@@ -14,8 +13,6 @@ class Application(object):
 
     def __init__(self):
         self.win = None
-        self.game = None
-        self.render = None
         self.music = None
         self.vsync = True
         if (
@@ -32,11 +29,10 @@ class Application(object):
 
         self.win.push_handlers(self)
 
-        self.game = Game(self.win)
-        arena = Arena(self.win, self)
-        self.render = Render(arena)
-        self.render.init(self.win)
-        self.game.init(arena)
+        game = Game(self.win)
+        render = Render(game)
+        render.init(self.win)
+        game.init()
 
         load_sounds()
 

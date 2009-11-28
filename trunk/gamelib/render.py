@@ -23,11 +23,10 @@ class Render(object):
         OrderedGroup(3), # hud
     ]
 
-    def __init__(self, arena):
-        self.arena = arena
-
-        arena.item_added += self.on_add_item
-        arena.item_removed += self.on_remove_item
+    def __init__(self, game):
+        self.game = game
+        game.item_added += self.on_add_item
+        game.item_removed += self.on_remove_item
 
         self.clockDisplay = clock.ClockDisplay()
         self.batch = Batch()
@@ -55,7 +54,7 @@ class Render(object):
     def draw(self):
         # TODO, can this be over items[SpriteItem] or something, and
         # hence drop the hasattr check?
-        for item in self.arena.items:
+        for item in self.game:
             if hasattr(item, 'animate'):
                 item.animate()
 
@@ -63,10 +62,13 @@ class Render(object):
         self.clockDisplay.draw()
 
 
-    def on_add_item(self, _, item):
-        item.add_to_batch(self.batch, self.groups)
+    # TODO: icky hasattr checks
+    def on_add_item(self, item):
+        if hasattr(item, 'add_to_batch'):
+            item.add_to_batch(self.batch, self.groups)
 
 
-    def on_remove_item(self, _, item):
-        item.remove_from_batch(self.batch)
+    def on_remove_item(self, item):
+        if hasattr(item, 'remove_from_batch'):
+            item.remove_from_batch(self.batch)
 

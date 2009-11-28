@@ -5,7 +5,10 @@ from pyglet import clock
 from pyglet.window import key
 
 from bird import Bird
+from collision import Collision
 from enemy import Enemy
+from event import Event
+from gamecontrols import GameControls
 from gameitem import GameItem
 from ground import Ground
 from hudmessage import HudMessage
@@ -17,34 +20,8 @@ from feather import Feather
 from player import Player
 from sky import Sky
 from sounds import play
-
-
-
-class GameControls(key.KeyStateHandler):
-
-    def __init__(self, win, game, arena):
-        self.win = win
-        self.game = game
-        self.arena = arena
-
-
-    def update(self):
-        if self[key.F1]:
-            hudpoints = HudPoints(
-                randint(0, self.win.width),
-                randint(0, self.win.height),
-                randint(0, 8))
-            self.arena.add(hudpoints)
-
-        if self[key.F2]:
-            clock.schedule_once(self.game.spawn_enemy, 0 * 0.1)
-
-        if self[key.F3]:
-            for bird in self.arena.items[Enemy]:
-                bird.feathers += 1
-                bird.lose_feather(
-                    bird.x + bird.width / 2,
-                    bird.y + bird.height / 2)
+from typebag import TypeBag
+from worlditem import WorldItem
 
 
 
@@ -52,58 +29,60 @@ class Game(object):
 
     def __init__(self, win):
         self.win = win
+        HudMessage.win_width = win.width
+        HudMessage.win_height = win.height
         self.score = 0
         self.wave = 0
         self.num_enemies = 0
         self.gamecontrols = None
-        self.arena = None
+        self._items = TypeBag()
+        self.item_added = Event(self.on_add_item)
+        self.item_removed = Event(self.on_remove_item)
+        self.collision = Collision()
+        GameItem.game = self
 
 
-    def init(self, arena):
-        self.arena = GameItem.arena = arena
+    def __iter__(self):
+        return iter(self._items)
 
-        arena.item_added += self.on_add_item
-        arena.item_removed += self.on_remove_item
 
-        sky = Sky(self.win.width, self.win.height)
-        arena.add(sky)
+    def add(self, item):
+        self._items.add(item)
+        self.item_added(item)
 
-        ground = Ground()
-        arena.add(ground)
 
-        hudtitle = HudTitle(self, self.win.width, self.win.height)
-        arena.add(hudtitle)
+    def remove(self, item=None, itemid=None):
+        assert (item is None) ^ (itemid is None)
+        if item is None:
+            item = self._items[itemid]
+        self._items.remove(item)
+        self.item_removed(item)
 
-        self.gamecontrols = GameControls(self.win, self, arena)
-        self.win.push_handlers(self.gamecontrols)
 
+    def init(self):
+        self.add(Sky(self.win.width, self.win.height))
+        self.add(Ground())
+        self.add(HudTitle(self, self.win.width, self.win.height))
+        self.gamecontrols = GameControls(self.win, self)
+        self.add(self.gamecontrols)
         clock.schedule(self.update)
 
 
     def start(self):
         self.get_ready()
 
-        self.arena.add(
-            HudInstructions(self, self.win.width, self.win.height))
-
-        hudscore = HudScore(self, self.win.width, self.win.height)
-        clock.schedule_once(lambda _: self.arena.add(hudscore), 1)
-
+        # TODO: probably all WorldItems need to know win.width/height
+        # as a class attribute, so we don't have to pass these in all over
+        self.add(HudInstructions(self, self.win.width, self.win.height))
+        clock.schedule_once(
+            lambda _: self.add(HudScore(self, self.win.width, self.win.height)),
+            1)
         clock.schedule_once(lambda _: self.spawn_wave(), 3)
 
 
     def get_ready(self):
-        self.arena.add(HudMessage('Get Ready!', 36))
-        clock.schedule_once(lambda _: self.spawn_player(), 1)
-
-
-    def spawn_player(self):
-        player = Player(
-            self.win.width / 2, self.win.height + Player.height / 2,
-            self)
-        player.remove_from_game = False
-        player.is_alive = True
-        self.arena.add(player)
+        self.add(HudMessage('Get Ready!', 36))
+        clock.schedule_once(lambda _: Player.spawn(self), 1)
 
 
     def spawn_wave(self, number=None):
@@ -111,39 +90,56 @@ class Game(object):
         if number is None:
             number = self.wave * self.wave
 
-        self.arena.add(HudMessage('Wave %d' % (self.wave,), 36))
+        self.add(HudMessage('Wave %d' % (self.wave,), 36))
 
         for n in xrange(number):
-            clock.schedule_once(lambda _: self.spawn_enemy(), n)
+            clock.schedule_once(
+                lambda _: Enemy.spawn(self),
+                n * 0.25)
 
 
-    def spawn_enemy(self, x=None, y=None, dx=None, dy=None):
-        if x is None:
-            x = uniform(0, self.win.width)
-        if y is None:
-            y = self.win.height + 32
-        if dx is None:
-            dx = uniform(-20, 20)
-        if dy is None:
-            dy = 0
-        self.arena.add(Enemy(x, y, dx=dx, dy=0))
+    def wraparound(self, item):
+        if item.x < -item.width / 2:
+            item.x += self.win.width + item.width
+        if item.x > self.win.width + item.width / 2:
+            item.x -= self.win.width + item.width
 
 
     def update(self, _):
-        self.arena.update()
         self.gamecontrols.update()
 
+        to_remove = set()
+        for item in self._items:
+            item.update()
+            if item.remove_from_game:
+                to_remove.add(id(item))
 
-    def on_add_item(self, _, item):
+        for itemid in to_remove:
+            self.remove(itemid=itemid)
+
+        self.collision.detect(self._items)
+
+        # TODO, can we find a way to iterate through WorldItems?
+        for item in self._items:
+            if isinstance(item, WorldItem):
+                self.wraparound(item)
+
+
+    def on_add_item(self, item):
         if isinstance(item, Enemy):
             self.num_enemies += 1
+        if hasattr(item, 'on_key_press'):
+            self.win.push_handlers(item)
 
 
-    def on_remove_item(self, _, item):
+    def on_remove_item(self, item):
         if isinstance(item, Enemy):
             self.num_enemies -= 1
             if self.num_enemies == 0:
                 self.spawn_wave()
+        if hasattr(item, 'on_key_press'):
+            self.win.remove_handlers(item)
+
 
         if isinstance(item, Player):
             clock.schedule_once(lambda _: self.get_ready(), 2)

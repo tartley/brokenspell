@@ -4,7 +4,7 @@ from pyglet.gl import GL_QUADS, GL_TRIANGLES
 
 class VertexList(object):
     """
-    An item that can be added to the arena, and is rendered using
+    An item that can be added to the game, and is rendered using
     a Pyglet IndexedVertexList. For example, the sky is a large GL_QUAD.
     """
 

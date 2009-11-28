@@ -1,4 +1,4 @@
-import random
+from random import uniform
 
 from behaviour import Thinker, Plummet
 from bird import Bird
@@ -16,6 +16,15 @@ class Enemy(Bird):
         self.last_flap = 0
 
 
+    @staticmethod
+    def spawn(game):
+        x = uniform(0, game.win.width)
+        y = game.win.height + 32
+        dx = uniform(-20, 20)
+        dy = 0
+        game.add(Enemy(x, y, dx=dx, dy=0))
+
+
     def hit(self, other):
         Bird.die(self)
         self.think.state = Plummet(self)
@@ -27,9 +36,5 @@ class Enemy(Bird):
         self.feathers -= 1
         dx = self.x - otherx
         dy = self.y - othery
-        feather = Feather(
-            self.x, self.y,
-            dx, dy,
-            self)
-        self.arena.add(feather)
+        self.game.add(Feather(self.x, self.y, dx, dy, self))
 

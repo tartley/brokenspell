@@ -49,8 +49,14 @@ class TypeBag(object):
         return self.items.itervalues()
 
 
-    def __getitem__(self, typee):
-        ''' get an iterator over all items of the given type '''
-        ids = self.by_type.get(typee, set())
-        return (self.items[id] for id in ids)
+    def __getitem__(self, index):
+        '''
+        If passed an integer, returns the item with that id.
+        If passed a type, returns an iterator over all items of that type.
+        '''
+        if isinstance(index, type):
+            ids = self.by_type.get(index, set())
+            return (self.items[id] for id in ids)
+        else:
+            return self.items[index]
 

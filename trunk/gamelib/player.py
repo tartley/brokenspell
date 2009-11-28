@@ -29,6 +29,13 @@ class Player(Bird, key.KeyStateHandler):
         self.consecutive_feathers = 0
 
 
+    @staticmethod
+    def spawn(game):
+        x = game.win.width / 2
+        y = game.win.height + Player.height / 2
+        game.add(Player(x, y, game))
+
+
     def think(self):
         if not self.is_alive:
             return set()
@@ -48,7 +55,7 @@ class Player(Bird, key.KeyStateHandler):
         idx = min(self.consecutive_feathers, len(scores) - 1)
         self.game.score += scores[idx]
         hudpoints = HudPoints(self.x, self.y, self.consecutive_feathers)
-        self.arena.add(hudpoints)
+        self.game.add(hudpoints)
         self.consecutive_feathers += 1
 
 
@@ -66,5 +73,5 @@ class Player(Bird, key.KeyStateHandler):
         Bird.die(self)
         play('die')
         play('ohno')
-        self.arena.add(HudMessage('Oh no!', 36))
+        self.game.add(HudMessage('Oh no!', 36))
 
