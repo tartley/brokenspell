@@ -4,24 +4,22 @@ import locale
 from pyglet.text import Label
 
 from gameitem import GameItem
+from player import Player
 
 
 class HudScore(GameItem):
 
     render_layer = 3
 
-    def __init__(self, game, screen_width, screen_height):
+    def __init__(self):
         GameItem.__init__(self)
-        self.game = game
-        self.screen_width = screen_width
-        self.screen_height = screen_height
         self.label = None
         self.old_source = None
 
 
     @property
     def source(self):
-        return self.game.score
+        return Player.score
 
 
     @property
@@ -34,7 +32,7 @@ class HudScore(GameItem):
         self.label = Label(
             self.text,
             font_size=36,
-            x=self.screen_width - 10, y=self.screen_height - 5,
+            x=self.game.width - 10, y=self.game.height - 5,
             anchor_x='right', anchor_y='top',
             batch=batch,
             group=groups[self.render_layer] )

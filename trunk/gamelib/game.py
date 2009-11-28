@@ -24,7 +24,6 @@ class Game(object):
         self.win = win
         self.width = win.width
         self.height = win.height
-        self.score = 0
         self.wave = 0
         self.gamecontrols = None
         self._items = TypeBag()
@@ -82,9 +81,8 @@ class Game(object):
         # TODO: probably all WorldItems need to know win.width/height
         # as a class attribute, so we don't have to pass these in all over
         self.add(HudInstructions(self, self.win.width, self.win.height))
-        clock.schedule_once(
-            lambda _: self.add(HudScore(self, self.win.width, self.win.height)),
-            1)
+        Player.score = 0
+        clock.schedule_once(lambda _: self.add(HudScore()), 1)
         clock.schedule_once(lambda _: self.spawn_wave(), 3)
 
 
@@ -95,11 +93,9 @@ class Game(object):
 
     def spawn_wave(self):
         self.wave += 1
-        if number is None:
-            number = self.wave * self.wave
-
         self.add(HudMessage('Wave %d' % (self.wave,), 36))
 
+        number = self.wave ** 2
         for n in xrange(number):
             clock.schedule_once(
                 lambda _: Enemy.spawn(self),

@@ -21,6 +21,7 @@ action_map = {
 class Player(Bird, key.KeyStateHandler):
 
     is_player = True
+    score = 0
 
     def __init__(self, x, y, game):
         Bird.__init__(self, x, y)
@@ -52,7 +53,7 @@ class Player(Bird, key.KeyStateHandler):
         play('ding', self.consecutive_feathers)
         feather.remove_from_game = True
         idx = min(self.consecutive_feathers, len(scores) - 1)
-        self.game.score += scores[idx]
+        Player.score += scores[idx]
         hudpoints = HudPoints(self.x, self.y, self.consecutive_feathers)
         self.game.add(hudpoints)
         self.consecutive_feathers += 1
