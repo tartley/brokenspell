@@ -59,7 +59,7 @@ class Application(object):
 
         render = Render(game)
         render.init(self.win)
-        game.startup(self.win)
+        game.startup()
         self.win.set_visible()
         pyglet.app.run()
 

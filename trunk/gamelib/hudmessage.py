@@ -13,7 +13,8 @@ class HudMessage(GameItem):
     win_height = None
 
     def __init__(self,
-        text, size,
+        text,
+        size=36,
         x=None, y=None,
         font_name=None,
         remove_after=2

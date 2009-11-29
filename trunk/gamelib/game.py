@@ -7,6 +7,8 @@ from event import Event
 from stresstest import StressTest
 from gameitem import GameItem
 from ground import Ground
+from hudgameover import HudGameOver
+from hudlives import HudLives
 from hudmessage import HudMessage
 from hudscore import HudScore
 from hudtitle import HudTitle
@@ -25,7 +27,6 @@ class Game(object):
         self.width = width
         self.height = height
         self.wave = 0
-        self.stresstest = None
         self._items = TypeBag()
         self.item_added = Event()
         self.item_removed = Event()
@@ -58,26 +59,39 @@ class Game(object):
         self.item_removed(item)
 
 
-    def startup(self, win):
+    def startup(self):
         self.add(Sky())
         self.add(Ground())
-        self.add(HudTitle(win))
-        self.stresstest = StressTest()
-        self.add(self.stresstest)
+        self.add(StressTest())
+        self.add(HudLives())
+        self.add(HudScore())
         clock.schedule(self.update)
+        self.title()
+
+
+    def title(self):
+        self.add(HudTitle())
 
 
     def start(self):
+        for enemy in self._items[Enemy]:
+            enemy.remove_from_game = True
+
+        self.wave = 0
         Player.get_ready()
-        self.add(HudInstructions())
         Player.score = 0
-        clock.schedule_once(lambda _: self.add(HudScore()), 1)
+        Player.lives = 3
+        self.add(HudInstructions())
         clock.schedule_once(lambda _: self.spawn_wave(), 3)
+
+
+    def over(self):
+        self.add(HudGameOver())
 
 
     def spawn_wave(self):
         self.wave += 1
-        self.add(HudMessage('Wave %d' % (self.wave,), 36))
+        self.add(HudMessage('Wave %d' % (self.wave,)))
 
         number = self.wave ** 2
         for n in xrange(number):

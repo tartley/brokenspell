@@ -22,6 +22,7 @@ class Player(Bird):
 
     is_player = True
     score = 0
+    lives = 0
 
     def __init__(self, x, y):
         Bird.__init__(self, x, y)
@@ -30,7 +31,7 @@ class Player(Bird):
 
     @staticmethod
     def get_ready():
-        Player.game.add(HudMessage('Get Ready!', 36))
+        Player.game.add(HudMessage('Get Ready!'))
         clock.schedule_once(lambda _: Player.spawn(), 1)
 
 
@@ -42,7 +43,11 @@ class Player(Bird):
 
 
     def removed(self):
-        clock.schedule_once(lambda _: Player.get_ready(), 1.5)
+        Player.lives -= 1
+        if Player.lives == 0:
+            clock.schedule_once(lambda _: self.game.over(), 1.5)
+        else:
+            clock.schedule_once(lambda _: Player.get_ready(), 1.5)
 
 
     # TODO,impliment Player.think() as a behaviour think state
@@ -84,5 +89,5 @@ class Player(Bird):
         Bird.die(self)
         play('die')
         play('ohno')
-        self.game.add(HudMessage('Oh no!', 36))
+        self.game.add(HudMessage('Oh no!'))
 

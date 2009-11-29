@@ -33,7 +33,7 @@ class Enemy(Bird):
 
     def removed(self):
         Enemy.count -= 1
-        if Enemy.count == 0:
+        if Enemy.count == 0 and not self.is_alive:
             self.game.spawn_wave()
 
 

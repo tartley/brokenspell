@@ -16,9 +16,8 @@ class HudTitle(GameItem):
 
     render_layer = 3
 
-    def __init__(self, win):
+    def __init__(self):
         GameItem.__init__(self)
-        self.win = win
         self.titleLabel = None
         self.pressAnyKeyLabel = None
 
