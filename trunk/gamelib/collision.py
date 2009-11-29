@@ -13,6 +13,14 @@ collision_handlers = {
     (Player, Enemy): Player.collide_enemy,
 }
 
+collision_handlers = {
+    Player: {
+        Feather: Player.collide_feather,
+        Enemy: Player.collide_enemy,
+    }
+}
+
+
 
 def is_touching(item1, item2):
     '''
@@ -33,13 +41,18 @@ def is_touching(item1, item2):
 
 class Collision(object):
 
+    def _detect_type_collisions(self, items, type1, type2, handler):
+        for index, item1 in enumerate(items[type1]):
+            type2_items = items[type2]
+            if type1 == type2:
+                type2_items = islice(type2_items, index + 1, None)
+            for item2 in type2_items:
+                if is_touching(item1, item2):
+                    handler(item1, item2)
+
+
     def detect(self, items):
-        for (type1, type2), handler in collision_handlers.iteritems():
-            for index, item1 in enumerate(items[type1]):
-                type2_items = items[type2]
-                if type1 == type2:
-                    type2_items = islice(type2_items, index + 1, None)
-                for item2 in type2_items:
-                    if is_touching(item1, item2):
-                        handler(item1, item2)
+        for type1, handlers in collision_handlers.iteritems():
+            for type2, handler in handlers.iteritems():
+                self._detect_type_collisions(items, type1, type2, handler)
 
