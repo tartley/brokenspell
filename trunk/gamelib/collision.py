@@ -9,11 +9,6 @@ from worlditem import WorldItem
 
 
 collision_handlers = {
-    (Player, Feather): Player.collide_feather,
-    (Player, Enemy): Player.collide_enemy,
-}
-
-collision_handlers = {
     Player: {
         Feather: Player.collide_feather,
         Enemy: Player.collide_enemy,
