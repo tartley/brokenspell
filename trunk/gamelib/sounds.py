@@ -29,6 +29,7 @@ def load():
         sounds['die'] = _load_sounds_matching('die?.ogg')
         sounds['ohno'] = [_load_sound('ohno.ogg')]
         sounds['flap'] = [_load_sound('flap.ogg')]
+        sounds['gameover'] = [_load_sound('gameover.ogg')]
 
 
 def _load_sound(name):

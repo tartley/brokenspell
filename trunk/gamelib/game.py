@@ -16,6 +16,7 @@ from hudtitle import HudTitle
 from hudinstructions import HudInstructions
 from player import Player
 from sky import Sky
+from sounds import play
 from typebag import TypeBag
 from worlditem import WorldItem
 
@@ -92,6 +93,7 @@ class Game(object):
 
 
     def over(self):
+        play('gameover')
         self.add(HudGameOver())
 
 
