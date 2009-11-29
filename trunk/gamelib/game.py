@@ -5,6 +5,7 @@ from collision import Collision
 from enemy import Enemy
 from event import Event
 from stresstest import StressTest
+from feather import Feather
 from gameitem import GameItem
 from ground import Ground
 from hudgameover import HudGameOver
@@ -73,9 +74,14 @@ class Game(object):
         self.add(HudTitle())
 
 
+    def _remove_last_games_items(self):
+        for itemtype in (Enemy, Feather):
+            for item in self._items[itemtype]:
+                item.remove_from_game = True
+
+
     def start(self):
-        for enemy in self._items[Enemy]:
-            enemy.remove_from_game = True
+        self._remove_last_games_items()
 
         self.wave = 0
         Player.get_ready()
