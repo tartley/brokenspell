@@ -3,13 +3,14 @@ from pyglet import clock
 from pyglet.window import key
 from pyglet.text import Label
 
-from gameitem import GameItem
+from hudmessage import HudMessage
 
 
-text = [
-    '',
+texts = [
     'Press Z to flap',
+    '',
     'Left and Right to steer',
+    '',
 ]
 
 all_done = [
@@ -17,48 +18,45 @@ all_done = [
 ]
 
 
-# TODO: unused
-MESSAGE_WAVE1 = [
-    '',
-    'Attack from above',
-    'Avoid enemies above you',
-    'Lowest bird loses feathers',
-]
+class HudInstructions(HudMessage):
 
+    color = (255, 255, 255, 127)
 
-class HudInstructions(GameItem, key.KeyStateHandler):
-
-    render_layer = 3
-
-    def __init__(self):
-        GameItem.__init__(self)
-        self.label = None
-        self.textidx = 0
+    def __init__(self, *args, **kwargs):
+        kwargs.update(dict(
+            anchor_x = 'right',
+            anchor_y = 'bottom',
+            x = self.game.width - 10,
+            y = 5,
+            font_size = 24,
+        ))
+        self.textidx = -1
+        HudMessage.__init__(self, self.text, *args, **kwargs)
         self.need_pressing = set([key.LEFT, key.RIGHT, key.Z])
 
 
+    @property
+    def source(self):
+        return texts[self.textidx]
+
+
     def add_to_batch(self, batch, groups):
-        self.label = Label(
-            text[self.textidx],
-            font_size=24,
-            x=10, y=self.game.height - 5,
-            anchor_x='left', anchor_y='top',
-            batch=batch,
-            group=groups[self.render_layer] )
+        HudMessage.add_to_batch(self, batch, groups)
         clock.schedule_once(self.next_text, 5)
 
 
     def remove_from_batch(self, batch):
-        self.label.delete()
-        self.label = None
+        HudMessage.remove_from_batch(self, batch)
         clock.unschedule(self.next_text)
 
 
     def next_text(self, _):
         self.textidx += 1
-        self.textidx %= len(text)
-        self.label.text = text[self.textidx]
-        clock.schedule_once(self.next_text, 1.5)
+        self.textidx %= len(texts)
+        delay = 1.5
+        if self.text == '':
+            delay = 0.5
+        clock.schedule_once(self.next_text, delay)
 
 
     def on_key_press(self, symbol, __):

@@ -85,9 +85,7 @@ class Game(object):
         self._remove_last_games_items()
 
         self.wave = 0
-        Player.get_ready()
-        Player.score = 0
-        Player.lives = 3
+        Player.start_game()
         self.add(HudInstructions())
         clock.schedule_once(lambda _: self.spawn_wave(), 3)
 
@@ -99,7 +97,7 @@ class Game(object):
 
     def spawn_wave(self):
         self.wave += 1
-        self.add(HudMessage('Wave %d' % (self.wave,)))
+        self.add(HudMessage('Wave %d' % (self.wave,), remove_after=2))
 
         number = self.wave ** 2
         for n in xrange(number):

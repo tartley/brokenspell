@@ -22,6 +22,7 @@ class Player(Bird):
 
     is_player = True
     score = 0
+    multiplier = 1
     lives = 0
 
     def __init__(self, x, y):
@@ -30,8 +31,16 @@ class Player(Bird):
 
 
     @staticmethod
+    def start_game():
+        Player.get_ready()
+        Player.score = 0
+        Player.lives = 3
+        Player.multiplier = 1
+
+
+    @staticmethod
     def get_ready():
-        Player.game.add(HudMessage('Get Ready!'))
+        Player.game.add(HudMessage('Get Ready!', remove_after=2))
         clock.schedule_once(lambda _: Player.spawn(), 1)
 
 
@@ -89,5 +98,5 @@ class Player(Bird):
         Bird.die(self)
         play('die')
         play('ohno')
-        self.game.add(HudMessage('Oh no!'))
+        self.game.add(HudMessage('Oh no!', remove_after=2))
 
