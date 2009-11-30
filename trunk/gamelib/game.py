@@ -11,6 +11,7 @@ from ground import Ground
 from hudgameover import HudGameOver
 from hudlives import HudLives
 from hudmessage import HudMessage
+from hudmultiplier import HudMultiplier
 from hudscore import HudScore
 from hudtitle import HudTitle
 from hudinstructions import HudInstructions
@@ -67,6 +68,7 @@ class Game(object):
         self.add(StressTest())
         self.add(HudLives())
         self.add(HudScore())
+        self.add(HudMultiplier())
         clock.schedule(self.update)
         self.title()
 

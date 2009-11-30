@@ -16,6 +16,7 @@ class HudMessage(GameItem):
         x=None, y=None,
         anchor_x='center', anchor_y='center',
         font_name=None,
+        color=color,
         remove_after=None,
     ):
         GameItem.__init__(self)
@@ -30,6 +31,7 @@ class HudMessage(GameItem):
         self.anchor_x = anchor_x
         self.anchor_y = anchor_y
         self.font_name = font_name
+        self.color = color
         self.label = None
         # used to detect when Label needs updating
         self.old_source = None
