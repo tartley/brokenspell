@@ -27,6 +27,7 @@ class Hover(State):
     def __init__(self, *args):
         State.__init__(self, *args)
         self.choose_altitude(None)
+        self.flap_state = 0
 
 
     def choose_altitude(self, _):
@@ -37,6 +38,8 @@ class Hover(State):
 
 
     def get_actions(self):
+        self.flap_state -= 1
+
         foe_is_below = (
             self.item.foe and
             self.item.foe.y < self.item.y and
@@ -56,6 +59,9 @@ class Hover(State):
 
         flap_rate = 15
         if self.item.y < self.desired_y and self.item.last_flap > flap_rate:
+            self.flap_state = flap_rate
+
+        if self.flap_state > flap_rate / 2:
             return set([Action.FLAP])
         return set()
 
