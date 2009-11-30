@@ -9,6 +9,7 @@ from worlditem import GRAVITY, WorldItem
 
 
 AIR_RESIST = 0.99
+GRAVITY = 1
 
 
 class Feather(WorldItem):
@@ -19,7 +20,7 @@ class Feather(WorldItem):
     def __init__(self, x, y, dx, _, owner):
         WorldItem.__init__(self, x, y, 0, 0)
         self.rotation = 0
-        self.speed = copysign(uniform(5, 12), -dx)
+        self.speed = copysign(uniform(5, 52), -dx)
         self.curve = uniform(0.002, 0.02)
         self.owner = owner
         clock.schedule_once(lambda _: self.reset_owner(), 1)
@@ -31,7 +32,7 @@ class Feather(WorldItem):
 
     def update(self):
         self.rotation += self.speed * self.curve
-        self.speed *= (1 - (abs(self.speed) * self.curve))
+        self.speed *= (1 - (max(0, (abs(self.speed) - 7)) * self.curve))
         self.speed -= sin(self.rotation) / 2
 
         self.x += self.speed * -cos(self.rotation)
