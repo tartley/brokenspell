@@ -2,11 +2,15 @@
 from glob import glob
 from os.path import join
 
-from pyglet.image import load
+from pyglet.image import load, SolidColorImagePattern
 from pyglet.image.atlas import TextureAtlas
 
 
 IMAGES_DIR = join('data', 'images')
+
+# blank image spacer to prevent adjacent images in the atlas from bleeding
+# into each other
+SPACER = SolidColorImagePattern((0, 0, 0, 0)).create_image(1024, 1)
 
 
 def set_anchor(image):
@@ -14,11 +18,12 @@ def set_anchor(image):
     image.anchor_y = image.height / 2
 
 
-
 class Graphics(object):
 
     def __init__(self):
         self.atlas = TextureAtlas(width=1024, height=512)
+        blank = SolidColorImagePattern((0, 0, 0, 0)).create_image(1024, 1)
+        self.atlas.add(blank)
 
 
     def _split_filename(self, filename):
@@ -65,6 +70,7 @@ class Graphics(object):
         """
         images = {}
         for filename in glob('%s/*.png' % (IMAGES_DIR)):
+            self.atlas.add(SPACER)
             region = self.atlas.add(load(filename))
             name, num_frames = self._split_filename(filename)
             if num_frames:
