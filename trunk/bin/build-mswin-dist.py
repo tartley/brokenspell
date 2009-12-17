@@ -96,8 +96,6 @@ def zip_directory():
 def main(config):
     if not ('--verbose' in sys.argv or '-v' in sys.argv):
         sys.argv.append('--quiet')
-    if not 'py2exe' in sys.argv:
-        sys.argv.append('py2exe')
     setup(**config)
     zip_directory()
 
