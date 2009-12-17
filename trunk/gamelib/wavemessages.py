@@ -16,5 +16,6 @@ WAVE_MESSAGES = [
     'There are no more messages',
     'OverflowError: message index out of bounds',
     'Make it stop',
+    'Please?',
 ]
 

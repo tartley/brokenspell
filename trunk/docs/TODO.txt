@@ -1,72 +1,21 @@
 
 CURRENT TASK:
 
-Lives
-* store on Game
-* HUD: display lives remaining
-* dying decrements number of lives
-* game over on 0
-* back to titles after game over
-
 
 FEATURES
 
-* enemies should collect feathers after all, and drop all held feathers
-when killed
-
-Difficulty/gameplay tuning
-* consider Player collects up to 3 'shield feathers', which need a HUD
-
 Each wave gets a special message
 
-make collisions detection stop detecting each collision after the
-first impact, until the two items have un-collided again.
-
-* Bounces sometimes result in enemies getting caught embedded in each other.
-Try (pos -= vel) before applying bounce logic.
-
-current wraparound implimentation can result in worlditems deeply
-interpenetrating
-
-fullscreen mode
-* button to toggle it
-
-* persist fullscreen between runs
-* persist vsync between runs
+some Enemies in later waves go fast
 
 Current enemy attacking 'dive on you' behaviour needs work. In particular, it
 does not account for horizontal velocities, so a diving enemy will almost
 always miss.
-* Should only dive if bird is smart, which happens if wave is high.
 * Should only dive is bird is higher than player (diving away when below is
   just annoying)
 
-* higher waves have birds that fly faster?
-
-* Enemy ducks should hold down flap a tad longer than they do, just for the
-  sake of the animation.
-
-More sound effects reqd:
-* player attacked: urgent cries
-* birds bounce off harmlessly at equal heights
-* Game over
-
 * Only show fps when outside acceptable range.
 * Key to toggle fps visibility?
-
-Combos
-* HUD: display multiplier
-* killing an enemy increments multiplier
-* multiplier reduces back to 1 over time
-* feather scores are multiplied by this
-
-Control
-* Holding down flap lets you glide? (if speed is high enough?)
-* Holding down briefly produces a weaker flap?
-
-High scores?
-* Displayed after user dies, until next game starts
-* Persisted?
 
 Binary exe for Mac
 
@@ -75,9 +24,6 @@ Binary exe for Linux
 
 
 BUGS
-
-fuzzy line along top of rotated sprites, introduced when I started using
-a texture atlas.
 
 rotation of player bird goes screwy at high velocity
 
@@ -102,6 +48,9 @@ Three-body collisions are probably not handled correctly
 
 REFACTOR
 
+move 'build-mswin-dist.py' to 'setup.py', think about adding a makefile
+or make-bin.bat which invokes it with the correct args.
+
 Consider that a worlditems have-a displayable, rather than being one.
 Displayable is root class, derived into SpriteHolder, LabelHolder,
 VertexListHolder. Can we then sort out HudItems to share more code?
@@ -119,9 +68,6 @@ Type of worlditem that has-a displayable is called VisibleItem.
 
 A Displayable knows about its parent GameItem - not the other way around!
 The WorldItem exposes properties that the displayable uses.
-
-move 'build-mswin-dist.py' to 'setup.py', think about adding a makefile
-or make-bin.bat which invokes it with the correct args.
 
 Can fps display be put into render.batch as well? It can if we construct
 our own.
