@@ -105,8 +105,7 @@ class Player(Bird):
                 self.consecutive_enemies += 1
                 points = self.consecutive_enemies * 10 * self.multiplier
                 Player.score += points
-                self.game.add(
-                    HudPoints(self.x, self.y, points, self.consecutive_enemies) )
+                self.game.add( HudPoints(self.x, self.y, points) )
 
 
     def hit(self, _):

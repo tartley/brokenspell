@@ -16,17 +16,18 @@ class HudPoints(SpriteItem):
 
     render_layer = 3 # hud
 
-    def __init__(self, x, y, score, size):
+    def __init__(self, x, y, score):
         SpriteItem.__init__(self, x, y)
+        size = 16 + score / 10
         label = Label(
             text=str(score),
-            font_size = 16 + size)
+            font_size = size)
         image = label2texture(label)
         image.anchor_x = image.width / 2
         image.anchor_y = image.height / 2
         self.images = [image]
 
-        self.dy = 3 + size * 2
+        self.dy = 5 + score / 10
         self.opacity = 255
 
 
