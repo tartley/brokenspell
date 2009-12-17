@@ -10,7 +10,6 @@ from enemy import Enemy
 from feather import Feather
 from graphics import Graphics
 from ground import Ground
-from hudpoints import HudPoints
 from player import Player
 
 
@@ -46,7 +45,6 @@ class Render(object):
         graphics = Graphics()
         images = graphics.load()
         self.assign_images_and_sizes(images)
-        HudPoints.create_images()
 
         win.on_draw = self.draw
 

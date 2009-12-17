@@ -1,10 +1,8 @@
 
-from label2texture import StringTextureAtlas
+from pyglet.text import Label
+
+from label2texture import label2texture
 from spriteitem import SpriteItem
-
-
-# scores for consecutive feather collections
-scores = [5, 10, 25, 50, 100, 250, 500, 1000]
 
 
 class HudPoints(SpriteItem):
@@ -12,33 +10,24 @@ class HudPoints(SpriteItem):
     Represents a number floating in the sky, instanciated whenever the player
     scores some points.
 
-    For performance, we generate bitmaps from Labels on startup, and
-    display these during gameplay as sprites.
+    For performance, we generate bitmaps from each label, and blit the bitmap in
+    the batch, instead of the label itself.
     '''
 
     render_layer = 3 # hud
-    images = {}
-    atlas = StringTextureAtlas()
 
-    def __init__(self, x, y, consecutive_feather):
+    def __init__(self, x, y, score, size):
         SpriteItem.__init__(self, x, y)
-        excitement = min(consecutive_feather, len(scores) - 1)
-        self.frame_idx = excitement
-        self.dy = 3 + excitement * 2
+        label = Label(
+            text=str(score),
+            font_size = 16 + size)
+        image = label2texture(label)
+        image.anchor_x = image.width / 2
+        image.anchor_y = image.height / 2
+        self.images = [image]
+
+        self.dy = 3 + size * 2
         self.opacity = 255
-
-
-    @classmethod
-    def create_images(cls):
-        '''
-        Generate the bitmaps that will later be used as Sprite images when
-        instances of HudPoints get rendered to the screen.
-        '''
-        for i, score in enumerate(scores):
-            image = HudPoints.atlas.label(text=str(score), font_size=16 + i * i)
-            image.anchor_x = image.width / 2
-            image.anchor_y = image.height / 2
-            cls.images[i] = image
 
 
     def update(self):

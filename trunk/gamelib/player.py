@@ -7,7 +7,7 @@ from pyglet.window import key
 from bird import Action, Bird
 from feather import Feather
 from hudmessage import HudMessage
-from hudpoints import HudPoints, scores
+from hudpoints import HudPoints
 from sounds import play
 
 
@@ -16,6 +16,8 @@ action_map = {
     key.LEFT: Action.LEFT,
     key.RIGHT: Action.RIGHT,
 }
+
+MULTIPLIER_DELAY = 3
 
 
 class Player(Bird):
@@ -27,7 +29,7 @@ class Player(Bird):
 
     def __init__(self, x, y):
         Bird.__init__(self, x, y)
-        self.consecutive_feathers = 0
+        self.consecutive_enemies = 0
 
 
     @staticmethod
@@ -73,15 +75,24 @@ class Player(Bird):
 
 
     def collide_feather(self, feather):
-        if feather.owner is self:
-            return
-        play('ding', self.consecutive_feathers)
         feather.remove_from_game = True
-        idx = min(self.consecutive_feathers, len(scores) - 1)
-        Player.score += scores[idx]
-        hudpoints = HudPoints(self.x, self.y, self.consecutive_feathers)
-        self.game.add(hudpoints)
-        self.consecutive_feathers += 1
+        play('ding', self.multiplier - 1)
+        self._increment_multiplier()
+        self.consecutive_enemies = 0
+
+
+    def _increment_multiplier(self):
+        Player.multiplier += 1
+        clock.unschedule(self._decrement_multiplier)
+        clock.schedule_once(self._decrement_multiplier, MULTIPLIER_DELAY)
+
+
+    def _decrement_multiplier(self, _):
+        if Player.multiplier > 1:
+            Player.multiplier -= 1
+            if Player.multiplier > 1:
+                clock.schedule_once(
+                    self._decrement_multiplier, MULTIPLIER_DELAY)
 
 
     def collide_enemy(self, enemy):
@@ -91,7 +102,11 @@ class Player(Bird):
                 self.hit(enemy)
             else:
                 enemy.hit(self)
-                self.consecutive_feathers = 0
+                self.consecutive_enemies += 1
+                points = self.consecutive_enemies * 10 * self.multiplier
+                Player.score += points
+                self.game.add(
+                    HudPoints(self.x, self.y, points, self.consecutive_enemies) )
 
 
     def hit(self, _):
@@ -99,4 +114,5 @@ class Player(Bird):
         play('die')
         play('ohno')
         self.game.add(HudMessage('Oh no!', remove_after=2))
+
 
