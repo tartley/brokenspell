@@ -19,6 +19,7 @@ from player import Player
 from sky import Sky
 from sounds import play
 from typebag import TypeBag
+from wavemessages import WAVE_MESSAGES
 from worlditem import WorldItem
 
 
@@ -89,7 +90,7 @@ class Game(object):
         self.wave = 0
         Player.start_game()
         self.add(HudInstructions())
-        clock.schedule_once(lambda _: self.spawn_wave(), 3)
+        clock.schedule_once(lambda _: self.spawn_wave(), 2)
 
 
     def over(self):
@@ -101,11 +102,20 @@ class Game(object):
         self.wave += 1
         self.add(HudMessage('Wave %d' % (self.wave,), remove_after=2))
 
+        text = WAVE_MESSAGES[min(self.wave - 1, len(WAVE_MESSAGES) - 1)]
+        hudmessage = HudMessage(
+            text,
+            y = self.height / 2 - 40,
+            color = (255, 255, 255, 128),
+            font_size = 16,
+            remove_after=2)
+        clock.schedule_once( lambda _: self.add( hudmessage ), 0.5)
+
         number = self.wave ** 2
         for n in xrange(number):
             clock.schedule_once(
                 lambda _: Enemy.spawn(self),
-                n * 0.25)
+                1.5 + n * 0.25)
 
 
     def wraparound(self, item):

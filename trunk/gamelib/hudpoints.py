@@ -27,7 +27,7 @@ class HudPoints(SpriteItem):
         image.anchor_y = image.height / 2
         self.images = [image]
 
-        self.dy = 5 + score / 10
+        self.dy = 2 + score / 50
         self.opacity = 255
 
 
