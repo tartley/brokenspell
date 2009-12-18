@@ -11,19 +11,19 @@ class Enemy(Bird):
     is_enemy = True
     count = 0
 
-    def __init__(self, x, y, dx=0, dy=0):
+    def __init__(self, x, y, dx=0, dy=0, fast=False):
         Bird.__init__(self, x, y, dx, dy)
-        self.think = Thinker(self)
+        self.think = Thinker(self, fast)
         self.last_flap = 0
 
 
     @staticmethod
-    def spawn(_):
+    def spawn(fast):
         x = uniform(0, Enemy.game.width)
         y = Enemy.game.height + 32
         dx = uniform(-20, 20)
         dy = 0
-        Enemy.game.add(Enemy(x, y, dx=dx, dy=0))
+        Enemy.game.add(Enemy(x, y, dx=dx, dy=0, fast=fast))
 
 
     def added(self):

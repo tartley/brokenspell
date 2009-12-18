@@ -1,9 +1,9 @@
 
 WAVE_MESSAGES = [
     'Get That Duck!',
-    'Here come some more!',
-    "Look out! A flock of them.",
-    'Holy crap! The birds!',
+    "Here comes a flock of them",
+    'Look out for the angry one!',
+    'Holy moley!',
     "My God, it's full of ducks...",
     'And now for something completely different...',
     "Nobody's ever got this far before",
@@ -16,6 +16,5 @@ WAVE_MESSAGES = [
     'There are no more messages',
     'OverflowError: message index out of bounds',
     'Make it stop',
-    'Please?',
 ]
 

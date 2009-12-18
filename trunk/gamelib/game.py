@@ -112,10 +112,15 @@ class Game(object):
         clock.schedule_once( lambda _: self.add( hudmessage ), 0.5)
 
         number = self.wave ** 2
-        for n in xrange(number):
+
+        def _spawn(fast):
             clock.schedule_once(
-                lambda _: Enemy.spawn(self),
+                lambda _: Enemy.spawn(fast),
                 1.5 + n * 0.25)
+
+        for n in xrange(number):
+            fast = n >= number + 2 - self.wave
+            _spawn(fast)
 
 
     def wraparound(self, item):

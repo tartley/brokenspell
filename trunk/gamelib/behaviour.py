@@ -69,8 +69,9 @@ class Hover(State):
 
 class Cruise(Hover):
 
-    def __init__(self, item):
+    def __init__(self, item, fast):
         Hover.__init__(self, item)
+        self.fast = fast
         if self.item.dx < 0:
             self.direction = Action.LEFT
         else:
@@ -78,17 +79,20 @@ class Cruise(Hover):
 
     def get_actions(self):
         actions = Hover.get_actions(self)
-        if not actions and self.item.last_flap % 2 == 1:
-            actions = set([self.direction])
+        if self.fast:
+            actions.add(self.direction)
+        else:
+            if not actions and self.item.last_flap % 2 == 1:
+                actions = set([self.direction])
         return actions
 
 
 class Thinker(object):
 
-    def __init__(self, item, behaviour=None):
+    def __init__(self, item, fast, behaviour=None):
         self.item = item
         if behaviour is None:
-            behaviour = Cruise(item)
+            behaviour = Cruise(item, fast)
         self.state = behaviour
 
     def __call__(self):
