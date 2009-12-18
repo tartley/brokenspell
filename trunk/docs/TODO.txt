@@ -4,23 +4,11 @@ CURRENT TASK:
 
 FEATURES
 
-Each wave gets a special message
+Binary exe for Windows
 
-some Enemies in later waves go fast
-
-Current enemy attacking 'dive on you' behaviour needs work. In particular, it
-does not account for horizontal velocities, so a diving enemy will almost
-always miss.
-* Should only dive is bird is higher than player (diving away when below is
-  just annoying)
-
-* Only show fps when outside acceptable range.
-* Key to toggle fps visibility?
+Binary rpm / deb for Linux
 
 Binary exe for Mac
-
-Binary exe for Linux
-
 
 
 BUGS
