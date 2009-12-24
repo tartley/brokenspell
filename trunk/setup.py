@@ -7,8 +7,6 @@ from zipfile import ZipFile
 
 import py2exe
 
-import fixpath
-
 from gamelib import NAME, VERSION
 
 
@@ -35,6 +33,7 @@ py2exe_options = dict(
         '_imaging',
         '_hashlib',
         'pyexpat',
+        'pyreadline',
         'win32api',
         'bz2',
         '_socket',
@@ -93,13 +92,13 @@ def zip_directory():
     archive.close()
 
 
-def main(config):
+def main():
     if not ('--verbose' in sys.argv or '-v' in sys.argv):
         sys.argv.append('--quiet')
     setup(**config)
-    zip_directory()
+    #zip_directory()
 
 
 if __name__ == '__main__':
-    sys.exit(main(config))
+    main()
 
