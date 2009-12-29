@@ -60,6 +60,7 @@ config = dict(
     )],
     data_files=[
         ('', ['lib\\avbin.dll']),
+        ('lib', ['lib\\vcredist_x86.exe']),
 
         ('data', glob('data\\*.*')),
         ('data\\images', glob('data\\images\*.*')),
