@@ -1,4 +1,4 @@
 @echo off
-python -O run_game.py --profile
+python -O bin\profile.py && ^
 runsnake profile.out
 
