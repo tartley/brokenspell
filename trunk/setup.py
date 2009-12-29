@@ -21,6 +21,7 @@ py2exe_options = dict(
     excludes=[
         # silence some warnings of missing modules
         '_imaging_gif',
+        '_scproxy',
         'dummy.Process',
         'email',
         'email.utils',
@@ -59,10 +60,10 @@ config = dict(
     )],
     data_files=[
         ('', ['lib\\avbin.dll']),
+
         ('data', glob('data\\*.*')),
         ('data\\images', glob('data\\images\*.*')),
         ('data\\sounds', glob('data\\sounds\*.*')),
-        ('data\\sprites', glob('data\\sprites\*.*')),
     ],
     options=dict(
         py2exe=py2exe_options
