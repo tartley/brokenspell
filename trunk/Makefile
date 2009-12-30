@@ -17,6 +17,9 @@ clean:
 tags:
 	ctags -R gamelib
 
+py2exe:
+	python setup.py py2exe
+
 stats:
 	find gamelib -name '*.py' | grep -v '/tests/' | xargs wc -l | sort
 	find gamelib -name '*.py' | grep '/tests/' | xargs wc -l | sort
