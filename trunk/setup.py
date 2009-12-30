@@ -16,7 +16,9 @@ DIST_DIR = 'dist\\%s' % (WIN_BINARY)
 
 
 py2exe_options = dict(
+    # bundle_files=1, # causes problems with C extensions loaded at runtime
     dist_dir=DIST_DIR,
+    dll_excludes=["pywintypes26.dll"],
     optimize=2,
     excludes=[
         # silence some warnings of missing modules
@@ -50,7 +52,6 @@ py2exe_options = dict(
         'pyglet.window.carbon.types',
         'win32con',
     ],
-    dll_excludes=["pywintypes26.dll"],
 )
 
 config = dict(
@@ -59,16 +60,21 @@ config = dict(
         icon_resources=[(1, 'data\SinisterDucks.ico')],
     )],
     data_files=[
-        ('', ['lib\\avbin.dll']),
-        ('lib', ['lib\\vcredist_x86.exe']),
+        (r'Microsoft.VC90.CRT', [
+            r'lib\Microsoft.VC90.CRT\Microsoft.VC90.CRT.manifest',
+            r'lib\Microsoft.VC90.CRT\msvcr90.dll',
+        ]),
 
-        ('data', glob('data\\*.*')),
-        ('data\\images', glob('data\\images\*.*')),
-        ('data\\sounds', glob('data\\sounds\*.*')),
+        (r'', [r'lib\avbin.dll']),
+
+        (r'data', glob(r'data\*.*')),
+        (r'data\images', glob(r'data\images\*.*')),
+        (r'data\sounds', glob(r'data\sounds\*.*')),
     ],
     options=dict(
         py2exe=py2exe_options
     ),
+    # zipfile=None,
 )
 
 

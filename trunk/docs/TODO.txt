@@ -5,6 +5,9 @@ CURRENT TASK:
 FEATURES
 
 Binary exe for Windows
+    - test it on bare bones VM
+
+Source downloadable, make sure it includes everything it needs and runs ok
 
 Binary rpm / deb for Linux
 
@@ -15,7 +18,7 @@ BUGS
 
 rotation of player bird goes screwy at high velocity
 
-pressing 'alt' hangs the game until you press it again??? (jlappy/winxp)
+pressing 'alt' hangs the game until you press it again? (jlappy/winxp)
 
 Some people do not get vsync. Can we enforce this? Or busy wait? Or make game
 speed dependant on frame rate?
@@ -35,9 +38,6 @@ Three-body collisions are probably not handled correctly
 
 
 REFACTOR
-
-move 'build-mswin-dist.py' to 'setup.py', think about adding a makefile
-or make-bin.bat which invokes it with the correct args.
 
 Consider that a worlditems have-a displayable, rather than being one.
 Displayable is root class, derived into SpriteHolder, LabelHolder,
@@ -62,10 +62,6 @@ our own.
 
 Behaviour code is a bit wonky. Examine the state machine in the Python
 Game book to see if it could be better that way.
-
-Maybe collision detection should not immediately invoke collision response,
-but should leave a collection of touching worlditems on each item. Then
-it is up to the items to respond to that in update()
 
 
 NOT BEING DONE
