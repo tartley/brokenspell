@@ -1,7 +1,7 @@
 from distutils.core import setup
 from glob import glob
-from os import listdir
-from os.path import isdir, join
+from os import listdir, walk
+from os.path import isdir, join, normpath
 import sys
 from zipfile import ZipFile
 
@@ -54,23 +54,32 @@ py2exe_options = dict(
     ],
 )
 
+
+def all_files(src):
+    retval = []
+    for (root, dirs, files) in walk(normpath(src)):
+        if '.svn' in dirs:
+            dirs.remove('.svn')
+        retval.append((root, [join(root, file) for file in files]))
+    return retval
+
+
+data_files=[
+    (r'Microsoft.VC90.CRT', [
+        r'lib\Microsoft.VC90.CRT\Microsoft.VC90.CRT.manifest',
+        r'lib\Microsoft.VC90.CRT\msvcr90.dll',
+    ]),
+    (r'', [r'lib\avbin.dll']),
+]
+data_files += all_files(r'data')
+
+
 config = dict(
     windows=[dict(
         script='run_game.py',
         icon_resources=[(1, 'data\SinisterDucks.ico')],
     )],
-    data_files=[
-        (r'Microsoft.VC90.CRT', [
-            r'lib\Microsoft.VC90.CRT\Microsoft.VC90.CRT.manifest',
-            r'lib\Microsoft.VC90.CRT\msvcr90.dll',
-        ]),
-
-        (r'', [r'lib\avbin.dll']),
-
-        (r'data', glob(r'data\*.*')),
-        (r'data\images', glob(r'data\images\*.*')),
-        (r'data\sounds', glob(r'data\sounds\*.*')),
-    ],
+    data_files=data_files,
     options=dict(
         py2exe=py2exe_options
     ),

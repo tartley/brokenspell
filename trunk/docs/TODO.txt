@@ -6,6 +6,7 @@ FEATURES
 
 Binary exe for Windows
     - test it on bare bones VM
+    - can we remove unicodedata.pyd, zip/urllib.pyo, zip/locale.pyo?
 
 Source downloadable, make sure it includes everything it needs and runs ok
 
