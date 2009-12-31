@@ -31,5 +31,5 @@ profile:
 alltests:
 	nosetests gamelib
 
-.PHONY: clean tags stats profile alltests
+.PHONY: clean tags stats profile py2exe alltests
 
