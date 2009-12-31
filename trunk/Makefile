@@ -17,8 +17,8 @@ clean:
 tags:
 	ctags -R gamelib
 
-py2exe:
-	python setup.py py2exe
+py2exe: clean
+	python setup.py --quiet py2exe
 
 stats:
 	find gamelib -name '*.py' | grep -v '/tests/' | xargs wc -l | sort
@@ -30,6 +30,9 @@ profile:
 
 alltests:
 	nosetests gamelib
+
+zip: py2exe
+	bin\\make_zip.bat
 
 .PHONY: clean tags stats profile py2exe alltests
 
