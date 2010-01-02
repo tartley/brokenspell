@@ -1,5 +1,6 @@
 
 from glob import glob
+from math import atan2, sqrt
 
 from pyglet import resource
 from pyglet.sprite import Sprite
@@ -65,6 +66,30 @@ class Bird(WorldItem):
             self.frame_idx += 4
 
 
+    def sprite_rotation(self):
+        # above this speed, bird rotates to face in direction it is moving
+        # above half this speed, bird rotation tends towards zero
+        # below half this speed, bird rotation is zero
+        TIP_SPEED = 10
+
+        speed = sqrt(self.dx * self.dx + self.dy * self.dy)
+
+        if speed < TIP_SPEED / 2:# or self.dy > 0:
+            return 0
+
+        # angle is the direction the bird is heading in
+        angle = min(0.7, atan2(self.dy, abs(self.dx)))
+        if self.facing == RIGHT:
+            angle *= -1
+
+        if speed < TIP_SPEED:
+
+            ratio = speed * 2 / TIP_SPEED - 1
+            return angle * ratio
+
+        return angle
+
+
     def update(self):
         WorldItem.update(self)
         self.actions = self.think()
@@ -72,11 +97,9 @@ class Bird(WorldItem):
         self.choose_frame()
         if self.last_flap is not None:
             self.last_flap += 1
-        self.rotation = -self.dx * self.dy / 100.0
+        self.rotation = self.sprite_rotation()
 
 
-    # TODO: make collisions detection stop detecting each collision after the
-    # first impact, until the two items have un-collided again.
     @staticmethod
     def bounce(one, two):
         '''
@@ -89,19 +112,20 @@ class Bird(WorldItem):
 
         # offset of body two from body one
         offset = Vec2(two.x, two.y) - Vec2(one.x, one.y)
-        n = offset.normalized()
+        offsetn = offset.normalized()
 
         # velocities
         v1 = Vec2(one.dx, one.dy)
         v2 = Vec2(two.dx, two.dy)
 
         # momentum exchanged
-        delta_p = 2 * (v1.dot(n)- v2.dot(n)) * n / (m1 + m2)
+        delta_p = 2 * (v1.dot(offsetn)- v2.dot(offsetn)) * offsetn / (m1 + m2)
 
         # accelerations
         a1 = delta_p * m2
         one.ddx -= a1.x
         one.ddy -= a1.y
+
         a2 = delta_p * m1
         two.ddx += a2.x
         two.ddy += a2.y

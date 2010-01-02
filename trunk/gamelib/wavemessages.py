@@ -3,7 +3,7 @@ WAVE_MESSAGES = [
     'Get That Duck!',
     "Here comes a flock of them",
     'Look out for the angry one!',
-    'Holy moley!',
+    'Oh no! Several flocks!',
     "My God, it's full of ducks...",
     'And now for something completely different...',
     "Nobody's ever got this far before",
