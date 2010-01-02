@@ -67,14 +67,14 @@ class Bird(WorldItem):
 
 
     def sprite_rotation(self):
-        # above this speed, bird rotates to face in direction it is moving
-        # above half this speed, bird rotation tends towards zero
         # below half this speed, bird rotation is zero
+        # above half this speed, bird rotates towards direction of motion
+        # above this speed, bird rotation == direction of motion
         TIP_SPEED = 10
 
         speed = sqrt(self.dx * self.dx + self.dy * self.dy)
 
-        if speed < TIP_SPEED / 2:# or self.dy > 0:
+        if speed < TIP_SPEED / 2:
             return 0
 
         # angle is the direction the bird is heading in
