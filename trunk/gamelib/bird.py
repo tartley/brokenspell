@@ -70,11 +70,14 @@ class Bird(WorldItem):
         # below half this speed, bird rotation is zero
         # above half this speed, bird rotates towards direction of motion
         # above this speed, bird rotation == direction of motion
-        TIP_SPEED = 10
+        if self.dy < 0:
+            tip_speed = 10
+        else:
+            tip_speed = 20
 
         speed = sqrt(self.dx * self.dx + self.dy * self.dy)
 
-        if speed < TIP_SPEED / 2:
+        if speed < tip_speed / 2:
             return 0
 
         # angle is the direction the bird is heading in
@@ -82,9 +85,9 @@ class Bird(WorldItem):
         if self.facing == RIGHT:
             angle *= -1
 
-        if speed < TIP_SPEED:
+        if speed < tip_speed:
 
-            ratio = speed * 2 / TIP_SPEED - 1
+            ratio = speed * 2 / tip_speed - 1
             return angle * ratio
 
         return angle
