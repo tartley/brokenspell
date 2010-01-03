@@ -67,30 +67,32 @@ class Bird(WorldItem):
 
 
     def sprite_rotation(self):
-        # below half this speed, bird rotation is zero
-        # above half this speed, bird rotates towards direction of motion
-        # above this speed, bird rotation == direction of motion
+        # use different dynamics to rotate bird sprite depending on if
+        # bird is rising or falling
         if self.dy < 0:
+            speed = sqrt(self.dx * self.dx + self.dy * self.dy)
             tip_speed = 10
         else:
-            tip_speed = 20
+            speed = abs(self.dx)
+            tip_speed = 5
 
-        speed = sqrt(self.dx * self.dx + self.dy * self.dy)
-
+        # below half tip_speed, sprite rotation is always zero
         if speed < tip_speed / 2:
             return 0
 
-        # angle is the direction the bird is heading in
-        angle = min(0.7, atan2(self.dy, abs(self.dx)))
+        # calculate direction the bird is heading in
+        heading = atan2(self.dy, abs(self.dx))
         if self.facing == RIGHT:
-            angle *= -1
+            heading *= -1
 
+        # up to tip_speed, sprite rotates towards heading somewhat
         if speed < tip_speed:
 
             ratio = speed * 2 / tip_speed - 1
-            return angle * ratio
+            return heading * ratio
 
-        return angle
+        # above tip_speed, sprite always faces in direction of bird's motion
+        return heading
 
 
     def update(self):
