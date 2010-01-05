@@ -1,0 +1,7 @@
+
+1.0.1
+
+* fix algorithm used to rotate bird sprites. Rotation is now more
+prominent, while not going screwy at high velocities.
+
+

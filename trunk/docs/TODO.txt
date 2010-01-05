@@ -1,41 +1,44 @@
 
 CURRENT TASK:
 
+Can py2exe put avbin and msvcr in 'lib' dir?
 
-FEATURES
+rename 'gamelib' to 'sinisterducks' or something.
 
-Binary exe for Windows
-    - test it on bare bones VM
-    - can we remove unicodedata.pyd, zip/urllib.pyo, zip/locale.pyo?
+fix all relative imports to use '.' prefix
+
+check out other pylint failures
+
+slightly bigger hudscores
+
+colored hudscores for feather collection
+
+colored, bigger hudmultiplier
+
+automate updating source.zip and mswin binary on a new release
 
 Source downloadable, make sure it includes everything it needs and runs ok
 
-Binary rpm / deb for Linux
-
-Binary exe for Mac
-
-
-BUGS
-
-rotation of player bird goes screwy at high velocity
-
 pressing 'alt' hangs the game until you press it again? (jlappy/winxp)
+(I Asked about this on pyglet-users)
 
-Some people do not get vsync. Can we enforce this? Or busy wait? Or make game
-speed dependant on frame rate?
+Scale game speed by update dt. Required for:
+    when vsync does work, for monitors of different refresh rates
+    when vsync doesn't work, to make game playable at 400fps
+    when computer is too slow for 60fps, make game playable at 30 or even 20fps
 
 Audio does not work properly on ALSA on my ubuntu (crashes on 32nd play of flap)
 * is this an ALSA limitation - does it work if I install and use OpenAL?
 * can we fix this with better use of pyglet API? Review how many media players
   we create, etc. 'flap' used to create a new one for each play, does it still?
 
-Review the bugs people reported in pyweek
+Binary rpm / deb for Linux
+
+Binary exe for Mac
 
 If errors occur in audio, we should catch and run silent
     - if no audio device: OK, handled
     - if wrong driver selected: not handled
-
-Three-body collisions are probably not handled correctly
 
 
 REFACTOR
