@@ -78,7 +78,7 @@ def get_data_files():
             r'lib\Microsoft.VC90.CRT\msvcr90.dll',
     ])
     data_files = [
-        # ms_visualc_runtime,
+        ms_visualc_runtime,
         (r'', [r'lib\avbin.dll']),
     ]
     data_files += all_files(r'data')
