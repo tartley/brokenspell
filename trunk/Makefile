@@ -25,7 +25,7 @@ stats:
 	find gamelib -name '*.py' | grep '/tests/' | xargs wc -l | sort
 
 profile:
-	python -O run_game.py --profile
+	python -O -m cProfile -o profile.out run_game.py
 	runsnake profile.out
 
 alltests:
