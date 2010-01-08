@@ -18,4 +18,6 @@ prominent, while not going screwy at high velocities.
 * py2exe put library.zip, avbin and msvcr90.dll in 'lib' dir, less confusion
   for users over what to double-click to start the game
 
+* rename top level script Sinister-Ducks.py (hence also .exe name)
+
 

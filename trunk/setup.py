@@ -5,7 +5,7 @@ import sys
 
 import py2exe
 
-from gamelib import NAME, VERSION
+from sinisterducks import NAME, VERSION
 
 
 NAME = NAME.replace(' ', '')

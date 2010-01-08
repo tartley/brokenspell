@@ -1,8 +1,6 @@
 
 CURRENT TASK:
 
-rename 'gamelib' to 'sinisterducks' or something.
-
 fix all relative imports to use '.' prefix
 
 hudscores get MORE bigger as score increases.

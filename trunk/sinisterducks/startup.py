@@ -8,7 +8,7 @@ from subprocess import call
 
 from pyglet import options
 
-from gamelib.config import settings
+from .config import settings
 
 
 
@@ -51,7 +51,7 @@ def turn_gl_debug_off():
 
 
 def launch():
-    from gamelib.application import Application
+    from .application import Application
     application = Application()
     application.launch()
 

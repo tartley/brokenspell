@@ -3,7 +3,7 @@ from os.path import join
 
 from pyglet import clock
 
-from gamelib.config import settings
+from .config import settings
 
 
 load = None

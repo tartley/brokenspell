@@ -12,24 +12,24 @@
 
 clean:
 	rm -rf build dist tags
-	-find gamelib bin -name '*.py[oc]' -exec rm {} \;
+	-find sinisterducks bin -name '*.py[oc]' -exec rm {} \;
 
 tags:
-	ctags -R gamelib
+	ctags -R sinisterducks
 
 py2exe: clean
 	python setup.py --quiet py2exe
 
 stats:
-	find gamelib -name '*.py' | grep -v '/tests/' | xargs wc -l | sort
-	find gamelib -name '*.py' | grep '/tests/' | xargs wc -l | sort
+	find sinisterducks -name '*.py' | grep -v '/tests/' | xargs wc -l | sort
+	find sinisterducks -name '*.py' | grep '/tests/' | xargs wc -l | sort
 
 profile:
 	python -O -m cProfile -o profile.out run_game.py
 	runsnake profile.out
 
 alltests:
-	nosetests gamelib
+	nosetests sinisterducks
 
 zip: py2exe
 	bin\\make_zip.bat
