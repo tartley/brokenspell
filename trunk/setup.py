@@ -22,6 +22,7 @@ def write_make_zip():
 
 def get_py2exe_options():
     py2exe_options = dict(
+        ascii=True,
         bundle_files=1, # causes problems with C extensions loaded at runtime
         dist_dir=DIST_DIR,
         dll_excludes=["pywintypes26.dll"],
@@ -51,11 +52,14 @@ def get_py2exe_options():
             'select',
 
             # filter out unused .pyo files in library.zip
+            'difflib',
             'doctest',
+            'pdb',
             'pyglet.window.xlib',
             'pyglet.window.carbon',
             'pyglet.window.carbon.constants',
             'pyglet.window.carbon.types',
+            'unittest',
             'win32con',
         ],
     )
@@ -100,7 +104,13 @@ def get_config():
     return config
 
 
-if __name__ == '__main__':
+
+def main():
     write_make_zip()
     setup(**get_config())
+    os.system('erase dist\SinisterDucks\w9xpopen.exe')
+
+
+if __name__ == '__main__':
+    main()
 
