@@ -1,5 +1,5 @@
 from distutils.core import setup
-from os import walk
+import os
 from os.path import join, normpath
 import sys
 
@@ -68,7 +68,7 @@ def get_py2exe_options():
 
 def all_files(src):
     retval = []
-    for (root, dirs, files) in walk(normpath(src)):
+    for (root, dirs, files) in os.walk(normpath(src)):
         if '.svn' in dirs:
             dirs.remove('.svn')
         retval.append((root, [join(root, file) for file in files]))
@@ -92,7 +92,7 @@ def get_data_files():
 def get_config():
     return dict(
         windows=[dict(
-            script='run_game.py',
+            script='Sinister-Ducks.py',
             icon_resources=[(1, 'data\SinisterDucks.ico')],
         )],
         data_files=get_data_files(),

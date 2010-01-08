@@ -13,12 +13,12 @@ Sinister Ducks
 RUNNING THE GAME
 
     On Windows, download the windows binary version, and double-click
-    'run_game.exe'.
+    'Sinister-Ducks.exe'.
 
     Otherwise, download the source, install the dependencies listed
     below, and then from a terminal, cd to the game directory and type:
 
-        python -O run_game.py
+        python -O Sinister-Ducks.py
 
     A configuration file, config.ini, can be used to affect the
     game and workaround issues. See comments within that file.
