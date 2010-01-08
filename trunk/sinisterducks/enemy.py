@@ -1,9 +1,9 @@
 from random import uniform
 
-from behaviour import Thinker, Plummet
-from bird import Bird
-from feather import Feather
-from sounds import play
+from .behaviour import Thinker, Plummet
+from .bird import Bird
+from .feather import Feather
+from .sounds import play
 
 
 class Enemy(Bird):

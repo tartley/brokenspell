@@ -1,5 +1,5 @@
 
-from spriteitem import SpriteItem
+from .spriteitem import SpriteItem
 
 
 class Ground(SpriteItem):

@@ -3,9 +3,9 @@ from random import randint
 
 from pyglet.window import key
 
-from enemy import Enemy
-from gameitem import GameItem
-from hudpoints import HudPoints
+from .enemy import Enemy
+from .gameitem import GameItem
+from .hudpoints import HudPoints
 
 
 class StressTest(GameItem):

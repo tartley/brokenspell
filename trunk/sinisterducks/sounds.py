@@ -4,7 +4,7 @@ from os.path import join
 from platform import system
 from random import randint
 
-from config import settings
+from .config import settings
 
 
 sounds_dir = join('data', 'sounds')

@@ -1,8 +1,8 @@
 
 from pyglet.text import Label
 
-from label2texture import label2texture
-from spriteitem import SpriteItem
+from .label2texture import label2texture
+from .spriteitem import SpriteItem
 
 
 class HudPoints(SpriteItem):

@@ -6,11 +6,11 @@ from pyglet.gl import (
 )
 from pyglet.graphics import Batch, OrderedGroup
 
-from enemy import Enemy
-from feather import Feather
-from graphics import Graphics
-from ground import Ground
-from player import Player
+from .enemy import Enemy
+from .feather import Feather
+from .graphics import Graphics
+from .ground import Ground
+from .player import Player
 
 
 class Render(object):

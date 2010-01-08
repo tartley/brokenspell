@@ -1,5 +1,5 @@
 
-from hudmessage import HudMessage
+from .hudmessage import HudMessage
 
 class HudGameOver(HudMessage):
 

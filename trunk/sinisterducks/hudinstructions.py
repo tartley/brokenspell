@@ -3,7 +3,7 @@ from pyglet import clock
 from pyglet.window import key
 from pyglet.text import Label
 
-from hudmessage import HudMessage
+from .hudmessage import HudMessage
 
 
 texts = [

@@ -1,11 +1,11 @@
 
 from itertools import islice
 
-from bird import Bird
-from enemy import Enemy
-from feather import Feather
-from player import Player
-from worlditem import WorldItem
+from .bird import Bird
+from .enemy import Enemy
+from .feather import Feather
+from .player import Player
+from .worlditem import WorldItem
 
 
 collision_handlers = {

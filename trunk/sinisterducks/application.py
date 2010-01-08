@@ -2,12 +2,12 @@
 import pyglet
 from pyglet.window import key, Window
 
-from config import settings
-from game import Game
-from gameitem import GameItem
-from sounds import load as load_sounds
-from music import Music
-from render import Render
+from .config import settings
+from .game import Game
+from .gameitem import GameItem
+from .sounds import load as load_sounds
+from .music import Music
+from .render import Render
 
 
 class KeyHandler(GameItem):

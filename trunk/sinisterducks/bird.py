@@ -5,10 +5,10 @@ from math import atan2, sqrt
 from pyglet import resource
 from pyglet.sprite import Sprite
 
-from behaviour import Action
-from sounds import play
-from vec2 import Vec2
-from worlditem import WorldItem, LEFT, RIGHT
+from .behaviour import Action
+from .sounds import play
+from .vec2 import Vec2
+from .worlditem import WorldItem, LEFT, RIGHT
 
 
 GLIDE_STEER = 0.1

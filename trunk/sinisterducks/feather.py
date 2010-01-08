@@ -5,7 +5,7 @@ from random import uniform
 from pyglet import clock, resource
 from pyglet.sprite import Sprite
 
-from worlditem import GRAVITY, WorldItem
+from .worlditem import GRAVITY, WorldItem
 
 
 AIR_RESIST = 0.99

@@ -3,7 +3,7 @@ from pyglet import clock
 from pyglet.text import Label
 from pyglet.window import key
 
-from gameitem import GameItem
+from .gameitem import GameItem
 
 
 colors = [

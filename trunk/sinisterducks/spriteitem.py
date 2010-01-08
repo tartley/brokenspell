@@ -3,7 +3,7 @@ from math import degrees
 
 from pyglet.sprite import Sprite
 
-from gameitem import GameItem
+from .gameitem import GameItem
 
 
 class SpriteItem(GameItem):

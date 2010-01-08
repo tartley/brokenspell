@@ -4,11 +4,11 @@ import math
 from pyglet import clock
 from pyglet.window import key
 
-from bird import Action, Bird
-from feather import Feather
-from hudmessage import HudMessage
-from hudpoints import HudPoints
-from sounds import play
+from .bird import Action, Bird
+from .feather import Feather
+from .hudmessage import HudMessage
+from .hudpoints import HudPoints
+from .sounds import play
 
 
 action_map = {

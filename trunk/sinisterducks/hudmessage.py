@@ -2,7 +2,7 @@
 from pyglet import clock
 from pyglet.text import Label
 
-from gameitem import GameItem
+from .gameitem import GameItem
 
 
 class HudMessage(GameItem):

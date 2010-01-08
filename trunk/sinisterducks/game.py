@@ -1,26 +1,26 @@
 
 from pyglet import clock
 
-from collision import Collision
-from enemy import Enemy
-from event import Event
-from stresstest import StressTest
-from feather import Feather
-from gameitem import GameItem
-from ground import Ground
-from hudgameover import HudGameOver
-from hudlives import HudLives
-from hudmessage import HudMessage
-from hudmultiplier import HudMultiplier
-from hudscore import HudScore
-from hudtitle import HudTitle
-from hudinstructions import HudInstructions
-from player import Player
-from sky import Sky
-from sounds import play
-from typebag import TypeBag
-from wavemessages import WAVE_MESSAGES
-from worlditem import WorldItem
+from .collision import Collision
+from .enemy import Enemy
+from .event import Event
+from .stresstest import StressTest
+from .feather import Feather
+from .gameitem import GameItem
+from .ground import Ground
+from .hudgameover import HudGameOver
+from .hudlives import HudLives
+from .hudmessage import HudMessage
+from .hudmultiplier import HudMultiplier
+from .hudscore import HudScore
+from .hudtitle import HudTitle
+from .hudinstructions import HudInstructions
+from .player import Player
+from .sky import Sky
+from .sounds import play
+from .typebag import TypeBag
+from .wavemessages import WAVE_MESSAGES
+from .worlditem import WorldItem
 
 
 

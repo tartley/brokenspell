@@ -3,8 +3,8 @@ import locale
 
 from pyglet.text import Label
 
-from hudmessage import HudMessage
-from player import Player
+from .hudmessage import HudMessage
+from .player import Player
 
 
 class HudScore(HudMessage):

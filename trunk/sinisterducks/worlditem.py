@@ -1,7 +1,7 @@
 
 from math import atan2
 
-from spriteitem import SpriteItem
+from .spriteitem import SpriteItem
 
 
 GRAVITY = 0.2
