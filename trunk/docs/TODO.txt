@@ -1,8 +1,6 @@
 
 CURRENT TASK:
 
-fix all relative imports to use '.' prefix
-
 hudscores get MORE bigger as score increases.
 
 colored hudscores for feather collection

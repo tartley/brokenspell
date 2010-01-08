@@ -81,18 +81,21 @@ class Player(Bird):
         self.consecutive_enemies = 0
 
 
-    def _increment_multiplier(self):
-        Player.multiplier += 1
+    def _schedule_decrement_multiplier(self):
         clock.unschedule(self._decrement_multiplier)
         clock.schedule_once(self._decrement_multiplier, MULTIPLIER_DELAY)
+
+
+    def _increment_multiplier(self):
+        Player.multiplier += 1
+        self._schedule_decrement_multiplier()
 
 
     def _decrement_multiplier(self, _):
         if Player.multiplier > 1:
             Player.multiplier -= 1
             if Player.multiplier > 1:
-                clock.schedule_once(
-                    self._decrement_multiplier, MULTIPLIER_DELAY)
+                self._schedule_decrement_multiplier()
 
 
     def collide_enemy(self, enemy):
@@ -106,6 +109,7 @@ class Player(Bird):
                 points = self.consecutive_enemies * 10 * self.multiplier
                 Player.score += points
                 self.game.add( HudPoints(self.x, self.y, points) )
+                self._schedule_decrement_multiplier()
 
 
     def hit(self, _):
