@@ -27,6 +27,8 @@ class Render(object):
         game.item_added += self.on_add_item
         game.item_removed += self.on_remove_item
 
+        self.win = None
+
         self.clockDisplay = clock.ClockDisplay()
         self.batch = Batch()
 
@@ -39,6 +41,7 @@ class Render(object):
 
 
     def init(self, win):
+        self.win = win
         glEnable(GL_BLEND)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 
@@ -50,8 +53,6 @@ class Render(object):
 
 
     def draw(self):
-        # TODO, can this be over items[SpriteItem] or something, and
-        # hence drop the hasattr check?
         for item in self.game:
             if hasattr(item, 'animate'):
                 item.animate()
@@ -59,8 +60,9 @@ class Render(object):
         self.batch.draw()
         self.clockDisplay.draw()
 
+        self.win.invalid = False
 
-    # TODO: icky hasattr checks
+
     def on_add_item(self, item):
         if hasattr(item, 'add_to_batch'):
             item.add_to_batch(self.batch, self.groups)

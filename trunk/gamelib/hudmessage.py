@@ -75,7 +75,7 @@ class HudMessage(GameItem):
         self.label.delete()
 
 
-    def update(self):
+    def update(self, _):
         if self.source != self.old_source:
             self.label.text = self.text
             self.old_source = self.source

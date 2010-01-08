@@ -4,6 +4,9 @@ from random import randint
 from pyglet import clock
 
 
+FLAP_RATE = 20
+
+
 class Action(object):
     FLAP = 0
     LEFT = 1
@@ -27,7 +30,6 @@ class Hover(State):
     def __init__(self, *args):
         State.__init__(self, *args)
         self.choose_altitude(None)
-        self.flap_state = 0
 
 
     def choose_altitude(self, _):
@@ -38,30 +40,14 @@ class Hover(State):
 
 
     def get_actions(self):
-        self.flap_state -= 1
-
-        foe_is_below = (
-            self.item.foe and
-            self.item.foe.y < self.item.y and
-            abs(self.item.foe.x - self.item.x) < self.item.width
-        )
-        if foe_is_below:
-            return set()
-        if self.item.foe:
-            foe_x = self.item.foe.x
-            self.item.foe = None
-            if foe_x < self.item.x:
-                self.direction = Action.RIGHT
-                return set()
-            else:
-                self.direction = Action.LEFT
-                return set()
-
-        flap_rate = 15
-        if self.item.y < self.desired_y and self.item.last_flap > flap_rate:
-            self.flap_state = flap_rate
-
-        if self.flap_state > flap_rate / 2:
+        if (
+            self.item.last_flap < FLAP_RATE / 2.0
+            or
+            (
+                self.item.y < self.desired_y and
+                self.item.last_flap > FLAP_RATE
+            )
+        ):
             return set([Action.FLAP])
         return set()
 
@@ -82,7 +68,7 @@ class Cruise(Hover):
         if self.fast:
             actions.add(self.direction)
         else:
-            if not actions and self.item.last_flap % 2 == 1:
+            if not actions and self.item.last_flap > FLAP_RATE / 2:
                 actions = set([self.direction])
         return actions
 

@@ -58,4 +58,3 @@ class HudTitle(GameItem):
         clock.schedule_once(lambda _: self.game.start(), 1)
         self.remove_from_game = True
 
-

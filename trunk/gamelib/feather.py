@@ -30,13 +30,13 @@ class Feather(WorldItem):
         self.owner = None
 
 
-    def update(self):
-        self.rotation += self.speed * self.curve
-        self.speed *= (1 - (max(0, (abs(self.speed) - 7)) * self.curve))
-        self.speed -= sin(self.rotation) / 2
+    def update(self, dt):
+        self.rotation += (self.speed * self.curve) * dt
+        self.speed *= (1 - (max(0, (abs(self.speed) - 7)) * self.curve)) ** dt
+        self.speed -= sin(self.rotation) / 2 * dt
 
-        self.x += self.speed * -cos(self.rotation)
-        self.y += self.speed * sin(self.rotation) - GRAVITY
+        self.x += self.speed * -cos(self.rotation) * dt
+        self.y += (self.speed * sin(self.rotation) - GRAVITY) * dt
 
         WorldItem.test_for_fall_off_screen(self)
 

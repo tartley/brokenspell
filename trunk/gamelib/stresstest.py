@@ -14,7 +14,7 @@ class StressTest(GameItem):
         GameItem.__init__(self)
 
 
-    def update(self):
+    def update(self, _):
         if self.game.keystate[key.F1]:
             self.game.add(HudPoints(
                 randint(0, self.game.width),
@@ -25,7 +25,7 @@ class StressTest(GameItem):
     def on_key_press(self, symbol, modifier):
         if symbol == key.F2:
             for _ in xrange(16):
-                Enemy.spawn(self.game)
+                Enemy.spawn()
         elif symbol == key.F3:
             for bird in self.game._items[Enemy]:
                 bird.feathers += 1

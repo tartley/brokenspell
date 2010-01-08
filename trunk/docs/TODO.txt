@@ -1,31 +1,77 @@
 
 CURRENT TASK:
 
+py2exe has some sort of 'ascii' mode to remove encodings/unicode from output.
+Can we safely use it? Does it reduce exe size?
+
 Can py2exe put avbin and msvcr in 'lib' dir?
 
 rename 'gamelib' to 'sinisterducks' or something.
 
 fix all relative imports to use '.' prefix
 
-check out other pylint failures
-
-slightly bigger hudscores
+hudscores get MORE bigger as score increases.
 
 colored hudscores for feather collection
 
 colored, bigger hudmultiplier
 
-automate updating source.zip and mswin binary on a new release
+Don't show fps when abs(fps - refreshrate) > 3
+Or, if refreshrate can't be determined, don't show when 50 <= fps <= 75
+
+Function key to toggle between fps on always / as described above
+
+check out other pylint failures
+
+automate creation and upload of source.zip and mswin_binary.zip for new releases
 
 Source downloadable, make sure it includes everything it needs and runs ok
+
+Instructions for running from source on Linux & Mac. Test this on Linux.
 
 pressing 'alt' hangs the game until you press it again? (jlappy/winxp)
 (I Asked about this on pyglet-users)
 
-Scale game speed by update dt. Required for:
-    when vsync does work, for monitors of different refresh rates
-    when vsync doesn't work, to make game playable at 400fps
-    when computer is too slow for 60fps, make game playable at 30 or even 20fps
+
+REFACTOR
+
+Consider that a worlditems have-a displayable, rather than being one.
+Displayable is root class, derived into SpriteHolder, LabelHolder,
+VertexListHolder. Can we then sort out HudItems to share more code?
+Type of worlditem that has-a displayable is called VisibleItem.
+
+                  GameItem
+                     |
+                 VisibleItem                   Displayable
+                /    |    \                   /     |     \
+               /     |    Ground<>----VertexList    |     |
+              |      |    & Sky        Holder       |     |
+              |      |                           Label    |
+              |    HudItem<>---------------------Holder   |
+              |   /   |   \                               |
+              |  A great many                             |
+              |     things                                |
+              |                                           |
+          WorldItem<>-----------------------------------Sprite
+           /     \                                      Holder
+         Bird    Feather
+        /    \
+     Player  Enemy
+
+
+Renderer should create and manage a collection of displayables, mirroring
+the collection of gameitems. Each displayable should know about the gameitem
+it represents, not the other way around.
+The gameitems expose properties that the displayable uses.
+
+Can fps display be put into render.batch as well? It can if we construct
+our own, HudFps.
+
+Behaviour code is a bit wonky. Examine the state machine in the Python
+Game book to see if it could be better that way.
+
+
+NOT BEING DONE
 
 Audio does not work properly on ALSA on my ubuntu (crashes on 32nd play of flap)
 * is this an ALSA limitation - does it work if I install and use OpenAL?
@@ -39,36 +85,6 @@ Binary exe for Mac
 If errors occur in audio, we should catch and run silent
     - if no audio device: OK, handled
     - if wrong driver selected: not handled
-
-
-REFACTOR
-
-Consider that a worlditems have-a displayable, rather than being one.
-Displayable is root class, derived into SpriteHolder, LabelHolder,
-VertexListHolder. Can we then sort out HudItems to share more code?
-Type of worlditem that has-a displayable is called VisibleItem.
-
-                  GameItem   AHAR! This relationship is BACKWARDS!
-                     |               |
-                 VisibleItem<>-----------Displayable
-                /    |      \            /     |    \
-       WorldItem  HudItem  Ground    Sprite  Label   VertexList
-         /    \        |   & Sky     Holder  Holder   Holder
-      Bird    Feather  A
-     /    \          great
-  Player  Enemy    many things
-
-A Displayable knows about its parent GameItem - not the other way around!
-The WorldItem exposes properties that the displayable uses.
-
-Can fps display be put into render.batch as well? It can if we construct
-our own.
-
-Behaviour code is a bit wonky. Examine the state machine in the Python
-Game book to see if it could be better that way.
-
-
-NOT BEING DONE
 
 Enemy behaviour. Smarter enemies should:
 * face and move away when attacked

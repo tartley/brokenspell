@@ -18,6 +18,6 @@ class GameItem(object):
             self.win.remove_handlers(self)
 
 
-    def update(self):
+    def update(self, _):
         pass
 

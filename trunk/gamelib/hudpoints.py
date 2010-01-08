@@ -10,8 +10,8 @@ class HudPoints(SpriteItem):
     Represents a number floating in the sky, instanciated whenever the player
     scores some points.
 
-    For performance, we generate bitmaps from each label, and blit the bitmap in
-    the batch, instead of the label itself.
+    For performance, we generate bitmaps from each label, and blit the bitmap
+    in the batch, instead of the label itself.
     '''
 
     render_layer = 3 # hud
@@ -31,11 +31,11 @@ class HudPoints(SpriteItem):
         self.opacity = 255
 
 
-    def update(self):
-        self.y += self.dy
-        self.dy *= 0.9
+    def update(self, dt):
+        self.y += self.dy * dt
+        self.dy *= 0.9 ** dt
         self.sprite.opacity = self.opacity
-        self.opacity -= 3
+        self.opacity -= 3 * dt
         if self.opacity <= 0:
             self.remove_from_game = True
 

@@ -12,8 +12,8 @@ from worlditem import WorldItem, LEFT, RIGHT
 
 
 GLIDE_STEER = 0.1
-FLAP_STEER = 4
-FLAP_LIFT = 6
+FLAP_STEER = 4.0
+FLAP_LIFT = 6.0
 
 
 class Bird(WorldItem):
@@ -28,15 +28,14 @@ class Bird(WorldItem):
         self.last_flap = None
         self.is_alive = True
         self.actions = set()
-        self.foe = None
         self.feathers = 1
 
 
-    def act(self):
+    def act(self, dt):
         if Action.FLAP in self.actions:
             if self.can_flap:
-                self.dy += FLAP_LIFT
-                self.last_flap = 0
+                self.ddy += FLAP_LIFT / dt
+                self.last_flap = 0.0
                 self.can_flap = False
                 if self.is_player:
                     play('flap')
@@ -44,14 +43,14 @@ class Bird(WorldItem):
             self.can_flap = True
 
         ddx = GLIDE_STEER
-        if self.last_flap == 0:
-            ddx = FLAP_STEER
+        if self.last_flap == 0.0:
+            ddx = FLAP_STEER / dt
 
         if Action.LEFT in self.actions:
-            self.dx -= ddx
+            self.ddx -= ddx
             self.facing = LEFT
         if Action.RIGHT in self.actions:
-            self.dx += ddx
+            self.ddx += ddx
             self.facing = RIGHT
 
 
@@ -95,13 +94,13 @@ class Bird(WorldItem):
         return heading
 
 
-    def update(self):
-        WorldItem.update(self)
+    def update(self, dt):
+        WorldItem.update(self, dt)
         self.actions = self.think()
-        self.act()
+        self.act(dt)
         self.choose_frame()
         if self.last_flap is not None:
-            self.last_flap += 1
+            self.last_flap += dt
         self.rotation = self.sprite_rotation()
 
 

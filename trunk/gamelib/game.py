@@ -63,14 +63,19 @@ class Game(object):
         self.item_removed(item)
 
 
-    def startup(self):
+    def startup(self, win):
         self.add(Sky())
         self.add(Ground())
         self.add(StressTest())
         self.add(HudLives())
         self.add(HudScore())
         self.add(HudMultiplier())
-        clock.schedule(self.update)
+
+        def update_and_refresh(win, dt):
+            self.update(dt)
+            win.invalid = True
+
+        clock.schedule(lambda dt: update_and_refresh(win, dt))
         self.title()
 
 
@@ -130,20 +135,26 @@ class Game(object):
             item.x -= self.width + item.width
 
 
-    def update(self, _):
-        # iterate through self._items, updating each
+    def update(self, dt):
+        # scale dt such that 'standard' framerate of 60fps gives dt=1.0
+        dt *= 60.0
+
+        # don't attempt to compensate for framerate of less than 30fps. This
+        # guards against huge explosion when game is paused for any reason
+        # and then restarted
+        dt = min(dt, 2)
+
         ids_to_remove = set()
         for item in self._items:
-            item.update()
+            item.update(dt)
             if item.remove_from_game:
                 ids_to_remove.add(id(item))
-            # TODO, can we find a way to iterate through WorldItems?
             if isinstance(item, WorldItem):
                 self.wraparound(item)
 
-        # Add and remove from self._items here
-        while self._to_be_added:
-            self._add(self._to_be_added.pop())
+        for item in self._to_be_added:
+            self._add(item)
+        self._to_be_added = []
         for itemid in ids_to_remove:
             self.remove(itemid=itemid)
 

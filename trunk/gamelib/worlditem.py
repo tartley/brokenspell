@@ -26,15 +26,20 @@ class WorldItem(SpriteItem):
         self.ddy = 0
 
 
-    def update(self):
-        self.dx += self.ddx
-        self.dx *= self.AIR_RESIST
-        self.dy += self.ddy - GRAVITY
-        self.dy *= self.AIR_RESIST
+    def update(self, dt):
+        self.ddy -= GRAVITY
+
+        self.dy += self.ddy * dt
+        self.dx += self.ddx * dt
+        self.dy *= self.AIR_RESIST ** dt
+        self.dx *= self.AIR_RESIST ** dt
+
+        self.x += self.dx * dt
+        self.y += self.dy * dt
+
         self.ddx = 0
         self.ddy = 0
-        self.x += self.dx
-        self.y += self.dy
+
         self.test_for_fall_off_screen()
 
 
