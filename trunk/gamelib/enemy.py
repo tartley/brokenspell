@@ -18,11 +18,11 @@ class Enemy(Bird):
 
 
     @staticmethod
-    def spawn(fast):
+    def spawn(fast=False):
         x = uniform(0, Enemy.game.width)
         y = Enemy.game.height + 32
         dx = uniform(-20, 20)
-        dy = 0
+        dy = -8
         Enemy.game.add(Enemy(x, y, dx=dx, dy=0, fast=fast))
 
 
