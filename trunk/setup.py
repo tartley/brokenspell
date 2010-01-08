@@ -77,20 +77,20 @@ def all_files(src):
 
 def get_data_files():
     ms_visualc_runtime = (
-        r'Microsoft.VC90.CRT', [
+        r'lib\Microsoft.VC90.CRT', [
             r'lib\Microsoft.VC90.CRT\Microsoft.VC90.CRT.manifest',
             r'lib\Microsoft.VC90.CRT\msvcr90.dll',
     ])
     data_files = [
         ms_visualc_runtime,
-        (r'', [r'lib\avbin.dll']),
+        (r'lib', [r'lib\avbin.dll']),
     ]
     data_files += all_files(r'data')
     return data_files
 
 
 def get_config():
-    config = dict(
+    return dict(
         windows=[dict(
             script='run_game.py',
             icon_resources=[(1, 'data\SinisterDucks.ico')],
@@ -99,9 +99,8 @@ def get_config():
         options=dict(
             py2exe=get_py2exe_options(),
         ),
-        zipfile=None,
+        zipfile='lib\library.zip',
     )
-    return config
 
 
 

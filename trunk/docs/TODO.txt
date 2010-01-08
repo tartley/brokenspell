@@ -1,11 +1,6 @@
 
 CURRENT TASK:
 
-py2exe has some sort of 'ascii' mode to remove encodings/unicode from output.
-Can we safely use it? Does it reduce exe size?
-
-Can py2exe put avbin and msvcr in 'lib' dir?
-
 rename 'gamelib' to 'sinisterducks' or something.
 
 fix all relative imports to use '.' prefix

@@ -4,4 +4,18 @@
 * fix algorithm used to rotate bird sprites. Rotation is now more
 prominent, while not going screwy at high velocities.
 
+* Scale game speed by dt between frames. Fixes game being too fast or slow:
+  + when vsync doesn't work, game was unplayably fast at 400fps
+  + when computer is too slow for 60fps, make game playable at 30fps
+  + when user monitor has different refresh rate from the expected 60fps
+
+* Disable pyglet automatically redrawing window after every key, mouse
+  or window event. Results in much less cpu wasted by many needless redraws
+  and possibly smoother on-screen updates.
+
+* py2exe 'ascii' mode removes encodings/unicode. Reduces exe size by 50k
+
+* py2exe put library.zip, avbin and msvcr90.dll in 'lib' dir, less confusion
+  for users over what to double-click to start the game
+
 
