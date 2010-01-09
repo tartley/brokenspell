@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+NAME=SinisterDucks
+VERSION=`python -O ${NAME}.py --version | sed -e 's/\n//' `
+
 if [ ! -d dist ] ; then
     mkdir dist
 fi

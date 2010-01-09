@@ -9,7 +9,7 @@ VERSION := `python -O SinisterDucks.py --version`
 PACKAGE := sinisterducks
 
 clean:
-	rm -rf build dist tags
+	rm -rf build dist tags pip-log.txt
 	-find ${PACKAGE} bin -name '*.py[oc]' -exec rm {} \;
 
 tags:
@@ -20,7 +20,7 @@ stats:
 	find ${PACKAGE} -name '*.py' | grep '/tests/' | xargs wc -l | sort -g
 
 profile:
-	python -O -m cProfile -o profile.out Sinister-Ducks.py
+	python -O -m cProfile -o profile.out SinisterDucks.py
 	runsnake profile.out
 
 alltests:
@@ -31,19 +31,15 @@ py2exe:
 	rm -rf dist/${NAME}
 	python setup.py --quiet py2exe
 
-templates:
-	python bin/template.py
-	chmod 755 bin/*.sh
+zipwin: py2exe
+	bin/make_win_zip.sh
 
-zipwin: templates py2exe
-	bin/make_win_zip.bat
-
-zipsrc: templates
+zipsrc:
 	bin/make_src_zip.sh
 
 zips: zipsrc zipwin
 
-uploadwin:
+uploadwin: zipwin
 	googlecode_upload.py \
         --project=brokenspell \
         --summary='MS Windows executable' \
