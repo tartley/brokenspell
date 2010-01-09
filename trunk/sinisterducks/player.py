@@ -8,6 +8,7 @@ from .bird import Action, Bird
 from .feather import Feather
 from .hudmessage import HudMessage
 from .hudpoints import HudPoints
+from .multiplier import Multiplier
 from .sounds import play
 
 
@@ -17,14 +18,12 @@ action_map = {
     key.RIGHT: Action.RIGHT,
 }
 
-MULTIPLIER_DELAY = 3
-
 
 class Player(Bird):
 
     is_player = True
     score = 0
-    multiplier = 1
+    multiplier = None
     lives = 0
 
     def __init__(self, x, y):
@@ -37,7 +36,7 @@ class Player(Bird):
         Player.get_ready()
         Player.score = 0
         Player.lives = 3
-        Player.multiplier = 1
+        Player.multiplier = Multiplier()
 
 
     @staticmethod
@@ -76,26 +75,9 @@ class Player(Bird):
 
     def collide_feather(self, feather):
         feather.remove_from_game = True
-        play('ding', self.multiplier - 1)
-        self._increment_multiplier()
+        play('ding', self.multiplier.value - 1)
+        self.multiplier.increment()
         self.consecutive_enemies = 0
-
-
-    def _schedule_decrement_multiplier(self):
-        clock.unschedule(self._decrement_multiplier)
-        clock.schedule_once(self._decrement_multiplier, MULTIPLIER_DELAY)
-
-
-    def _increment_multiplier(self):
-        Player.multiplier += 1
-        self._schedule_decrement_multiplier()
-
-
-    def _decrement_multiplier(self, _):
-        if Player.multiplier > 1:
-            Player.multiplier -= 1
-            if Player.multiplier > 1:
-                self._schedule_decrement_multiplier()
 
 
     def collide_enemy(self, enemy):
@@ -106,10 +88,10 @@ class Player(Bird):
             else:
                 enemy.hit(self)
                 self.consecutive_enemies += 1
-                points = self.consecutive_enemies * 10 * self.multiplier
+                points = self.consecutive_enemies * self.multiplier.value * 10
                 Player.score += points
                 self.game.add( HudPoints(self.x, self.y, points) )
-                self._schedule_decrement_multiplier()
+                self.multiplier.schedule_decrement()
 
 
     def hit(self, _):

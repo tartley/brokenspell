@@ -4,6 +4,21 @@ from pyglet.text import Label
 from .hudmessage import HudMessage
 from .player import Player
 
+colors = [
+    (127, 127, 255, 127),
+    (127, 255, 255, 127),
+    (127, 255, 127, 127),
+    (255, 255, 127, 127),
+    (255, 127, 127, 127),
+    (255, 127, 255, 127),
+    (127, 127, 255, 255),
+    (127, 255, 255, 255),
+    (127, 255, 127, 255),
+    (255, 255, 127, 255),
+    (255, 127, 127, 255),
+    (255, 127, 255, 255),
+    (255, 255, 255, 255),
+]
 
 class HudMultiplier(HudMessage):
 
@@ -22,9 +37,21 @@ class HudMultiplier(HudMessage):
 
     @property
     def source(self):
-        return Player.multiplier
+        if Player.multiplier:
+            return Player.multiplier.value
+        return 0
 
     @property
     def text(self):
-        return 'x%d' % (Player.multiplier, )
+        if Player.multiplier:
+            return 'x%d' % (Player.multiplier.value, )
+        return ''
+
+
+    def update(self, _):
+        self.label.begin_update()
+        self.label.font_size = 24 + self.source * 3
+        self.label.color = colors[min(self.source, len(colors)) - 1]
+        HudMessage.update(self, None)
+        self.label.end_update()
 

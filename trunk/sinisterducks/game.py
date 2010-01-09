@@ -100,6 +100,7 @@ class Game(object):
 
     def over(self):
         play('gameover')
+        Player.multiplier = None
         self.add(HudGameOver())
 
 

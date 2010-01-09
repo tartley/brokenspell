@@ -18,7 +18,7 @@ class HudPoints(SpriteItem):
 
     def __init__(self, x, y, score):
         SpriteItem.__init__(self, x, y)
-        size = 16 + score / 10
+        size = 16 + score / 5.0
         label = Label(
             text=str(score),
             font_size = size)
