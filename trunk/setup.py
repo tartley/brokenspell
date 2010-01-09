@@ -9,15 +9,8 @@ from sinisterducks import NAME, VERSION
 
 
 NAME = NAME.replace(' ', '')
-WIN_BINARY = '%s-%s-mswin' % (NAME, VERSION,)
 DIST_DIR = 'dist\\%s' % (NAME,)
 
-
-def write_make_zip():
-    with open(r'bin\make_zip.bat', 'w') as fp:
-        fp.write('@echo off\n')
-        fp.write('cd dist\n')
-        fp.write('zip -rq %s.zip %s\n' % (WIN_BINARY, NAME))
 
 
 def get_py2exe_options():
@@ -105,7 +98,6 @@ def get_config():
 
 
 def main():
-    write_make_zip()
     setup(**get_config())
     os.system('erase dist\SinisterDucks\w9xpopen.exe')
 

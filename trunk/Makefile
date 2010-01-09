@@ -17,9 +17,6 @@ clean:
 tags:
 	ctags -R sinisterducks
 
-py2exe: clean
-	python setup.py --quiet py2exe
-
 stats:
 	find sinisterducks -name '*.py' | grep -v '/tests/' | xargs wc -l | sort
 	find sinisterducks -name '*.py' | grep '/tests/' | xargs wc -l | sort
@@ -31,8 +28,23 @@ profile:
 alltests:
 	nosetests sinisterducks
 
-zip: py2exe
-	bin\\make_zip.bat
 
-.PHONY: clean tags stats profile py2exe alltests
+py2exe:
+	rm -rf dist\\SinisterDucks
+	python setup.py --quiet py2exe
+
+
+make_zips:
+	python bin\\make_make_zips.py
+
+zipwin: make_zips py2exe
+	bin\\make_win_zip.bat
+
+zipsrc: make_zips
+	bin\\make_src_zip.bat
+
+zips: zipsrc zipwin
+
+
+.PHONY: clean tags stats profile py2exe alltests make_zips win_zip src_zip zips
 
