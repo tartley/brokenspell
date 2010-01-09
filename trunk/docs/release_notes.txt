@@ -20,7 +20,7 @@ prominent, while not going screwy at high velocities.
 
 IMPLEMENTATION DETAILS
 
-* rename top level script Sinister-Ducks.py (hence also .exe name)
+* rename top level script SinisterDucks.py (hence also .exe name)
 * rename top level module 'gamelib' to 'sinisterducks'
 
 

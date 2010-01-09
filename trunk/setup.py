@@ -85,7 +85,7 @@ def get_data_files():
 def get_config():
     return dict(
         windows=[dict(
-            script='Sinister-Ducks.py',
+            script='SinisterDucks.py',
             icon_resources=[(1, 'data\SinisterDucks.ico')],
         )],
         data_files=get_data_files(),

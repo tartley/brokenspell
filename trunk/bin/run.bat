@@ -1,3 +1,3 @@
 @echo off
-python -O Sinister-Ducks.py
+python -O SinisterDucks.py
 

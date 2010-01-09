@@ -1,0 +1,7 @@
+@echo off
+
+setlocal
+cd dist
+rm -f ${NAME}-${VERSION}-mswin.zip
+zip -rq ${NAME}-${VERSION}-mswin.zip ${NAME}
+

@@ -6,7 +6,7 @@ TARBALL=${NAME}-linux-bin.tar.gz
 set -x -e
 
 rm -rf dist
-bb-freeze Sinister-Ducks.py
+bb-freeze SinisterDucks.py
 cp -r README.txt config.ini data dist
 cp lib/libavbin.so* dist
 find dist -name .svn | xargs rm -rf

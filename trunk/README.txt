@@ -9,7 +9,7 @@ http://www.pyweek.org/e/BrokenSpell/
 On Windows:
 
     Download the windows executable version, and double-click
-    'Sinister-Ducks.exe'.
+    'SinisterDucks.exe'.
 
 
 On Mac or Linux:
@@ -19,7 +19,7 @@ On Mac or Linux:
     Download the Sinister Ducks source tarfile, untar it.
     Then from a terminal, cd to the game directory and type:
 
-        python -O Sinister-Ducks.py
+        python -O SinisterDucks.py
 
     A configuration file, config.ini, can be used to affect the game,
     particularly useful to work around problems with sound. See comments

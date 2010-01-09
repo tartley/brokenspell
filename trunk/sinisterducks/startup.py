@@ -3,13 +3,19 @@ from ctypes import cdll
 from os import environ, pathsep
 from os.path import join
 from platform import system
-from sys import stderr
 from subprocess import call
+import sys
 
 from pyglet import options
 
 from .config import settings
+from . import VERSION
 
+
+def process_args():
+    if '--version' in sys.argv:
+        print VERSION
+        sys.exit()
 
 
 def get_env_name():
@@ -58,6 +64,7 @@ def launch():
 
 def startup():
     # these functions must be executed before importing Application
+    process_args()
     setup_environment_variables()
     setup_audio()
     turn_gl_debug_off()

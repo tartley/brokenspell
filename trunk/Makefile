@@ -4,42 +4,54 @@
 
 # I run these under bash, or on Windows under Cygwin
 
+NAME := SinisterDucks
+VERSION := `python -O SinisterDucks.py --version`
+PACKAGE := sinisterducks
+
 clean:
 	rm -rf build dist tags
-	-find sinisterducks bin -name '*.py[oc]' -exec rm {} \;
+	-find ${PACKAGE} bin -name '*.py[oc]' -exec rm {} \;
 
 tags:
-	ctags -R sinisterducks
+	ctags -R ${PACKAGE}
 
 stats:
-	find sinisterducks -name '*.py' | grep -v '/tests/' | xargs wc -l | sort -g
-	find sinisterducks -name '*.py' | grep '/tests/' | xargs wc -l | sort -g
+	find ${PACKAGE} -name '*.py' | grep -v '/tests/' | xargs wc -l | sort -g
+	find ${PACKAGE} -name '*.py' | grep '/tests/' | xargs wc -l | sort -g
 
 profile:
 	python -O -m cProfile -o profile.out Sinister-Ducks.py
 	runsnake profile.out
 
 alltests:
-	nosetests sinisterducks
+	nosetests ${PACKAGE}
 
 
 py2exe:
-	rm -rf dist/SinisterDucks
+	rm -rf dist/${NAME}
 	python setup.py --quiet py2exe
 
+templates:
+	python bin/template.py
+	chmod 755 bin/*.sh
 
-make_zips:
-	python bin/make_make_zips.py
-	chmod 755 bin/*
-
-zipwin: make_zips py2exe
+zipwin: templates py2exe
 	bin/make_win_zip.bat
 
-zipsrc: make_zips
+zipsrc: templates
 	bin/make_src_zip.sh
 
 zips: zipsrc zipwin
 
+uploadwin:
+	googlecode_upload.py \
+        --project=brokenspell \
+        --summary='MS Windows executable' \
+        --user=tartley \
+        --password=`cat ~/.googlecodepw` \
+        --labels=Featured,Type-Executable,OpSys-Windows \
+        dist\\${NAME}-${VERSION}-mswin.zip
 
-.PHONY: clean tags stats profile alltests py2exe make_zips zipsrc zipwin zips
+
+.PHONY: clean tags stats profile alltests py2exe make_zips zipsrc zipwin zips uploadwin
 
