@@ -25,7 +25,7 @@ stats:
 	find sinisterducks -name '*.py' | grep '/tests/' | xargs wc -l | sort
 
 profile:
-	python -O -m cProfile -o profile.out run_game.py
+	python -O -m cProfile -o profile.out Sinister-Ducks.py
 	runsnake profile.out
 
 alltests:
