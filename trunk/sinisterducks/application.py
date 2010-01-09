@@ -35,7 +35,9 @@ class Application(object):
 
     def launch(self):
         self.win = Window(
-            width=1024, height=768, vsync=self.vsync, visible=False)
+            width=1024, height=768,
+            vsync=self.vsync,
+            visible=False)
         self.win.set_mouse_visible(False)
         GameItem.win = self.win
 
