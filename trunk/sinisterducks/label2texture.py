@@ -1,4 +1,6 @@
 
+import sys
+
 from pyglet import gl
 from pyglet.image import Texture
 
@@ -24,6 +26,9 @@ def label2texture(label):
         x = x - xstart
         y = height - glyph.height - y + ystart
         texture.blit_into(data, x, y, 0)
+
+    if sys.platform not in ['win32', 'cygwin']:
+        texture = texture.get_transform(flip_y=True)
 
     return texture
 
