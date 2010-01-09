@@ -1,17 +1,22 @@
 
 CURRENT TASK:
 
-automate creation and upload of source.zip and mswin_binary.zip for new releases
-
 Source downloadable, make sure it includes everything it needs and runs ok
 
-Instructions for running from source on Linux & Mac. Test this on Linux.
+automate creation and upload of source.zip and mswin_binary.zip for new releases
 
 BUG: pressing 'alt' hangs the game until you press it again? (jlappy/winxp)
 (I Asked about this on pyglet-users)
 
 
 REFACTOR
+
+all positions, velocities, accellerations should be vec2 quantities, rather
+than separate x and y components
+
+replace accelerations with separate 'force' and 'impulse' for each item.
+Then in update:
+    velocity = force * dt + impulse
 
 Consider that a worlditems have-a displayable, rather than being one.
 Displayable is root class, derived into SpriteHolder, LabelHolder,
