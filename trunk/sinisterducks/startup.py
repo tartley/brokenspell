@@ -39,7 +39,7 @@ def setup_audio():
         if system() == 'Windows':
             options['audio'] = ('directsound', 'openal', 'silent')
         else:
-            options['audio'] = ('alsa', 'openal', 'silent')
+            options['audio'] = ('openal', 'alsa', 'silent')
 
 
 def turn_gl_debug_off():
