@@ -1,4 +1,4 @@
 import sys
-from os.path import dirname
-sys.path.append(dirname(__file__) + '\\..')
+from os.path import dirname, join
+sys.path.append(join(dirname(__file__), '..'))
 
