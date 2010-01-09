@@ -77,7 +77,7 @@ def all_files(src):
 
 def get_data_files():
     ms_visualc_runtime = (
-        r'lib\Microsoft.VC90.CRT', [
+        r'Microsoft.VC90.CRT', [
             r'lib\Microsoft.VC90.CRT\Microsoft.VC90.CRT.manifest',
             r'lib\Microsoft.VC90.CRT\msvcr90.dll',
     ])
