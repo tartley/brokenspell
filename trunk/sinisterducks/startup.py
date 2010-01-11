@@ -33,10 +33,6 @@ def append(name, suffix):
     environ[name] = value
 
 
-def setup_environment_variables():
-    append(get_env_name(), 'lib')
-
-
 def setup_audio():
     force_audio = settings.get('all', 'force_audio')
     if force_audio:
@@ -48,25 +44,20 @@ def setup_audio():
             options['audio'] = ('openal', 'alsa', 'silent')
 
 
-def turn_gl_debug_off():
-    '''
-    Turn off error checking on opengl calls. This can make a huge improvement
-    to performance.
-    '''
+def startup():
+    # these functions must be executed before importing pyglet
+    process_args()
+
+    # we put dynamic library files in this directory
+    append(get_env_name(), 'lib')
+
+    setup_audio()
+
+    # This can result in massive performance gains (eg x5 on Linux)
+    # by not performing error checking on OpenGL calls
     options['gl_debug'] = False
 
-
-def launch():
     from .application import Application
     application = Application()
     application.launch()
-
-
-def startup():
-    # these functions must be executed before importing Application
-    process_args()
-    setup_environment_variables()
-    setup_audio()
-    turn_gl_debug_off()
-    launch()
 
