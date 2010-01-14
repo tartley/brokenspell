@@ -3,7 +3,9 @@ from mock import Mock
 from unittestplus.testcaseplus import TestCasePlus
 from unittestplus.run import run
 
-from ..typebag import TypeBag
+import fixpath
+
+from sinisterducks.typebag import TypeBag
 
 
 class TypeBagTest(TestCasePlus):

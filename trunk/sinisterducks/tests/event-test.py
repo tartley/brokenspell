@@ -3,7 +3,9 @@ from mock import Mock
 from unittestplus.testcaseplus import TestCasePlus
 from unittestplus.run import run
 
-from ..event import Event
+import fixpath
+
+from sinisterducks.event import Event
 
 
 class EventTest(TestCasePlus):

@@ -1,12 +1,14 @@
 
-from ..event import Event
-from ..gameitem import GameItem
-from ..render import Render
-from ..worlditem import WorldItem
-
 from mock import Mock
 from unittestplus.testcaseplus import TestCasePlus
 from unittestplus.run import run
+
+import fixpath
+
+from sinisterducks.event import Event
+from sinisterducks.gameitem import GameItem
+from sinisterducks.render import Render
+from sinisterducks.worlditem import WorldItem
 
 
 class RenderTest(TestCasePlus):

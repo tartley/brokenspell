@@ -6,7 +6,9 @@ import operator
 from unittestplus.testcaseplus import TestCasePlus
 from unittestplus.run import run
 
-from ..vec2 import Vec2
+import fixpath
+
+from sinisterducks.vec2 import Vec2
 
 
 class Vec2Test(TestCasePlus):
